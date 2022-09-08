@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {Query} from "react-apollo"
 import gql from "graphql-tag"
+import { Link } from 'react-router-dom'
 import "../assets/css/header.css"
 import logo from "../assets/images/logo.png"
 import currency from "../assets/images/currency.png"
@@ -31,7 +32,8 @@ export default class Header extends Component {
         super()
         this.state = {
             currencyButtonClick: false,
-            currentCurrencyIndex: 0
+            currentCurrencyIndex: 0,
+            cartOverlayOpen: false
         }
         this.currencyButtonHandler = this.currencyButtonHandler.bind(this)
         this.updateCurrencyHandler = this.updateCurrencyHandler.bind(this)
@@ -51,8 +53,12 @@ export default class Header extends Component {
     const currencyDropdownStyle = {
         display: this.state.currencyButtonClick ? "block" : "none"
     }
+
+    console.log(this.props)
+    
     return (
-      <header className='header-container'>
+      <div className="header-wrapper">
+        <header className='header-container'>
         <div className='categories-container'>
             <ul>
                 <Query query={CATEGORIES_QUERY}>
@@ -91,10 +97,29 @@ export default class Header extends Component {
                 </div>       
             </div>
             <div className='empty-cart-button'>
-                <img src={empty_cart} alt="empty cart" />
+                <img src={empty_cart} alt="empty cart" onClick={() => {this.setState({cartOverlayOpen: !this.state.cartOverlayOpen})}} />
             </div>
-        </div>
-      </header>
+            <div className='cart-overlay-background-container' style={{display: this.state.cartOverlayOpen ? "block" : "none"}} >
+                <div className='cart-overlay-background'>
+                    <div className='cart-overlay-wrapper'>
+                        <div className="cart-overlay">
+                            <div className='cart-overlay-title'>My Bag, <span>3 items</span></div>
+                            <div className='cart-overlay-items-container'>items</div>
+                            <div className='cart-overlay-total-container'>
+                                <div className='total-title'>Total</div>
+                                <div className='total-content'>$200.00</div>
+                            </div>
+                            <div className='cart-overlay-buttons'>
+                                <button>VIEW BAG</button>
+                                <Link to="/cart"><button>CHECK OUT</button></Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>                    
+        </header>
+      </div>
     )
   }
 }

@@ -20,9 +20,6 @@ export default class Cart extends Component {
         this.plusHandler = this.plusHandler.bind(this)
         this.minusHandler = this.minusHandler.bind(this)
     }
-    componentDidMount() {
-        console.log(this.props.location.state.cartCount)
-    }
 
     plusHandler() {
         this.setState(prev => {
@@ -32,8 +29,10 @@ export default class Cart extends Component {
     minusHandler() {}
   render() {
 
+    console.log(this.props)
+
     // Handle attributes per item in cart...
-    const cartItems = this.props.location.state.cartItems.map((item, idx) => {
+    const cartItems = this.props.cartItems.map((item, idx) => {
       const id = item.productId;
       const attributeArray = item.attributes;
       const CART_ITEMS_QUERY = gql`
@@ -213,7 +212,7 @@ export default class Cart extends Component {
               Tax 21%: <span>$42.00</span>
             </div>
             <div className="total-details">
-              Quantity: <span>{this.props.location.state.cartCount}</span>
+              Quantity: <span>{this.props.cartCount}</span>
             </div>
             <div className="total-details">
               Total: <span>$200.00</span>

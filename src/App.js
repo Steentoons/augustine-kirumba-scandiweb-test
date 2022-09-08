@@ -25,7 +25,6 @@ class App extends Component {
 
     this.cartItemsHandler = this.cartItemsHandler.bind(this)
     this.cartCountHandler = this.cartCountHandler.bind(this)
-    this.navigate = this.navigate.bind(this)
   }
 
   cartItemsHandler(product) {
@@ -33,16 +32,15 @@ class App extends Component {
     this.setState({cartItems: [...this.state.cartItems, product]})
   }
 
-  cartCountHandler(history, attributes, productId, cartItems) {
+  cartCountHandler() {
     this.setState(prev => {
       return ({cartCount: prev.cartCount + 1})
-    }, () => {this.navigate(history, attributes, productId, cartItems)})
+    })
   }
 
-  navigate(history, attributes, productId, cartItems) {
-    console.log(this.state.cartCount)
-    history.push('/cart', {cartItems: [ ...cartItems, {attributes, productId}], cartCount: this.state.cartCount})
-  }
+  // navigate(history, attributes, productId, cartItems) {
+  //   history.push('/cart', {cartItems: [ ...cartItems, {attributes, productId, quantity: 0}], cartCount: this.state.cartCount})
+  // }
   render() {
     return (
       <Router>
@@ -52,7 +50,7 @@ class App extends Component {
               <Route exact path="/"><Homepage cartItems={this.state.cartItems} cartCount={this.state.cartCount} /></Route>
               <Route exact path="/product/:id" render={(props) => <ProductView {...props} cartItemsHandler={this.cartItemsHandler} cartItems={this.state.cartItems} cartCount={this.state.cartCount} cartCountHandler={this.cartCountHandler} /> }
               />
-              <Route exact path="/cart" render={(props) => <Cart {...props} /> }
+              <Route exact path="/cart" render={(props) => <Cart {...props} cartItems={this.state.cartItems} cartCount={this.state.cartCount} /> }
               />
           </Switch>
         </div>

@@ -64,9 +64,11 @@ export default class ProductContent extends Component {
     const history = this.props.history
     const productId = this.props.currentId
     const {attributes} = this.state
+    const quantity = 0
     
-    this.props.cartItemsHandler({attributes, productId})
-    this.props.cartCountHandler(history, attributes, productId, this.props.cartItems)
+    this.props.cartItemsHandler({attributes, productId, quantity})
+    this.props.cartCountHandler()
+    // this.props.cartCountHandler(history, attributes, productId, this.props.cartItems)
   }
 
   render() {
