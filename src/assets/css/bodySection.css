@@ -1,0 +1,26 @@
+.body-section-container {
+    width: 100%;
+    padding: 0 100px;
+}
+
+.category-title {
+    font-family: raleway-400;
+    font-size: 42px;
+    line-height: 67px;
+    color: #1D1F22;
+    margin-top: 80px;
+}
+
+.product-list-wrapper {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 30px;
+}
+
+@media screen and (max-width: 1418px) {
+    .product-list-wrapper {
+        gap: 80px;
+    }
+}

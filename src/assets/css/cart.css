@@ -1,0 +1,143 @@
+.cart-title {
+    width: 100%;
+    padding: 0 100px;
+    margin-bottom: 55px;
+    margin-top: 80px;
+    font-family: raleway-700;
+    font-size: 32px;
+    line-height: 40px;
+    color: #1D1F22;
+}
+
+.cart-item-container {
+    width: 100%;
+    padding: 0 100px;
+}
+
+.cart-item-wrapper {
+    width: 100%;
+    border-top: solid #E5E5E5 1px;
+    padding: 24px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cart-details-brand {
+    font-family: raleway-600;
+    font-size: 30px;
+    line-height: 27px;
+    color: #1D1F22;
+    margin-bottom: 16px;
+}
+
+.cart-details-name {
+    font-family: raleway-400;
+    font-size: 30px;
+    line-height: 27px;
+    color: #1D1F22;
+    margin-bottom: 20px;
+}
+
+.cart-details-price {
+    font-family: raleway-700;
+    font-size: 24px;
+    line-height: 24px;
+    color: #1D1F22;
+}
+
+.cart-details-attributes-container {
+    padding-top: 20px;
+}
+
+.cart-images-container .cart-images-actions {
+    height: 288px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.cart-images-container {
+    display: flex;
+}
+
+.cart-images-container .cart-images-actions img {
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+}
+
+.cart-images-container .cart-images-img {
+    width: 200px;
+    height: 288px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-left: 24px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.total-container {
+    width: 100%;
+    padding: 0 100px 32px;
+}
+
+.total-details {
+    font-family: raleway-400;
+    font-size: 24px;
+    line-height: 28px;
+    color: #1D1F22;
+    margin-bottom: 8px;
+}
+
+.total-details span {
+    font-family: raleway-700;
+    line-height: 24px;
+}
+
+.total-details:last-child {
+    margin-bottom: 0;
+}
+
+.total-button button {
+    border: none;
+    padding: 13px 0;
+    width: 279px;
+    color: white;
+    background: #5ECE7B;
+    text-align: center;
+    font-family: raleway-600;
+    font-size: 14px;
+    line-height: 17px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.image-navigator {
+    margin-right: 16px;
+}
+
+.image-navigator img {
+    width: 24px;
+    margin-bottom: 16px;
+}
+
+.image-navigator img:last-child {
+    margin-left: 8px;
+}
+
+.cart-quantity-div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-family: raleway-500;
+    font-size: 24px;
+    font-size: 38px;
+    color: #1D1F22;
+}
+
+.total-border {
+    border-top: solid #E5E5E5 1px;
+    margin-bottom: 32px;
+}

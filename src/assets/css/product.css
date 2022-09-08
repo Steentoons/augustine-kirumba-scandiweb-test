@@ -1,0 +1,36 @@
+.product-container {
+    width: 386px;
+    padding: 16px;
+    cursor: pointer;
+    background: #FFFFFF;
+}
+
+.product-container:hover {
+    box-shadow: 0px 4px 35px rgba(168, 172, 176, 0.19);
+}
+
+.product-image {
+    width: 100%;
+    height: 338px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.product-contents {
+    margin-top: 4px;
+}
+
+.product-contents-title {
+    font-family: raleway-300;
+    font-size: 18px;
+    line-height: 29px;
+    color: #1D1F22;
+}
+
+.product-contents-price {
+    font-size: 18px;
+    line-height: 29px;
+    font-family: raleway-500;
+    color: #1D1F22;
+}
