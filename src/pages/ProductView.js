@@ -46,6 +46,8 @@ export default class ProductView extends Component {
           quantityMinusHandler={this.props.quantityMinusHandler}
           quantityPlusHandler={this.props.quantityPlusHandler}
           totalPrice={this.props.totalPrice}
+          navigateImageRight={this.props.navigateImageRight}
+          navigateImageLeft={this.props.navigateImageLeft}
         />
 
         <Query query={PRODUCT_VIEW_QUERY}>

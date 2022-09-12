@@ -38,10 +38,13 @@ class App extends Component {
   // Adding items to the cart...
   cartItemsHandler(product) {
     this.setState({ cartItems: [...this.state.cartItems, product] });
-    this.setState({
-      totalPrice:
-        ((this.state.totalPrice * 100) + (product.itemFixedPrice * 100))/100,
-    });
+    const newTotal = ((this.state.totalPrice * 100) + (product.itemFixedPrice * 100))/100
+
+    // Getting tax...
+    const tax = ((newTotal * 100) * (21/100))/100
+
+    this.setState({ totalPrice: newTotal });
+    this.setState({ tax: Number(tax.toFixed(2))})
   }
 
   // Adding individual item quantity to the cart...
@@ -71,8 +74,12 @@ class App extends Component {
     this.cartCountPlusHandler();
     const newTotal =
       ((this.state.totalPrice * 100) + (this.state.cartItems[idx].itemFixedPrice * 100))/100;
+    
+    // Getting tax...
+    const tax = ((newTotal * 100) * (21/100))/100
 
     this.setState({ totalPrice: newTotal });
+    this.setState({ tax: Number(tax.toFixed(2))})
   }
 
   // Reducing quantity from the cart...
@@ -90,22 +97,23 @@ class App extends Component {
       const newTotal =
         ((this.state.totalPrice * 100) - (this.state.cartItems[idx].itemFixedPrice * 100))/100;
 
+      // Getting tax...
+      const tax = ((newTotal * 100) * (21/100))/100
+
       this.setState({ totalPrice: Number(newTotal.toFixed(2)) });
+      this.setState({ tax: Number(tax.toFixed(2))})
     }
   }
 
   // Navigate displayed image to the right...
   navigateImageRight(idx, length) {
     const currentIdx = this.state.cartItems[idx].currentImageIdx;
-    console.log("called");
     console.log(`${idx} ${currentIdx} ${length}`);
     if (currentIdx !== length - 1) {
-      console.log("The if statement met");
       let items = [...this.state.cartItems];
       let item = { ...items[idx] };
       item.currentImageIdx = currentIdx + 1;
-      console.log(item.currentImageIdx);
-      item[idx] = item;
+      items[idx] = item;
 
       this.setState({ cartItems: items });
     }
@@ -114,13 +122,12 @@ class App extends Component {
   // Navigate displayed image to the left...
   navigateImageLeft(idx, length) {
     const currentIdx = this.state.cartItems[idx].currentImageIdx;
-    console.log("called");
     console.log(`${idx} ${currentIdx} ${length}`);
-    if (currentIdx >= 0) {
+    if (currentIdx > 0) {
       let items = [...this.state.cartItems];
       let item = { ...items[idx] };
       item.currentImageIdx = currentIdx - 1;
-      item[idx] = item;
+      items[idx] = item;
 
       this.setState({ cartItems: items });
     }
@@ -157,6 +164,8 @@ class App extends Component {
                     quantityMinusHandler={this.quantityMinusHandler}
                     quantityPlusHandler={this.quantityPlusHandler}
                     totalPrice={this.state.totalPrice}
+                    navigateImageRight={this.navigateImageRight}
+                    navigateImageLeft={this.navigateImageLeft}
                   />
                 )}
               />
@@ -173,6 +182,7 @@ class App extends Component {
                     totalPrice={this.state.totalPrice}
                     navigateImageRight={this.navigateImageRight}
                     navigateImageLeft={this.navigateImageLeft}
+                    tax={this.state.tax}
                   />
                 )}
               />

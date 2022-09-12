@@ -36,6 +36,8 @@ export default class Homepage extends Component {
           quantityMinusHandler={this.props.quantityMinusHandler}
           quantityPlusHandler={this.props.quantityPlusHandler}
           totalPrice={this.props.totalPrice}
+          navigateImageRight={this.props.navigateImageRight}
+          navigateImageLeft={this.props.navigateImageLeft}
         />
         <BodySection
           category={this.state.category}

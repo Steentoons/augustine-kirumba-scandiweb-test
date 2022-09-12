@@ -187,12 +187,40 @@ export default class Cart extends Component {
                       <div
                         className="cart-images-img"
                         style={{
-                          backgroundImage: `url('${product.gallery[this.props.cartItems[idx].currentImageIdx]}')`,
+                          backgroundImage: `url('${
+                            product.gallery[
+                              this.props.cartItems[idx].currentImageIdx
+                            ]
+                          }')`,
                         }}
                       >
-                        <div className="image-navigator" style={{display: product.gallery.length <= 1 ? "none" : "flex"}}>
-                          <img src={navigatorLeft} alt="navigator-left" onClick={() => {this.props.navigateImageLeft(idx,product.gallery.length)}} />
-                          <img src={navigatorRight} alt="navigator-right" onClick={() => {this.props.navigateImageRight(idx,product.gallery.length)}} />
+                        <div
+                          className="image-navigator"
+                          style={{
+                            display:
+                              product.gallery.length <= 1 ? "none" : "flex",
+                          }}
+                        >
+                          <img
+                            src={navigatorLeft}
+                            alt="navigator-left"
+                            onClick={() => {
+                              this.props.navigateImageLeft(
+                                idx,
+                                product.gallery.length
+                              );
+                            }}
+                          />
+                          <img
+                            src={navigatorRight}
+                            alt="navigator-right"
+                            onClick={() => {
+                              this.props.navigateImageRight(
+                                idx,
+                                product.gallery.length
+                              );
+                            }}
+                          />
                         </div>
                       </div>
                     </div>
@@ -217,6 +245,8 @@ export default class Cart extends Component {
           quantityMinusHandler={this.props.quantityMinusHandler}
           quantityPlusHandler={this.props.quantityPlusHandler}
           totalPrice={this.props.totalPrice}
+          navigateImageRight={this.props.navigateImageRight}
+          navigateImageLeft={this.props.navigateImageLeft}
         />
 
         <div className="cart-container">
@@ -225,7 +255,7 @@ export default class Cart extends Component {
           <div className="total-container">
             <div className="total-border"></div>
             <div className="total-details">
-              Tax 21%: <span>$42.00</span>
+              Tax 21%: <span>{`$${this.props.tax}`}</span>
             </div>
             <div className="total-details">
               Quantity: <span>{this.props.cartCount}</span>
