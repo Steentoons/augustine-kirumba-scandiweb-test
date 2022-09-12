@@ -15,6 +15,7 @@ export default class BodySection extends Component {
           id
           name
           gallery
+          inStock
           prices {
             currency {
               symbol

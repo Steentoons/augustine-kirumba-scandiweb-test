@@ -34,6 +34,11 @@ export default class Product extends Component {
           }}
         >
           <div className="product-image" style={productImage}></div>
+          <div className="instock-container" style={{display: this.props.product.inStock ? "none" : "block"}}>
+            <div className="instock-wrapper">
+              <div className="instock-div">OUT OF STOCK</div>
+            </div>
+          </div>
           <div className="product-contents">
             <div className="product-contents-title">{`${this.props.product.brand} ${this.props.product.name}`}</div>
             <div className="product-contents-price">{`${

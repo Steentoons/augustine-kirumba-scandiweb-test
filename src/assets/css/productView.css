@@ -23,6 +23,31 @@
     margin-right: 100px;
 }
 
+.product-view-container .instock-container {
+    position: relative;
+}
+
+.product-view-container .instock-wrapper {
+    position: absolute;
+    z-index: +2;
+    width: 610px;
+    height: 511px;
+    background: red;
+    margin-top: -511px;
+    background: rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+}
+
+.product-view-container .instock-div {
+    width: 100%;
+    font-family: raleway-400;
+    font-size: 24px;
+    line-height: 38px;
+    color: #8D8F9A;
+    text-align: center;
+}
+
 .product-view-image .product-view-image-div {
     width: 610px;
     height: 511px;

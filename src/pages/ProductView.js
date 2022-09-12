@@ -21,6 +21,7 @@ export default class ProductView extends Component {
         gallery
         description
         brand
+        inStock
         prices {
           amount
           currency {

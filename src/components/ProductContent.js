@@ -142,6 +142,11 @@ export default class ProductContent extends Component {
         </div>
         <div className='product-view-image'>
             <div style={productImageStyle} className='product-view-image-div'></div>
+            <div className='instock-container' style={{display: this.props.currentProduct.inStock ? "none" : "block"}}>
+              <div className='instock-wrapper'>
+                <div className="instock-div">OUT OF STOCK</div>
+              </div>
+            </div>
         </div>
         <div className='product-view-details-wrapper'>
           <div className='product-view-details-brand'>{this.props.currentProduct.brand}</div>
@@ -155,7 +160,7 @@ export default class ProductContent extends Component {
             <div className='price'>{`${this.props.currentProduct.prices[0].currency.symbol}${this.props.currentProduct.prices[0].amount}`}</div>
           </div>
           <div className='product-view-details-button'>
-              <button onClick={() => {this.cartStateHandler()}}>ADD TO CART</button>
+              <button onClick={() => {if(this.props.currentProduct.inStock) this.cartStateHandler() }}>ADD TO CART</button>
           </div>
           <div className='product-view-details-desc'>{parsedDescription}</div>
         </div>
