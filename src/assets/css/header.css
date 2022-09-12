@@ -17,6 +17,30 @@
     background-color: white;
 }
 
+.cart-notification-container {
+    width: 0;
+    height: 0;
+    position: relative;
+}
+
+.cart-notification {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #1D1F22;
+    color: white;
+    font-family: raleway-700;
+    font-size: 14px;
+    display: flex;
+    align-items: flex-start;
+    padding-top: 1px;
+    justify-content: center;
+    margin-top: -10px;
+    margin-left: -10px;
+    cursor: pointer;
+}
+
 .cart-overlay-background-container {
     width: 0;
     position: relative;
@@ -40,6 +64,9 @@
     width: 100%;
     background-color: white;
     padding: 32px 16px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: calc(100vh - 80px);
 }
 
 .cart-overlay-title {
@@ -75,7 +102,7 @@
     margin-top: 32px;
 }
 
-.cart-overlay-buttons button:first-child {
+.cart-overlay-buttons a button:first-child {
     background: #FFFFFF;
     border: 1px solid #1D1F22;
     color: #1D1F22;
@@ -203,4 +230,163 @@
 
 .currency-absolute-dropdown ul li:hover {
     background: #EEEEEE;
+}
+
+
+/* CART STYLES ON OVERLAY... */
+
+.header-container .cart-item-container {
+    width: 100%;
+    padding: 0 1px;
+}
+
+.header-container .cart-item-wrapper {
+    width: 100%;
+    border-top: none;
+    padding: 24px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.header-container .cart-details-brand {
+    width: 136px;
+    font-family: raleway-300;
+    font-size: 16px;
+    line-height: 26px;
+    color: #1D1F22;
+    margin-bottom: 8px;
+}
+
+.header-container .cart-details-name {
+    width: 136px;
+    font-family: raleway-300;
+    font-size: 16px;
+    line-height: 26px;
+    color: #1D1F22;
+    margin-bottom: 4px;
+}
+
+.header-container .cart-details-price {
+    font-family: raleway-500;
+    font-size: 16px;
+    line-height: 26px;
+    color: #1D1F22;
+}
+
+.header-container .cart-details-attributes-container {
+    padding-top: 8px;
+}
+
+.header-container .cart-images-container .cart-images-actions {
+    height: 190px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.header-container .cart-images-container {
+    display: flex;
+}
+
+.header-container .cart-images-container .cart-images-actions img {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.header-container .cart-images-container .cart-images-img {
+    width: 121px;
+    height: 190px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-left: 8px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+
+/* ATTRIBUTES ON OVERLAY */
+
+.header-container .attribute-wrapper {
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.header-container .attribute-wrapper:last-child {
+    margin-bottom: 0;
+}
+
+.header-container .attribute-wrapper .attribute-title {
+    font-family: raleway-400;
+    font-size: 14px;
+    line-height: 16px;
+    color: #1D1F22;
+    margin-bottom: 8px;
+}
+
+.header-container .attribute-wrapper .attribute-contents {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.header-container .attribute-wrapper .attribute-contents .attribute-value-text {
+    padding: 8px;
+    background: white;
+    border: 1px solid #1D1F22;
+    margin-right: 8px;
+    color: #1D1F22;
+    cursor: pointer;
+    font-family: raleway-400;
+    font-size: 14px;
+    line-height: 22px;
+    min-width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.header-container .attribute-wrapper .attribute-contents .attribute-value-text:hover {
+    background: #1D1F22;
+    color: white;
+}
+
+.header-container .attribute-wrapper .attribute-contents .attribute-value-swatch-wrapper {
+    margin-right: 8px;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-container .attribute-wrapper .attribute-contents .attribute-value-swatch-wrapper:hover {
+    border: 1px solid #5ECE7B;
+}
+
+.header-container .attribute-wrapper .attribute-contents .attribute-value-swatch {
+    width: 16px;
+    height: 16px;
+}
+
+.header-container .attribute-wrapper .attribute-contents .attribute-value-text-swatch {
+    background: #1D1F22;
+    color: white;
+}
+
+.header-container .cart-quantity-div {
+    font-family: raleway-500;
+    font-size: 16px;
+    line-height: 26px;
+}
+
+.header-container .image-navigator img {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
 }

@@ -6,31 +6,28 @@ import Header from "../components/Header";
 import Attributes from "../components/Attributes";
 import plusIcon from "../assets/images/plus-square.png";
 import minusIcon from "../assets/images/minus-square.png";
-import navigatorLeft from "../assets/images/left-arrow.png"
-import navigatorRight from "../assets/images/right-arrow.png"
+import navigatorLeft from "../assets/images/left-arrow.png";
+import navigatorRight from "../assets/images/right-arrow.png";
 
 export default class Cart extends Component {
-    constructor() {
-        super()
+  constructor() {
+    super();
 
-        this.state = {
-            quantity: 0
-        }
+    this.state = {
+      quantity: 0,
+    };
 
-        this.plusHandler = this.plusHandler.bind(this)
-        this.minusHandler = this.minusHandler.bind(this)
-    }
+    this.plusHandler = this.plusHandler.bind(this);
+    this.minusHandler = this.minusHandler.bind(this);
+  }
 
-    plusHandler() {
-        this.setState(prev => {
-            return {quantity: prev.quantity + 1}
-        })
-    }
-    minusHandler() {}
+  plusHandler(idx) {
+    this.setState((prev) => {
+      return { quantity: prev.quantity + 1 };
+    });
+  }
+  minusHandler() {}
   render() {
-
-    console.log(this.props)
-
     // Handle attributes per item in cart...
     const cartItems = this.props.cartItems.map((item, idx) => {
       const id = item.productId;
@@ -66,7 +63,6 @@ export default class Cart extends Component {
 
               const printAttributes = product.attributes.map(
                 (attribute, index) => {
-
                   // When type is text...
                   const attributesValueText = attribute.items.map(
                     (value, idx) => {
@@ -161,30 +157,44 @@ export default class Cart extends Component {
                 <div className="cart-item-container">
                   <div className="cart-item-wrapper">
                     <div className="cart-details-container">
-                        <div className="cart-details-brand">{product.brand}</div>
-                        <div className="cart-details-name">{product.name}</div>
-                        <div className="cart-details-price">{`${product.prices[0].currency.symbol}${product.prices[0].amount}`}</div>
-                        <div className="cart-details-attributes-container">
+                      <div className="cart-details-brand">{product.brand}</div>
+                      <div className="cart-details-name">{product.name}</div>
+                      <div className="cart-details-price">{`${product.prices[0].currency.symbol}${this.props.cartItems[idx].itemTotalPrice}`}</div>
+                      <div className="cart-details-attributes-container">
                         {printAttributes}
-                        </div>
+                      </div>
                     </div>
                     <div className="cart-images-container">
-                        <div className="cart-images-actions">
-                        <img src={plusIcon} alt="plus-option" onClick={() => {this.plusHandler()}} />
-                        <div className="cart-quantity-div">{this.state.quantity}</div>
-                        <img src={minusIcon} alt="minus-option" onClick={() => {this.minusHandler()}}  />
+                      <div className="cart-images-actions">
+                        <img
+                          src={plusIcon}
+                          alt="plus-option"
+                          onClick={() => {
+                            this.props.quantityPlusHandler(idx);
+                          }}
+                        />
+                        <div className="cart-quantity-div">
+                          {this.props.cartItems[idx].quantity}
                         </div>
-                        <div
+                        <img
+                          src={minusIcon}
+                          alt="minus-option"
+                          onClick={() => {
+                            this.props.quantityMinusHandler(idx);
+                          }}
+                        />
+                      </div>
+                      <div
                         className="cart-images-img"
                         style={{
-                            backgroundImage: `url('${product.gallery[0]}')`,
+                          backgroundImage: `url('${product.gallery[this.props.cartItems[idx].currentImageIdx]}')`,
                         }}
-                        >
-                            <div className="image-navigator">
-                                <img src={navigatorLeft} alt="navigator-left" />
-                                <img src={navigatorRight} alt="navigator-right" />
-                            </div>
+                      >
+                        <div className="image-navigator" style={{display: product.gallery.length <= 1 ? "none" : "flex"}}>
+                          <img src={navigatorLeft} alt="navigator-left" onClick={() => {this.props.navigateImageLeft(idx,product.gallery.length)}} />
+                          <img src={navigatorRight} alt="navigator-right" onClick={() => {this.props.navigateImageRight(idx,product.gallery.length)}} />
                         </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -201,7 +211,13 @@ export default class Cart extends Component {
 
     return (
       <div>
-        <Header />
+        <Header
+          cartItems={this.props.cartItems}
+          cartCount={this.props.cartCount}
+          quantityMinusHandler={this.props.quantityMinusHandler}
+          quantityPlusHandler={this.props.quantityPlusHandler}
+          totalPrice={this.props.totalPrice}
+        />
 
         <div className="cart-container">
           <div className="cart-title">CART</div>
@@ -215,10 +231,10 @@ export default class Cart extends Component {
               Quantity: <span>{this.props.cartCount}</span>
             </div>
             <div className="total-details">
-              Total: <span>$200.00</span>
+              Total: <span>{`$${this.props.totalPrice}`}</span>
             </div>
             <div className="total-button">
-                <button>ORDER</button>
+              <button>ORDER</button>
             </div>
           </div>
         </div>

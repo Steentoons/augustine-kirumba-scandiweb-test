@@ -6,13 +6,12 @@ import Header from "../components/Header";
 
 export default class ProductView extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      currentId: this.props.match.params.id
-    }
+      currentId: this.props.match.params.id,
+    };
   }
   render() {
-
     // Product view query...
     const PRODUCT_VIEW_QUERY = gql`
     {
@@ -38,25 +37,41 @@ export default class ProductView extends Component {
         }
       }
     }
-    `
+    `;
     return (
       <div>
-        <Header />
+        <Header
+          cartItems={this.props.cartItems}
+          cartCount={this.props.cartCount}
+          quantityMinusHandler={this.props.quantityMinusHandler}
+          quantityPlusHandler={this.props.quantityPlusHandler}
+          totalPrice={this.props.totalPrice}
+        />
 
         <Query query={PRODUCT_VIEW_QUERY}>
           {({ loading, data }) => {
-            let result = null
-            if(!loading) {
-              const currentProduct = data.product
-              const currentProjectComponent =  <ProductContent history={this.props.history} currentProduct={currentProduct} currentId={this.state.currentId} cartItemsHandler={this.props.cartItemsHandler} cartItems={this.props.cartItems} cartCount={this.props.cartCount} cartCountHandler={this.props.cartCountHandler} />
+            let result = null;
+            if (!loading) {
+              const currentProduct = data.product;
+              const currentProjectComponent = (
+                <ProductContent
+                  history={this.props.history}
+                  currentProduct={currentProduct}
+                  currentId={this.state.currentId}
+                  cartItemsHandler={this.props.cartItemsHandler}
+                  cartItems={this.props.cartItems}
+                  cartCount={this.props.cartCount}
+                  cartCountPlusHandler={this.props.cartCountPlusHandler}
+                  cartCountMinusHandler={this.props.cartCountMinusHandler}
+                />
+              );
 
-              result = currentProjectComponent
+              result = currentProjectComponent;
             }
 
-            return result
+            return result;
           }}
         </Query>
-
       </div>
     );
   }

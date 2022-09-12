@@ -121,6 +121,7 @@
 .image-navigator img {
     width: 24px;
     margin-bottom: 16px;
+    cursor: pointer;
 }
 
 .image-navigator img:last-child {

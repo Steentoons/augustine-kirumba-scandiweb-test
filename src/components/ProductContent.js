@@ -61,14 +61,17 @@ export default class ProductContent extends Component {
   }
 
   cartStateHandler() {
-    const history = this.props.history
+
+    // Setting the main cart item state to be used all over the project...
     const productId = this.props.currentId
     const {attributes} = this.state
-    const quantity = 0
+    const quantity = 1
+    const itemFixedPrice = Number(this.props.currentProduct.prices[0].amount)
+    const itemTotalPrice = itemFixedPrice
+    const currentImageIdx = 0
     
-    this.props.cartItemsHandler({attributes, productId, quantity})
-    this.props.cartCountHandler()
-    // this.props.cartCountHandler(history, attributes, productId, this.props.cartItems)
+    this.props.cartItemsHandler({attributes, productId, quantity, itemFixedPrice, itemTotalPrice, currentImageIdx})
+    this.props.cartCountPlusHandler()
   }
 
   render() {
