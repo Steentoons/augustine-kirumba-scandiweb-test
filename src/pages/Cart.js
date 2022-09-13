@@ -249,6 +249,7 @@ export default class Cart extends Component {
           navigateImageLeft={this.props.navigateImageLeft}
           currencySymbol={this.props.currencySymbol}
           currencyHandler={this.props.currencyHandler}
+          checkout={this.props.checkout}
         />
 
         <div className="cart-container">
@@ -266,7 +267,7 @@ export default class Cart extends Component {
               Total: <span>{`$${this.props.totalPrice}`}</span>
             </div>
             <div className="total-button">
-              <button>ORDER</button>
+              <button onClick={() => {this.props.checkout()}}>ORDER</button>
             </div>
           </div>
         </div>

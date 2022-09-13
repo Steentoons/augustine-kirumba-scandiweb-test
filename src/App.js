@@ -34,6 +34,7 @@ class App extends Component {
     this.navigateImageLeft = this.navigateImageLeft.bind(this);
     this.currencyHandler = this.currencyHandler.bind(this)
     this.deleteItem = this.deleteItem.bind(this)
+    this.checkout = this.checkout.bind(this)
   }
 
   // HANDLERS...
@@ -51,7 +52,6 @@ class App extends Component {
 
   // Adding items to the cart...
   cartItemsHandler(product) {
-    console.log("Called")
     this.setState({ cartItems: [...this.state.cartItems, product] });
     const newTotal = ((this.state.totalPrice * 100) + (product.itemFixedPrice * 100))/100
 
@@ -60,7 +60,6 @@ class App extends Component {
 
     this.setState({ totalPrice: newTotal });
     this.setState({ tax: Number(tax.toFixed(2))})
-    console.log("Finished")
   }
 
   // Deleting items from the cart...
@@ -74,6 +73,14 @@ class App extends Component {
       }
 
       this.setState({ cartItems: items})
+  }
+
+  // Ordering and clearing cart...
+  checkout() {
+    this.setState({ cartItems: []})
+    this.setState({ cartCount: 0 })
+    this.setState({ totalPrice: 0 })
+    this.setState({ tax: 0 })
   }
   
 
@@ -187,6 +194,7 @@ class App extends Component {
                   cartCountPlusHandler={this.cartCountPlusHandler}
                   currencySymbol={this.state.currencySymbol}
                   currencyHandler={this.currencyHandler}
+                  checkout={this.checkout}
                 />
               </Route>
               <Route
@@ -207,6 +215,7 @@ class App extends Component {
                     navigateImageLeft={this.navigateImageLeft}
                     currencySymbol={this.state.currencySymbol}
                     currencyHandler={this.currencyHandler}
+                    checkout={this.checkout}
                   />
                 )}
               />
@@ -226,6 +235,7 @@ class App extends Component {
                     tax={this.state.tax}
                     currencySymbol={this.state.currencySymbol}
                     currencyHandler={this.currencyHandler}
+                    checkout={this.checkout}
                   />
                 )}
               />

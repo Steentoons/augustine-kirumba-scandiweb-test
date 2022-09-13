@@ -188,7 +188,7 @@ export default class Header extends Component {
                   const attributeTemplate = (
                     <Attributes
                       key={index}
-                      attrName={attribute.name.toUpperCase()}
+                      attrName={attribute.name.charAt(0).toUpperCase() + attribute.name.slice(1)}
                       attrType={attribute.type}
                       index={index}
                       attributesValueSwatch={attributesValueSwatch}
@@ -390,7 +390,7 @@ export default class Header extends Component {
                       >
                         <button>VIEW BAG</button>
                       </Link>
-                      <button>CHECK OUT</button>
+                      <button onClick={() => {this.props.checkout()}}>CHECK OUT</button>
                     </div>
                   </div>
                 </div>

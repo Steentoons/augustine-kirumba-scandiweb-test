@@ -51,6 +51,7 @@ export default class ProductView extends Component {
           navigateImageLeft={this.props.navigateImageLeft}
           currencySymbol={this.props.currencySymbol}
           currencyHandler={this.props.currencyHandler}
+          checkout={this.props.checkout}
         />
 
         <Query query={PRODUCT_VIEW_QUERY}>

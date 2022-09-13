@@ -44,8 +44,22 @@ export default class Product extends Component {
     const itemTotalPrice = itemFixedPrice
     const currentImageIdx = 0
 
-    this.props.cartItemsHandler({attributes, productId, quantity, itemFixedPrice, itemTotalPrice, currentImageIdx})
+    console.log("attributes")
+    console.log(attributes)
+    console.log("productId")
+    console.log(productId)
+    console.log("quantity")
+    console.log(quantity)
+    console.log("itemFixedPrice")
+    console.log(itemFixedPrice)
+    console.log("itemTotalPrice")
+    console.log(itemTotalPrice)
+    console.log("currentImageIdx")
+    console.log(currentImageIdx)
+    
+
     this.props.cartCountPlusHandler()
+    this.props.cartItemsHandler({attributes, productId, quantity, itemFixedPrice, itemTotalPrice, currentImageIdx})
   }
 
   render() {
@@ -68,12 +82,12 @@ export default class Product extends Component {
             </div>
           </div>
           <div className="plp-add-to-cart-container" style={{display: this.state.toCart ? "block" : "none"}}>
-            <div className="plp-add-to-cart">
-              <img src={circleCart} alt="circle cart" onClick={(e) => {this.plpCartHandler(e)}}/>
+            <div className="plp-add-to-cart" onClick={(e) => {this.plpCartHandler(e)}}>
+              <img src={circleCart} alt="circle cart" />
             </div>
           </div>
           <div className="product-contents">
-            <div className="product-contents-title">{`${this.props.product.brand} ${this.props.product.name}`}</div>
+            <div className="product-contents-title" >{`${this.props.product.brand} ${this.props.product.name}`}</div>
             <div className="product-contents-price">{`${this.props.currencySymbol[1]}${this.props.product.prices[this.props.currencySymbol[0]].amount}`}</div>
           </div>
         </div>

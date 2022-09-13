@@ -32,7 +32,7 @@ export default class BodySection extends Component {
     `;
     return (
       <div className="body-section-container">
-        <div className="category-title">{this.props.category}</div>
+        <div className="category-title">{this.props.category.charAt(0).toUpperCase() + this.props.category.slice(1)}</div>
         <div className="product-list-wrapper">
           <Query query={PRODUCT_QUERY}>
             {({ loading, data }) => {

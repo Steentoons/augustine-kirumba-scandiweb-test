@@ -41,6 +41,7 @@ export default class Homepage extends Component {
           category={this.state.category}
           currencySymbol={this.props.currencySymbol}
           currencyHandler={this.props.currencyHandler}
+          checkout={this.props.checkout}
         />
         <BodySection
           category={this.state.category}
