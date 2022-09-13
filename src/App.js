@@ -21,6 +21,7 @@ class App extends Component {
       cartCount: 0,
       totalPrice: 0,
       tax: 0,
+      currencySymbol: [0, "$"]
     };
 
     // Binding Handlers...
@@ -31,12 +32,26 @@ class App extends Component {
     this.quantityMinusHandler = this.quantityMinusHandler.bind(this);
     this.navigateImageRight = this.navigateImageRight.bind(this);
     this.navigateImageLeft = this.navigateImageLeft.bind(this);
+    this.currencyHandler = this.currencyHandler.bind(this)
+    this.deleteItem = this.deleteItem.bind(this)
   }
 
   // HANDLERS...
 
+  // Changing currency...
+  currencyHandler(e) {
+    const idx = Number(e.currentTarget.dataset.currindex);
+    const currentCurrency = e.currentTarget.dataset.curr_currency
+    let items = [...this.state.currencySymbol]
+    items[0] = idx
+    items[1] = currentCurrency
+    this.setState({ currencySymbol: items });
+  }
+
+
   // Adding items to the cart...
   cartItemsHandler(product) {
+    console.log("Called")
     this.setState({ cartItems: [...this.state.cartItems, product] });
     const newTotal = ((this.state.totalPrice * 100) + (product.itemFixedPrice * 100))/100
 
@@ -45,7 +60,22 @@ class App extends Component {
 
     this.setState({ totalPrice: newTotal });
     this.setState({ tax: Number(tax.toFixed(2))})
+    console.log("Finished")
   }
+
+  // Deleting items from the cart...
+  deleteItem(idx) {
+      let items = [...this.state.cartItems]
+
+      for(let i = 0; i < items.length; i++) {
+        if(i === idx) {
+          items.splice(i, 1)
+        }
+      }
+
+      this.setState({ cartItems: items})
+  }
+  
 
   // Adding individual item quantity to the cart...
   cartCountPlusHandler() {
@@ -102,6 +132,11 @@ class App extends Component {
 
       this.setState({ totalPrice: Number(newTotal.toFixed(2)) });
       this.setState({ tax: Number(tax.toFixed(2))})
+
+      // Calling the delete item fn...
+      if(item.quantity === 0) {
+        this.deleteItem(idx)
+      }
     }
   }
 
@@ -148,6 +183,10 @@ class App extends Component {
                   navigateImageRight={this.navigateImageRight}
                   navigateImageLeft={this.navigateImageLeft}
                   totalPrice={this.state.totalPrice}
+                  cartItemsHandler={this.cartItemsHandler}
+                  cartCountPlusHandler={this.cartCountPlusHandler}
+                  currencySymbol={this.state.currencySymbol}
+                  currencyHandler={this.currencyHandler}
                 />
               </Route>
               <Route
@@ -166,6 +205,8 @@ class App extends Component {
                     totalPrice={this.state.totalPrice}
                     navigateImageRight={this.navigateImageRight}
                     navigateImageLeft={this.navigateImageLeft}
+                    currencySymbol={this.state.currencySymbol}
+                    currencyHandler={this.currencyHandler}
                   />
                 )}
               />
@@ -183,6 +224,8 @@ class App extends Component {
                     navigateImageRight={this.navigateImageRight}
                     navigateImageLeft={this.navigateImageLeft}
                     tax={this.state.tax}
+                    currencySymbol={this.state.currencySymbol}
+                    currencyHandler={this.currencyHandler}
                   />
                 )}
               />

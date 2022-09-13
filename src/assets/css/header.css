@@ -48,6 +48,7 @@
 
 .cart-overlay-background {
     position: fixed;
+    z-index: +5;
     width: 100vw;
     height: 100vh;
     background: rgba(57, 55, 72, 0.22);
@@ -202,6 +203,7 @@
 
 .currency-absolute-dropdown {
     position: absolute;
+    z-index: +6;
     width: 114px;
     background: white;
     box-shadow: 0px 4px 35px rgba(168, 172, 176, 0.19);

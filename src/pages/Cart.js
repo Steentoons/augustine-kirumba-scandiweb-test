@@ -247,6 +247,8 @@ export default class Cart extends Component {
           totalPrice={this.props.totalPrice}
           navigateImageRight={this.props.navigateImageRight}
           navigateImageLeft={this.props.navigateImageLeft}
+          currencySymbol={this.props.currencySymbol}
+          currencyHandler={this.props.currencyHandler}
         />
 
         <div className="cart-container">

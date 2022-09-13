@@ -66,7 +66,7 @@ export default class ProductContent extends Component {
     const productId = this.props.currentId
     const {attributes} = this.state
     const quantity = 1
-    const itemFixedPrice = Number(this.props.currentProduct.prices[0].amount)
+    const itemFixedPrice = Number(this.props.currentProduct.prices[this.props.currencySymbol[0]].amount)
     const itemTotalPrice = itemFixedPrice
     const currentImageIdx = 0
     
@@ -157,7 +157,7 @@ export default class ProductContent extends Component {
           {attributes}
           <div className='product-view-details-price-wrapper'>
             <div className='price-name'>PRICE: </div>
-            <div className='price'>{`${this.props.currentProduct.prices[0].currency.symbol}${this.props.currentProduct.prices[0].amount}`}</div>
+            <div className='price'>{`${this.props.currencySymbol[1]}${this.props.currentProduct.prices[this.props.currencySymbol[0]].amount}`}</div>
           </div>
           <div className='product-view-details-button'>
               <button onClick={() => {if(this.props.currentProduct.inStock) this.cartStateHandler() }}>ADD TO CART</button>

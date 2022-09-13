@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
-import {Query} from "react-apollo"
-import gql from "graphql-tag"
-import "../assets/css/bodySection.css"
-import Product from './Product'
+import React, { Component } from "react";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
+import "../assets/css/bodySection.css";
+import Product from "./Product";
 
-// PRODUCT_QUERY = 
+// PRODUCT_QUERY =
 
 export default class BodySection extends Component {
   render() {
@@ -22,29 +22,40 @@ export default class BodySection extends Component {
             }
             amount
           }
+          attributes {
+            name
+          }
           brand
         }
       }
     }
-    `
+    `;
     return (
-      <div className='body-section-container'>
+      <div className="body-section-container">
         <div className="category-title">{this.props.category}</div>
         <div className="product-list-wrapper">
           <Query query={PRODUCT_QUERY}>
             {({ loading, data }) => {
-                if(loading) return null 
+              if (loading) return null;
 
-                const allProducts = data.category.products.map((product, idx) => {
-                  return <Product key={idx} product={product} currencyIdx={this.props.currencyIdx}/>
-                })
+              const allProducts = data.category.products.map((product, idx) => {
+                return (
+                  <Product
+                    key={idx}
+                    product={product}
+                    currencyIdx={this.props.currencyIdx}
+                    cartItemsHandler={this.props.cartItemsHandler}
+                    cartCountPlusHandler={this.props.cartCountPlusHandler}
+                    currencySymbol={this.props.currencySymbol}
+                  />
+                );
+              });
 
-                return allProducts
-                
+              return allProducts;
             }}
           </Query>
         </div>
       </div>
-    )
+    );
   }
 }

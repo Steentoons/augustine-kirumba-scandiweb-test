@@ -43,6 +43,8 @@ export default class Header extends Component {
     this.currencyButtonHandler = this.currencyButtonHandler.bind(this);
     this.updateCurrencyHandler = this.updateCurrencyHandler.bind(this);
     this.checkoutHandler = this.checkoutHandler.bind(this);
+    this.cartOverlayHandler = this.cartOverlayHandler.bind(this)
+    this.cartOverlayBackgroundHandler = this.cartOverlayBackgroundHandler.bind(this)
   }
 
   currencyButtonHandler() {
@@ -51,11 +53,21 @@ export default class Header extends Component {
 
   updateCurrencyHandler(e) {
     this.setState({ currencyButtonClick: false });
-    this.props.updateCurrencyHandler(e);
+    if(this.props.cartCount === 0) {
+      this.props.currencyHandler(e);
+    }
   }
 
   checkoutHandler() {
     this.setState({ cartOverlayOpen: false });
+  }
+
+  cartOverlayHandler(e) {
+    e.stopPropagation();
+  }
+
+  cartOverlayBackgroundHandler(e) {
+      this.setState({ cartOverlayOpen: false });
   }
 
   render() {
@@ -194,7 +206,7 @@ export default class Header extends Component {
                     <div className="cart-details-container">
                       <div className="cart-details-brand">{product.brand}</div>
                       <div className="cart-details-name">{product.name}</div>
-                      <div className="cart-details-price">{`${product.prices[0].currency.symbol}${product.prices[0].amount}`}</div>
+                      <div className="cart-details-price">{`${this.props.currencySymbol[1]}${product.prices[this.props.currencySymbol[0]].amount}`}</div>
                       <div className="cart-details-attributes-container">
                         {printAttributes}
                       </div>
@@ -283,6 +295,7 @@ export default class Header extends Component {
                         key={idx}
                         category={category.name.toUpperCase()}
                         changeCategory={this.props.changeCategory}
+                        categoryState={this.props.category}
                       />
                     );
                   });
@@ -318,6 +331,7 @@ export default class Header extends Component {
                             <li
                               key={idx}
                               data-currindex={idx}
+                              data-curr_currency={currency.symbol}
                               onClick={(e) => {
                                 this.updateCurrencyHandler(e);
                               }}
@@ -354,18 +368,18 @@ export default class Header extends Component {
               className="cart-overlay-background-container"
               style={{ display: this.state.cartOverlayOpen ? "block" : "none" }}
             >
-              <div className="cart-overlay-background">
+              <div className="cart-overlay-background" data-overlay_background={true} onClick={(e) => {this.cartOverlayBackgroundHandler(e)}}>
                 <div className="cart-overlay-wrapper">
-                  <div className="cart-overlay">
+                  <div className="cart-overlay" onClick={(e) => {this.cartOverlayHandler(e)}}>
                     <div className="cart-overlay-title">
-                      My Bag, <span>3 items</span>
+                      My Bag, <span>{this.props.cartCount} items</span>
                     </div>
                     <div className="cart-overlay-items-container">
                       {cartItems}
                     </div>
                     <div className="cart-overlay-total-container">
                       <div className="total-title">Total</div>
-                      <div className="total-content">{`$${this.props.totalPrice}`}</div>
+                      <div className="total-content">{`${this.props.currencySymbol[1]}${this.props.totalPrice}`}</div>
                     </div>
                     <div className="cart-overlay-buttons">
                       <Link

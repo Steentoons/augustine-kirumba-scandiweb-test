@@ -30,6 +30,27 @@
     text-align: center;
 }
 
+.plp-add-to-cart-container {
+    width: 100%;
+    position: relative;
+}
+
+.plp-add-to-cart {
+    position: absolute;
+    z-index: +2;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -25px;
+    margin-left: -16px;
+}
+
+.plp-add-to-cart img {
+    width: 54px;
+    height: 54px;
+    cursor: pointer;
+}
+
 .product-container:hover {
     box-shadow: 0px 4px 35px rgba(168, 172, 176, 0.19);
 }
@@ -43,7 +64,7 @@
 }
 
 .product-contents {
-    margin-top: 4px;
+    margin-top: 24px;
 }
 
 .product-contents-title {

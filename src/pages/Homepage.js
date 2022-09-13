@@ -38,10 +38,16 @@ export default class Homepage extends Component {
           totalPrice={this.props.totalPrice}
           navigateImageRight={this.props.navigateImageRight}
           navigateImageLeft={this.props.navigateImageLeft}
+          category={this.state.category}
+          currencySymbol={this.props.currencySymbol}
+          currencyHandler={this.props.currencyHandler}
         />
         <BodySection
           category={this.state.category}
           currencyIdx={this.state.currencyIndex}
+          cartItemsHandler={this.props.cartItemsHandler}
+          cartCountPlusHandler={this.props.cartCountPlusHandler}
+          currencySymbol={this.props.currencySymbol}
         />
       </>
     );
