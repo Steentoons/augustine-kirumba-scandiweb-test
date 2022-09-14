@@ -74,7 +74,7 @@ export default class ProductView extends Component {
               );
 
               result = currentProjectComponent;
-            }
+            } else return null
 
             return result;
           }}

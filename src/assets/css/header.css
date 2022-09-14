@@ -57,7 +57,8 @@
 }
 
 .cart-overlay-wrapper {
-    width: 325px;
+    min-width: 325px;
+    max-width: 332px;
     margin-left: calc(100vw - 400px);
 }
 

@@ -21,7 +21,7 @@ class App extends Component {
       cartCount: 0,
       totalPrice: 0,
       tax: 0,
-      currencySymbol: [0, "$"]
+      currencySymbol: [0, "$"],
     };
 
     // Binding Handlers...
@@ -32,9 +32,35 @@ class App extends Component {
     this.quantityMinusHandler = this.quantityMinusHandler.bind(this);
     this.navigateImageRight = this.navigateImageRight.bind(this);
     this.navigateImageLeft = this.navigateImageLeft.bind(this);
-    this.currencyHandler = this.currencyHandler.bind(this)
-    this.deleteItem = this.deleteItem.bind(this)
-    this.checkout = this.checkout.bind(this)
+    this.currencyHandler = this.currencyHandler.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
+    this.checkout = this.checkout.bind(this);
+  }
+
+  componentDidMount() {
+    const oldState = JSON.parse(sessionStorage.getItem("oldState"));
+    const oldCartItems = JSON.parse(sessionStorage.getItem("oldCartItems"))
+    if (oldState) {
+      const { cartCount, totalPrice, tax, currencySymbol } =
+        oldState;
+
+      this.setState({ cartCount, totalPrice, tax, currencySymbol: JSON.parse(currencySymbol) });
+    }
+    if(oldCartItems) {
+      const { cartItems } = oldCartItems
+      const items = JSON.parse(cartItems)
+
+      console.log(JSON.parse(cartItems))
+
+      this.setState({ cartItems: items })
+    }
+  }
+
+  componentDidUpdate() {
+    const { cartCount, totalPrice, tax, currencySymbol } = this.state
+    const { cartItems } = this.state
+    sessionStorage.setItem('oldState', JSON.stringify({ cartCount, totalPrice, tax, currencySymbol: JSON.stringify(currencySymbol) }))
+    sessionStorage.setItem('oldCartItems', JSON.stringify({cartItems: JSON.stringify(cartItems)}))
   }
 
   // HANDLERS...
@@ -42,47 +68,46 @@ class App extends Component {
   // Changing currency...
   currencyHandler(e) {
     const idx = Number(e.currentTarget.dataset.currindex);
-    const currentCurrency = e.currentTarget.dataset.curr_currency
-    let items = [...this.state.currencySymbol]
-    items[0] = idx
-    items[1] = currentCurrency
+    const currentCurrency = e.currentTarget.dataset.curr_currency;
+    let items = [...this.state.currencySymbol];
+    items[0] = idx;
+    items[1] = currentCurrency;
     this.setState({ currencySymbol: items });
   }
-
 
   // Adding items to the cart...
   cartItemsHandler(product) {
     this.setState({ cartItems: [...this.state.cartItems, product] });
-    const newTotal = ((this.state.totalPrice * 100) + (product.itemFixedPrice * 100))/100
+    const newTotal =
+      (this.state.totalPrice * 100 + product.itemFixedPrice * 100) / 100;
 
     // Getting tax...
-    const tax = ((newTotal * 100) * (21/100))/100
+    const tax = (newTotal * 100 * (21 / 100)) / 100;
 
     this.setState({ totalPrice: newTotal });
-    this.setState({ tax: Number(tax.toFixed(2))})
+    this.setState({ tax: Number(tax.toFixed(2)) });
   }
 
   // Deleting items from the cart...
   deleteItem(idx) {
-      let items = [...this.state.cartItems]
+    let items = [...this.state.cartItems];
 
-      for(let i = 0; i < items.length; i++) {
-        if(i === idx) {
-          items.splice(i, 1)
-        }
+    for (let i = 0; i < items.length; i++) {
+      if (i === idx) {
+        items.splice(i, 1);
       }
+    }
 
-      this.setState({ cartItems: items})
+    this.setState({ cartItems: items });
   }
 
   // Ordering and clearing cart...
   checkout() {
-    this.setState({ cartItems: []})
-    this.setState({ cartCount: 0 })
-    this.setState({ totalPrice: 0 })
-    this.setState({ tax: 0 })
+    this.setState({ cartItems: [] });
+    this.setState({ cartCount: 0 });
+    this.setState({ totalPrice: 0 });
+    this.setState({ tax: 0 });
   }
-  
 
   // Adding individual item quantity to the cart...
   cartCountPlusHandler() {
@@ -103,20 +128,23 @@ class App extends Component {
     let items = [...this.state.cartItems];
     let item = { ...items[idx] };
     item.quantity = this.state.cartItems[idx].quantity + 1;
-    item.itemTotalPrice = ((this.state.cartItems[idx].itemFixedPrice * 100) * item.quantity)/100
+    item.itemTotalPrice =
+      (this.state.cartItems[idx].itemFixedPrice * 100 * item.quantity) / 100;
     items[idx] = item;
 
     this.setState({ cartItems: items });
 
     this.cartCountPlusHandler();
     const newTotal =
-      ((this.state.totalPrice * 100) + (this.state.cartItems[idx].itemFixedPrice * 100))/100;
-    
+      (this.state.totalPrice * 100 +
+        this.state.cartItems[idx].itemFixedPrice * 100) /
+      100;
+
     // Getting tax...
-    const tax = ((newTotal * 100) * (21/100))/100
+    const tax = (newTotal * 100 * (21 / 100)) / 100;
 
     this.setState({ totalPrice: newTotal });
-    this.setState({ tax: Number(tax.toFixed(2))})
+    this.setState({ tax: Number(tax.toFixed(2)) });
   }
 
   // Reducing quantity from the cart...
@@ -125,24 +153,27 @@ class App extends Component {
       let items = [...this.state.cartItems];
       let item = { ...items[idx] };
       item.quantity = this.state.cartItems[idx].quantity - 1;
-      item.itemTotalPrice = ((this.state.cartItems[idx].itemFixedPrice * 100) * item.quantity)/100
+      item.itemTotalPrice =
+        (this.state.cartItems[idx].itemFixedPrice * 100 * item.quantity) / 100;
       items[idx] = item;
 
       this.setState({ cartItems: items });
 
       this.cartCountMinusHandler();
       const newTotal =
-        ((this.state.totalPrice * 100) - (this.state.cartItems[idx].itemFixedPrice * 100))/100;
+        (this.state.totalPrice * 100 -
+          this.state.cartItems[idx].itemFixedPrice * 100) /
+        100;
 
       // Getting tax...
-      const tax = ((newTotal * 100) * (21/100))/100
+      const tax = (newTotal * 100 * (21 / 100)) / 100;
 
       this.setState({ totalPrice: Number(newTotal.toFixed(2)) });
-      this.setState({ tax: Number(tax.toFixed(2))})
+      this.setState({ tax: Number(tax.toFixed(2)) });
 
       // Calling the delete item fn...
-      if(item.quantity === 0) {
-        this.deleteItem(idx)
+      if (item.quantity === 0) {
+        this.deleteItem(idx);
       }
     }
   }

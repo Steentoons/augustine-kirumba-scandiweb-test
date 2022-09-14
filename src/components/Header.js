@@ -272,7 +272,7 @@ export default class Header extends Component {
               );
 
               return result;
-            }
+            } else return null
           }}
         </Query>
       );
@@ -287,7 +287,7 @@ export default class Header extends Component {
             <ul>
               <Query query={CATEGORIES_QUERY}>
                 {({ loading, data }) => {
-                  if (loading) return "Loading";
+                  if (loading) return null;
                   const { categories } = data;
                   const allcategories = categories.map((category, idx) => {
                     return (
@@ -351,7 +351,7 @@ export default class Header extends Component {
             <div
               className="empty-cart-button"
               onClick={() => {
-                this.setState({ cartOverlayOpen: !this.state.cartOverlayOpen });
+                this.setState({ cartOverlayOpen: !this.state.cartOverlayOpen, currencyButtonClick: false });
               }}
             >
               <img src={empty_cart} alt="empty cart" />

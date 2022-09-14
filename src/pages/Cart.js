@@ -229,7 +229,7 @@ export default class Cart extends Component {
               );
 
               return result;
-            }
+            } else return null
           }}
         </Query>
       );
