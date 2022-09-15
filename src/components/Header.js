@@ -4,7 +4,6 @@ import gql from "graphql-tag";
 import { Link } from "react-router-dom";
 import "../assets/css/header.css";
 import logo from "../assets/images/logo.png";
-import currency from "../assets/images/currency.png";
 import currency_arrow_down from "../assets/images/currency-arrow-down.png";
 import empty_cart from "../assets/images/empty-cart.png";
 import Categories from "./Categories";
@@ -312,7 +311,7 @@ export default class Header extends Component {
                 this.currencyButtonHandler();
               }}
             >
-              <img src={currency} alt="currency symbol" />
+              <div className="currency-symbol">{this.props.currencySymbol[1]}</div>
               <img src={currency_arrow_down} alt="currency arrow down" />
             </div>
             <div

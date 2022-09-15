@@ -16,10 +16,6 @@ export default class Product extends Component {
     this.plpCartHandler = this.plpCartHandler.bind(this)
   }
 
-  componentWillUnmount() {
-    console.log("This is what is happening")
-  }
-
   // Handling the hover add to cart on PLP...
   handleMouseOver() {
     const setToCart = (state) => {
@@ -43,20 +39,6 @@ export default class Product extends Component {
     const itemFixedPrice = Number(this.props.product.prices[this.props.currencySymbol[0]].amount)
     const itemTotalPrice = itemFixedPrice
     const currentImageIdx = 0
-
-    console.log("attributes")
-    console.log(attributes)
-    console.log("productId")
-    console.log(productId)
-    console.log("quantity")
-    console.log(quantity)
-    console.log("itemFixedPrice")
-    console.log(itemFixedPrice)
-    console.log("itemTotalPrice")
-    console.log(itemTotalPrice)
-    console.log("currentImageIdx")
-    console.log(currentImageIdx)
-    
 
     this.props.cartCountPlusHandler()
     this.props.cartItemsHandler({attributes, productId, quantity, itemFixedPrice, itemTotalPrice, currentImageIdx})

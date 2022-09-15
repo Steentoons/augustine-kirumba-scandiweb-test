@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
 export default class Categories extends Component {
   render() {
@@ -7,8 +8,8 @@ export default class Categories extends Component {
       borderBottom: this.props.category.toLowerCase() === this.props.categoryState ? "solid #5ECE7B 2px" : "none"
     }
     return (
-      <li style={categoryStyle} onClick={() => this.props.changeCategory(this.props.category.toLowerCase())}>
-        {this.props.category}
+      <li style={categoryStyle} >
+        <Link onClick={() => this.props.changeCategory(this.props.category.toLowerCase())} to="/">{this.props.category}</Link>
       </li>
     )
   }

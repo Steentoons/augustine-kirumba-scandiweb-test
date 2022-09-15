@@ -13,9 +13,17 @@ export default class ProductContent extends Component {
 
     this.thumbnailHandler = this.thumbnailHandler.bind(this)
     this.cartStateHandler = this.cartStateHandler.bind(this)
+    this.freshAttributes = this.freshAttributes.bind(this)
   }
 
   componentDidMount() {
+    this.freshAttributes()
+  }
+
+  // Handlers...
+
+  // Freshening the attributes...
+  freshAttributes() {
     const attributes = this.props.currentProduct.attributes
     const atrrArray = attributes.map(attribute => {
       const attrName = attribute.name.toLowerCase()
@@ -25,22 +33,8 @@ export default class ProductContent extends Component {
     this.setState({ attributes: [...atrrArray] })
   }
 
-  // Handlers...
+  // Handling them attributes...
   attributesHandler(e) {
-    const currentAttributeIdx = Number(e.currentTarget.dataset.attribute_idx)
-    const parentAttributeIdx = Number(e.currentTarget.parentElement.dataset.attribute_idx)
-    const attributeKey = e.currentTarget.dataset.attribute_key
-
-    const { attributes } = this.state
-    attributes[parentAttributeIdx] = {
-      ...attributes[parentAttributeIdx],
-      [attributeKey]: currentAttributeIdx
-    }
-
-    this.setState({attributes})
-  }
-
-  textHandler(e) {
     const currentAttributeIdx = Number(e.currentTarget.dataset.attribute_idx)
     const parentAttributeIdx = Number(e.currentTarget.parentElement.dataset.attribute_idx)
     const attributeKey = e.currentTarget.dataset.attribute_key
@@ -72,6 +66,8 @@ export default class ProductContent extends Component {
     
     this.props.cartItemsHandler({attributes, productId, quantity, itemFixedPrice, itemTotalPrice, currentImageIdx})
     this.props.cartCountPlusHandler()
+
+    this.freshAttributes()
   }
 
   render() {
@@ -160,7 +156,7 @@ export default class ProductContent extends Component {
             <div className='price'>{`${this.props.currencySymbol[1]}${this.props.currentProduct.prices[this.props.currencySymbol[0]].amount}`}</div>
           </div>
           <div className='product-view-details-button'>
-              <button onClick={() => {if(this.props.currentProduct.inStock) this.cartStateHandler() }}>ADD TO CART</button>
+              <button onClick={() => {if(this.props.currentProduct.inStock) this.cartStateHandler()}} style={{display: this.props.currentProduct.inStock ? "block" : "none"}}>ADD TO CART</button>
           </div>
           <div className='product-view-details-desc'>{parsedDescription}</div>
         </div>

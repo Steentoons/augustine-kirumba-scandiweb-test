@@ -146,13 +146,15 @@
     cursor: pointer;
 }
 
-.currency-symbol-button img:first-child {
-    width: 16px;
-    height: 23px;
+.currency-symbol-button .currency-symbol {
+    font-family: raleway-500;
+    font-size: 18px;
+    line-height: 29px;
+    color: #1D1F22;
     margin-right: 10px;
 }
 
-.currency-symbol-button img:last-child {
+.currency-symbol-button img {
     width: 8px;
     height: 4px;
     margin-right: 22px;
@@ -181,6 +183,11 @@
 }
 
 .categories-container ul li {
+    list-style: none;
+    height: 100%;
+}
+
+.categories-container ul li a {
     list-style: none;
     font-family: raleway-600;
     font-size: 16px;

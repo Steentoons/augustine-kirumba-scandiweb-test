@@ -22,6 +22,7 @@ class App extends Component {
       totalPrice: 0,
       tax: 0,
       currencySymbol: [0, "$"],
+      category: "all"
     };
 
     // Binding Handlers...
@@ -35,6 +36,7 @@ class App extends Component {
     this.currencyHandler = this.currencyHandler.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
     this.checkout = this.checkout.bind(this);
+    this.changeCategory = this.changeCategory.bind(this)
   }
 
   componentDidMount() {
@@ -50,8 +52,6 @@ class App extends Component {
       const { cartItems } = oldCartItems
       const items = JSON.parse(cartItems)
 
-      console.log(JSON.parse(cartItems))
-
       this.setState({ cartItems: items })
     }
   }
@@ -61,9 +61,16 @@ class App extends Component {
     const { cartItems } = this.state
     sessionStorage.setItem('oldState', JSON.stringify({ cartCount, totalPrice, tax, currencySymbol: JSON.stringify(currencySymbol) }))
     sessionStorage.setItem('oldCartItems', JSON.stringify({cartItems: JSON.stringify(cartItems)}))
+
+    console.log(cartItems)
   }
 
   // HANDLERS...
+
+  // Changing category...
+  changeCategory(currentCategory) {
+    this.setState({ category: currentCategory });
+  }
 
   // Changing currency...
   currencyHandler(e) {
@@ -181,7 +188,7 @@ class App extends Component {
   // Navigate displayed image to the right...
   navigateImageRight(idx, length) {
     const currentIdx = this.state.cartItems[idx].currentImageIdx;
-    console.log(`${idx} ${currentIdx} ${length}`);
+
     if (currentIdx !== length - 1) {
       let items = [...this.state.cartItems];
       let item = { ...items[idx] };
@@ -195,7 +202,6 @@ class App extends Component {
   // Navigate displayed image to the left...
   navigateImageLeft(idx, length) {
     const currentIdx = this.state.cartItems[idx].currentImageIdx;
-    console.log(`${idx} ${currentIdx} ${length}`);
     if (currentIdx > 0) {
       let items = [...this.state.cartItems];
       let item = { ...items[idx] };
@@ -226,6 +232,8 @@ class App extends Component {
                   currencySymbol={this.state.currencySymbol}
                   currencyHandler={this.currencyHandler}
                   checkout={this.checkout}
+                  changeCategory={this.changeCategory}
+                  category={this.state.category}
                 />
               </Route>
               <Route
@@ -247,6 +255,7 @@ class App extends Component {
                     currencySymbol={this.state.currencySymbol}
                     currencyHandler={this.currencyHandler}
                     checkout={this.checkout}
+                    changeCategory={this.changeCategory}
                   />
                 )}
               />
@@ -267,6 +276,7 @@ class App extends Component {
                     currencySymbol={this.state.currencySymbol}
                     currencyHandler={this.currencyHandler}
                     checkout={this.checkout}
+                    changeCategory={this.changeCategory}
                   />
                 )}
               />

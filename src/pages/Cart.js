@@ -250,6 +250,7 @@ export default class Cart extends Component {
           currencySymbol={this.props.currencySymbol}
           currencyHandler={this.props.currencyHandler}
           checkout={this.props.checkout}
+          changeCategory={this.props.changeCategory}
         />
 
         <div className="cart-container">
