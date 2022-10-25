@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 
 import "./assets/css/main.css";
 import Homepage from "./pages/Homepage";
@@ -22,7 +27,7 @@ class App extends Component {
       totalPrice: 0,
       tax: 0,
       currencySymbol: [0, "$"],
-      category: "all"
+      category: "all",
     };
 
     // Binding Handlers...
@@ -36,33 +41,48 @@ class App extends Component {
     this.currencyHandler = this.currencyHandler.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
     this.checkout = this.checkout.bind(this);
-    this.changeCategory = this.changeCategory.bind(this)
+    this.changeCategory = this.changeCategory.bind(this);
   }
 
   componentDidMount() {
     const oldState = JSON.parse(sessionStorage.getItem("oldState"));
-    const oldCartItems = JSON.parse(sessionStorage.getItem("oldCartItems"))
+    const oldCartItems = JSON.parse(sessionStorage.getItem("oldCartItems"));
     if (oldState) {
-      const { cartCount, totalPrice, tax, currencySymbol } =
-        oldState;
+      const { cartCount, totalPrice, tax, currencySymbol } = oldState;
 
-      this.setState({ cartCount, totalPrice, tax, currencySymbol: JSON.parse(currencySymbol) });
+      this.setState({
+        cartCount,
+        totalPrice,
+        tax,
+        currencySymbol: JSON.parse(currencySymbol),
+      });
     }
-    if(oldCartItems) {
-      const { cartItems } = oldCartItems
-      const items = JSON.parse(cartItems)
+    if (oldCartItems) {
+      const { cartItems } = oldCartItems;
+      const items = JSON.parse(cartItems);
 
-      this.setState({ cartItems: items })
+      this.setState({ cartItems: items });
     }
   }
 
   componentDidUpdate() {
-    const { cartCount, totalPrice, tax, currencySymbol } = this.state
-    const { cartItems } = this.state
-    sessionStorage.setItem('oldState', JSON.stringify({ cartCount, totalPrice, tax, currencySymbol: JSON.stringify(currencySymbol) }))
-    sessionStorage.setItem('oldCartItems', JSON.stringify({cartItems: JSON.stringify(cartItems)}))
+    const { cartCount, totalPrice, tax, currencySymbol } = this.state;
+    const { cartItems } = this.state;
+    sessionStorage.setItem(
+      "oldState",
+      JSON.stringify({
+        cartCount,
+        totalPrice,
+        tax,
+        currencySymbol: JSON.stringify(currencySymbol),
+      })
+    );
+    sessionStorage.setItem(
+      "oldCartItems",
+      JSON.stringify({ cartItems: JSON.stringify(cartItems) })
+    );
 
-    console.log(cartItems)
+    console.log(cartItems);
   }
 
   // HANDLERS...
@@ -230,23 +250,31 @@ class App extends Component {
           <div className="container">
             <Switch>
               <Route exact path="/">
-                <Homepage
-                  cartItems={this.state.cartItems}
-                  cartCount={this.state.cartCount}
-                  quantityMinusHandler={this.quantityMinusHandler}
-                  quantityPlusHandler={this.quantityPlusHandler}
-                  navigateImageRight={this.navigateImageRight}
-                  navigateImageLeft={this.navigateImageLeft}
-                  totalPrice={this.state.totalPrice}
-                  cartItemsHandler={this.cartItemsHandler}
-                  cartCountPlusHandler={this.cartCountPlusHandler}
-                  currencySymbol={this.state.currencySymbol}
-                  currencyHandler={this.currencyHandler}
-                  checkout={this.checkout}
-                  changeCategory={this.changeCategory}
-                  category={this.state.category}
-                />
+                <Redirect to="/category/all" />
               </Route>
+              <Route
+                exact
+                path="/category/:category"
+                render={(props) => (
+                  <Homepage
+                    {...props}
+                    cartItems={this.state.cartItems}
+                    cartCount={this.state.cartCount}
+                    quantityMinusHandler={this.quantityMinusHandler}
+                    quantityPlusHandler={this.quantityPlusHandler}
+                    navigateImageRight={this.navigateImageRight}
+                    navigateImageLeft={this.navigateImageLeft}
+                    totalPrice={this.state.totalPrice}
+                    cartItemsHandler={this.cartItemsHandler}
+                    cartCountPlusHandler={this.cartCountPlusHandler}
+                    currencySymbol={this.state.currencySymbol}
+                    currencyHandler={this.currencyHandler}
+                    checkout={this.checkout}
+                    changeCategory={this.changeCategory}
+                    category={this.state.category}
+                  />
+                )}
+              ></Route>
               <Route
                 exact
                 path="/product/:id"

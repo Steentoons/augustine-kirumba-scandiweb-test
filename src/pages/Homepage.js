@@ -44,6 +44,7 @@ export default class Homepage extends Component {
           cartCountPlusHandler={this.props.cartCountPlusHandler}
           currencySymbol={this.props.currencySymbol}
           category={this.props.category}
+          match={this.props.match}
         />
       </>
     );

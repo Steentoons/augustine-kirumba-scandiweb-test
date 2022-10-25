@@ -10,7 +10,7 @@ export default class BodySection extends Component {
   render() {
     const PRODUCT_QUERY = gql`
     {
-      category(input: {title: "${this.props.category}"}) {
+      category(input: {title: "${this.props.match.params.category}"}) {
         products {
           id
           name
@@ -30,6 +30,7 @@ export default class BodySection extends Component {
       }
     }
     `;
+
     return (
       <div className="body-section-wrapper">
         <div className="body-section-container">

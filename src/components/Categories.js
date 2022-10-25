@@ -9,7 +9,7 @@ export default class Categories extends Component {
     }
     return (
       <li style={categoryStyle} >
-        <Link onClick={() => this.props.changeCategory(this.props.category.toLowerCase())} to="/">{this.props.category}</Link>
+        <Link onClick={() => this.props.changeCategory(this.props.category.toLowerCase())} to={`/category/${this.props.category.toLowerCase()}`}>{this.props.category}</Link>
       </li>
     )
   }

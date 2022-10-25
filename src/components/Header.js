@@ -321,7 +321,9 @@ export default class Header extends Component {
               </Query>
             </ul>
           </div>
-          <img className="logo" src={logo} alt="logo" />
+          <Link onClick={() => {this.props.changeCategory('all')}} to="/category/all">
+            <img className="logo" src={logo} alt="logo" />
+          </Link>
           <div className="top-right-buttons-container">
             <div
               className="currency-symbol-button"
