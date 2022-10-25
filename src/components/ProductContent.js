@@ -71,16 +71,12 @@ export default class ProductContent extends Component {
   }
 
   render() {
-    const productImageStyle = {
-        backgroundImage: `url(${this.props.currentProduct.gallery[this.state.thumbnailId]})`
-    }
 
     // Printing the thumbnails...
     const printImageThumbnails = this.props.currentProduct.gallery.map((thumbnail, idx) => {
-        const productImageThumbnail = {
-            backgroundImage: `url(${thumbnail})`
-        }
-        const result = <div key={idx} data-thumbnail={thumbnail} data-thumbnail_id={idx} onClick={(e) => {this.thumbnailHandler(e)}} style={productImageThumbnail} className='product-view-thumbnail'></div>
+        const result = <div key={idx} data-thumbnail={thumbnail} data-thumbnail_id={idx} onClick={(e) => {this.thumbnailHandler(e)}} className='product-view-thumbnail'>
+          <img src={thumbnail} alt={thumbnail} />
+        </div>
         return result
     })
 
@@ -137,7 +133,9 @@ export default class ProductContent extends Component {
             {printImageThumbnails}
         </div>
         <div className='product-view-image'>
-            <div style={productImageStyle} className='product-view-image-div'></div>
+            <div className='product-view-image-div'>
+              <img src={this.props.currentProduct.gallery[this.state.thumbnailId]} alt={this.props.currentProduct.name} />
+            </div>
             <div className='instock-container' style={{display: this.props.currentProduct.inStock ? "none" : "block"}}>
               <div className='instock-wrapper'>
                 <div className="instock-div">OUT OF STOCK</div>

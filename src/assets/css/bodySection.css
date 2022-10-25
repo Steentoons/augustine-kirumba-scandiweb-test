@@ -1,6 +1,10 @@
+.body-section-wrapper {
+    width: 100vw;
+    padding: 0 100px;
+}
+
 .body-section-container {
     width: 100%;
-    padding: 0 100px;
 }
 
 .category-title {
@@ -12,11 +16,10 @@
 }
 
 .product-list-wrapper {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 386px);
+    justify-content: space-between;
+    grid-gap: 30px;
 }
 
 @media screen and (max-width: 1418px) {

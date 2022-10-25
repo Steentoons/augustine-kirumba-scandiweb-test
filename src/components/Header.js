@@ -42,8 +42,9 @@ export default class Header extends Component {
     this.currencyButtonHandler = this.currencyButtonHandler.bind(this);
     this.updateCurrencyHandler = this.updateCurrencyHandler.bind(this);
     this.checkoutHandler = this.checkoutHandler.bind(this);
-    this.cartOverlayHandler = this.cartOverlayHandler.bind(this)
-    this.cartOverlayBackgroundHandler = this.cartOverlayBackgroundHandler.bind(this)
+    this.cartOverlayHandler = this.cartOverlayHandler.bind(this);
+    this.cartOverlayBackgroundHandler =
+      this.cartOverlayBackgroundHandler.bind(this);
   }
 
   currencyButtonHandler() {
@@ -52,7 +53,7 @@ export default class Header extends Component {
 
   updateCurrencyHandler(e) {
     this.setState({ currencyButtonClick: false });
-    if(this.props.cartCount === 0) {
+    if (this.props.cartCount === 0) {
       this.props.currencyHandler(e);
     }
   }
@@ -66,7 +67,7 @@ export default class Header extends Component {
   }
 
   cartOverlayBackgroundHandler(e) {
-      this.setState({ cartOverlayOpen: false });
+    this.setState({ cartOverlayOpen: false });
   }
 
   render() {
@@ -187,7 +188,10 @@ export default class Header extends Component {
                   const attributeTemplate = (
                     <Attributes
                       key={index}
-                      attrName={attribute.name.charAt(0).toUpperCase() + attribute.name.slice(1)}
+                      attrName={
+                        attribute.name.charAt(0).toUpperCase() +
+                        attribute.name.slice(1)
+                      }
                       attrType={attribute.type}
                       index={index}
                       attributesValueSwatch={attributesValueSwatch}
@@ -205,64 +209,78 @@ export default class Header extends Component {
                     <div className="cart-details-container">
                       <div className="cart-details-brand">{product.brand}</div>
                       <div className="cart-details-name">{product.name}</div>
-                      <div className="cart-details-price">{`${this.props.currencySymbol[1]}${product.prices[this.props.currencySymbol[0]].amount}`}</div>
+                      <div className="cart-details-price">{`${
+                        this.props.currencySymbol[1]
+                      }${
+                        product.prices[this.props.currencySymbol[0]].amount
+                      }`}</div>
                       <div className="cart-details-attributes-container">
                         {printAttributes}
                       </div>
                     </div>
                     <div className="cart-images-container">
                       <div className="cart-images-actions">
-                        <img
-                          src={plusIcon}
-                          alt="plus-option"
+                        <div
+                          className="cart-plus"
                           onClick={() => {
                             this.props.quantityPlusHandler(idx);
                           }}
-                        />
+                        >
+                          +
+                        </div>
                         <div className="cart-quantity-div">
                           {this.props.cartItems[idx].quantity}
                         </div>
-                        <img
-                          src={minusIcon}
-                          alt="minus-option"
+                        <div
+                          className="cart-minus"
                           onClick={() => {
                             this.props.quantityMinusHandler(idx);
                           }}
-                        />
-                      </div>
-                      <div
-                        className="cart-images-img"
-                        style={{
-                          backgroundImage: `url('${product.gallery[this.props.cartItems[idx].currentImageIdx]}')`,
-                        }}
-                      >
-                        <div
-                          className="image-navigator"
-                          style={{
-                            display:
-                              product.gallery.length <= 1 ? "none" : "flex",
-                          }}
                         >
+                          -
+                        </div>
+                      </div>
+                      <div className="mini-cart-image-wrapper">
+                        <div className="cart-images-img">
                           <img
-                            src={navigatorLeft}
-                            alt="navigator-left"
-                            onClick={() => {
-                              this.props.navigateImageLeft(
-                                idx,
-                                product.gallery.length
-                              );
-                            }}
+                            src={
+                              product.gallery[
+                                this.props.cartItems[idx].currentImageIdx
+                              ]
+                            }
+                            alt={product.brand}
+                            className="cart-actual-image"
                           />
-                          <img
-                            src={navigatorRight}
-                            alt="navigator-right"
-                            onClick={() => {
-                              this.props.navigateImageRight(
-                                idx,
-                                product.gallery.length
-                              );
+                        </div>
+                        <div className="image-navigator-wrapper">
+                          <div
+                            className="image-navigator"
+                            style={{
+                              display:
+                                product.gallery.length <= 1 ? "none" : "flex",
                             }}
-                          />
+                          >
+                            <img
+                              src={navigatorLeft}
+                              alt="navigator-left"
+                              onClick={() => {
+                                this.props.navigateImageLeft(
+                                  idx,
+                                  product.gallery.length
+                                );
+                              }}
+                            />
+                            <img
+                              src={navigatorRight}
+                              alt="navigator-right"
+                              onClick={() => {
+                                this.props.navigateImageRight(
+                                  idx,
+                                  product.gallery.length
+                                );
+                              }}
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -271,7 +289,7 @@ export default class Header extends Component {
               );
 
               return result;
-            } else return null
+            } else return null;
           }}
         </Query>
       );
@@ -311,7 +329,9 @@ export default class Header extends Component {
                 this.currencyButtonHandler();
               }}
             >
-              <div className="currency-symbol">{this.props.currencySymbol[1]}</div>
+              <div className="currency-symbol">
+                {this.props.currencySymbol[1]}
+              </div>
               <img src={currency_arrow_down} alt="currency arrow down" />
             </div>
             <div
@@ -350,7 +370,10 @@ export default class Header extends Component {
             <div
               className="empty-cart-button"
               onClick={() => {
-                this.setState({ cartOverlayOpen: !this.state.cartOverlayOpen, currencyButtonClick: false });
+                this.setState({
+                  cartOverlayOpen: !this.state.cartOverlayOpen,
+                  currencyButtonClick: false,
+                });
               }}
             >
               <img src={empty_cart} alt="empty cart" />
@@ -363,33 +386,58 @@ export default class Header extends Component {
                 <div className="cart-notification">{this.props.cartCount}</div>
               </div>
             </div>
+
             <div
               className="cart-overlay-background-container"
               style={{ display: this.state.cartOverlayOpen ? "block" : "none" }}
             >
-              <div className="cart-overlay-background" data-overlay_background={true} onClick={(e) => {this.cartOverlayBackgroundHandler(e)}}>
+              <div
+                className="cart-overlay-background"
+                data-overlay_background={true}
+                onClick={(e) => {
+                  this.cartOverlayBackgroundHandler(e);
+                }}
+              >
                 <div className="cart-overlay-wrapper">
-                  <div className="cart-overlay" onClick={(e) => {this.cartOverlayHandler(e)}}>
-                    <div className="cart-overlay-title">
-                      My Bag, <span>{this.props.cartCount} items</span>
+                  <div
+                    className="cart-overlay"
+                    onClick={(e) => {
+                      this.cartOverlayHandler(e);
+                    }}
+                  >
+                    <div className="cart-top-items">
+                      <div className="cart-overlay-title">
+                        My Bag,{" "}
+                        <span>{`${this.props.cartCount} ${
+                          this.props.cartCount === 1 ? "item" : "items"
+                        }`}</span>
+                      </div>
+                      <div className="cart-overlay-items-container">
+                        {cartItems}
+                      </div>
                     </div>
-                    <div className="cart-overlay-items-container">
-                      {cartItems}
-                    </div>
-                    <div className="cart-overlay-total-container">
-                      <div className="total-title">Total</div>
-                      <div className="total-content">{`${this.props.currencySymbol[1]}${this.props.totalPrice}`}</div>
-                    </div>
-                    <div className="cart-overlay-buttons">
-                      <Link
-                        to="/cart"
-                        onClick={() => {
-                          this.checkoutHandler();
-                        }}
-                      >
-                        <button>VIEW BAG</button>
-                      </Link>
-                      <button onClick={() => {this.props.checkout()}}>CHECK OUT</button>
+                    <div className="cart-bottom-items">
+                      <div className="cart-overlay-total-container">
+                        <div className="total-title">Total</div>
+                        <div className="total-content">{`${this.props.currencySymbol[1]}${this.props.totalPrice}`}</div>
+                      </div>
+                      <div className="cart-overlay-buttons">
+                        <Link
+                          to="/cart"
+                          onClick={() => {
+                            this.checkoutHandler();
+                          }}
+                        >
+                          <button>VIEW BAG</button>
+                        </Link>
+                        <button
+                          onClick={() => {
+                            this.props.checkout();
+                          }}
+                        >
+                          CHECK OUT
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

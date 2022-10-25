@@ -57,7 +57,9 @@ export default class Product extends Component {
           onMouseOver={() => {this.handleMouseOver()}}
           onMouseOut={() => {this.setState({toCart: false})}}
         >
-          <div className="product-image" style={productImage}></div>
+          <div className="product-image">
+            <img src={`${this.props.product.gallery[0]}`} alt={`${this.props.product.brand}`} />
+          </div>
           <div className="instock-container" style={{display: this.props.product.inStock ? "none" : "block"}}>
             <div className="instock-wrapper">
               <div className="instock-div">OUT OF STOCK</div>

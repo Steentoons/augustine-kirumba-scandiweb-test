@@ -110,10 +110,7 @@ class App extends Component {
 
   // Ordering and clearing cart...
   checkout() {
-    this.setState({ cartItems: [] });
-    this.setState({ cartCount: 0 });
-    this.setState({ totalPrice: 0 });
-    this.setState({ tax: 0 });
+    this.setState({ cartItems: [], cartCount: 0, totalPrice: 0, tax: 0 });
   }
 
   // Adding individual item quantity to the cart...
@@ -196,6 +193,13 @@ class App extends Component {
       items[idx] = item;
 
       this.setState({ cartItems: items });
+    } else if (currentIdx === length - 1) {
+      let items = [...this.state.cartItems];
+      let item = { ...items[idx] };
+      item.currentImageIdx = 0;
+      items[idx] = item;
+
+      this.setState({ cartItems: items });
     }
   }
 
@@ -206,6 +210,13 @@ class App extends Component {
       let items = [...this.state.cartItems];
       let item = { ...items[idx] };
       item.currentImageIdx = currentIdx - 1;
+      items[idx] = item;
+
+      this.setState({ cartItems: items });
+    } else if (currentIdx === 0) {
+      let items = [...this.state.cartItems];
+      let item = { ...items[idx] };
+      item.currentImageIdx = length - 1;
       items[idx] = item;
 
       this.setState({ cartItems: items });
