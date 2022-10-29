@@ -7,6 +7,7 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
+import _ from 'lodash'
 
 import "./assets/css/main.css";
 import Homepage from "./pages/Homepage";
@@ -42,6 +43,10 @@ class App extends Component {
     this.deleteItem = this.deleteItem.bind(this);
     this.checkout = this.checkout.bind(this);
     this.changeCategory = this.changeCategory.bind(this);
+    this.calculateCurrencyHandler = this.calculateCurrencyHandler.bind(this)
+    this.updateItemPrice = this.updateItemPrice.bind(this)
+    this.getTotalHandler = this.getTotalHandler.bind(this)
+    this.setTotalHandler = this.setTotalHandler.bind(this)
   }
 
   componentDidMount() {
@@ -81,8 +86,6 @@ class App extends Component {
       "oldCartItems",
       JSON.stringify({ cartItems: JSON.stringify(cartItems) })
     );
-
-    console.log(cartItems);
   }
 
   // HANDLERS...
@@ -90,6 +93,14 @@ class App extends Component {
   // Changing category...
   changeCategory(currentCategory) {
     this.setState({ category: currentCategory });
+  }
+
+  // Updating total price of an item in the main state...
+  updateItemPrice() {
+    let items = this.state.cartItems
+    // this.state.cartItems.map((item, idx) => {
+    //   item.itemTotalPrice = 
+    // })
   }
 
   // Changing currency...
@@ -100,6 +111,14 @@ class App extends Component {
     items[0] = idx;
     items[1] = currentCurrency;
     this.setState({ currencySymbol: items });
+
+    this.updateItemPrice()
+  }
+
+  // Calculating currency...
+  calculateCurrencyHandler(e) {
+    const idx = Number(e.currentTarget.dataset.currindex);
+    const currentCurrency = e.currentTarget.dataset.curr_currency;
   }
 
   // Adding items to the cart...
@@ -113,6 +132,26 @@ class App extends Component {
 
     this.setState({ totalPrice: newTotal });
     this.setState({ tax: Number(tax.toFixed(2)) });
+  }
+
+  // Calculating the grand total after currency change... 
+  getTotalHandler(fixedAmount, quantity, grandTotal, idx) {
+    let items = [...this.state.cartItems];
+    let item = { ...items[idx] };
+    item.itemFixedPrice = fixedAmount
+    items[idx] = item;
+    this.setState({ cartItems: items })
+
+    const itemPrice = (fixedAmount * quantity * 100)/100
+
+    grandTotal = ((grandTotal * 100) + (itemPrice * 100))/100
+
+    return grandTotal
+  }
+
+  // Setting the total to state after currency change...
+  setTotalHandler(grandTotal) {
+    this.setState({ totalPrice: grandTotal })
   }
 
   // Deleting items from the cart...
@@ -145,6 +184,12 @@ class App extends Component {
     this.setState((prev) => {
       return { cartCount: prev.cartCount - 1 };
     });
+  }
+
+  itemTotalHandler(symbol, price, quantity, id) {
+    return (
+      `${symbol}${(price * 100 * quantity)/100}`
+    )
   }
 
   // Adding quantity to the cart...
@@ -182,11 +227,10 @@ class App extends Component {
       items[idx] = item;
 
       this.setState({ cartItems: items });
-
       this.cartCountMinusHandler();
       const newTotal =
-        (this.state.totalPrice * 100 -
-          this.state.cartItems[idx].itemFixedPrice * 100) /
+        ((this.state.totalPrice * 100) -
+          (this.state.cartItems[idx].itemFixedPrice * 100)) /
         100;
 
       // Getting tax...
@@ -272,6 +316,9 @@ class App extends Component {
                     checkout={this.checkout}
                     changeCategory={this.changeCategory}
                     category={this.state.category}
+                    calculateCurrencyHandler={this.calculateCurrencyHandler}
+                    getTotalHandler={this.getTotalHandler}
+                    setTotalHandler={this.setTotalHandler}
                   />
                 )}
               ></Route>
@@ -295,6 +342,9 @@ class App extends Component {
                     currencyHandler={this.currencyHandler}
                     checkout={this.checkout}
                     changeCategory={this.changeCategory}
+                    calculateCurrencyHandler={this.calculateCurrencyHandler}
+                    getTotalHandler={this.getTotalHandler}
+                    setTotalHandler={this.setTotalHandler}
                   />
                 )}
               />
@@ -316,6 +366,9 @@ class App extends Component {
                     currencyHandler={this.currencyHandler}
                     checkout={this.checkout}
                     changeCategory={this.changeCategory}
+                    calculateCurrencyHandler={this.calculateCurrencyHandler}
+                    getTotalHandler={this.getTotalHandler}
+                    setTotalHandler={this.setTotalHandler}
                   />
                 )}
               />

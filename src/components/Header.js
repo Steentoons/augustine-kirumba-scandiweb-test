@@ -8,8 +8,6 @@ import currency_arrow_down from "../assets/images/currency-arrow-down.png";
 import empty_cart from "../assets/images/empty-cart.png";
 import Categories from "./Categories";
 import Attributes from "./Attributes";
-import plusIcon from "../assets/images/plus-square.png";
-import minusIcon from "../assets/images/minus-square.png";
 import navigatorLeft from "../assets/images/left-arrow.png";
 import navigatorRight from "../assets/images/right-arrow.png";
 
@@ -38,24 +36,57 @@ export default class Header extends Component {
       currencyButtonClick: false,
       currentCurrencyIndex: 0,
       cartOverlayOpen: false,
+      totals: [],
     };
     this.currencyButtonHandler = this.currencyButtonHandler.bind(this);
+    this.calculateTotalHandler = this.calculateTotalHandler.bind(this)
     this.updateCurrencyHandler = this.updateCurrencyHandler.bind(this);
     this.checkoutHandler = this.checkoutHandler.bind(this);
     this.cartOverlayHandler = this.cartOverlayHandler.bind(this);
     this.cartOverlayBackgroundHandler =
       this.cartOverlayBackgroundHandler.bind(this);
+    this.itemTotalHandler = this.itemTotalHandler.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    if(prevProps.currencySymbol[0] !== this.props.currencySymbol[0]) {
+      // Update every item price in the state...
+      let grandTotal = 0
+      if(this.props.cartItems && this.props.cartItems.length > 0) {
+        this.state.totals.forEach((item, idx) => {
+          const fixedAmount = item[this.props.currencySymbol[0]].amount
+          const quantity = this.props.cartItems[idx].quantity
+  
+          grandTotal = this.props.getTotalHandler(fixedAmount, quantity, grandTotal, idx)
+        })
+      }
+
+      this.props.setTotalHandler(grandTotal)
+    }
   }
 
   currencyButtonHandler() {
     this.setState({ currencyButtonClick: !this.state.currencyButtonClick });
   }
 
+  // Calculating the total for each item...
+  itemTotalHandler(symbol, price, quantity) {
+    return `${symbol}${(price * 100 * quantity) / 100}`;
+  }
+
+  // Calculate the total...
+  calculateTotalHandler() {
+    let result = 0
+    this.props.cartItems.forEach(item => {
+      result = ((result * 100) + (item.itemFixedPrice * 100))/100
+    })
+
+    return result
+  }
+
   updateCurrencyHandler(e) {
     this.setState({ currencyButtonClick: false });
-    if (this.props.cartCount === 0) {
-      this.props.currencyHandler(e);
-    }
+    this.props.currencyHandler(e);
   }
 
   checkoutHandler() {
@@ -103,7 +134,7 @@ export default class Header extends Component {
           `;
       let result = null;
       const query = (
-        <Query query={CART_ITEMS_QUERY}>
+        <Query query={CART_ITEMS_QUERY} onCompleted={data => this.setState({  totals: [ data.product.prices ] })}>
           {({ loading, data }) => {
             if (!loading) {
               const product = data.product;
@@ -134,9 +165,6 @@ export default class Header extends Component {
                           className="attribute-value-text"
                           data-attribute_key={attribute.name.toLowerCase()}
                           style={selectedAttribute}
-                          onClick={(e) => {
-                            this.attributesHandler(e);
-                          }}
                         >
                           {value.value}
                         </div>
@@ -163,9 +191,6 @@ export default class Header extends Component {
                           data-attribute_idx={idx}
                           data-attribute_key={attribute.name.toLowerCase()}
                           style={selectedAttribute}
-                          onClick={(e) => {
-                            this.attributesHandler(e);
-                          }}
                         >
                           <div
                             key={idx}
@@ -209,11 +234,13 @@ export default class Header extends Component {
                     <div className="cart-details-container">
                       <div className="cart-details-brand">{product.brand}</div>
                       <div className="cart-details-name">{product.name}</div>
-                      <div className="cart-details-price">{`${
-                        this.props.currencySymbol[1]
-                      }${
-                        product.prices[this.props.currencySymbol[0]].amount
-                      }`}</div>
+                      <div className="cart-details-price">
+                        {this.itemTotalHandler(
+                          this.props.currencySymbol[1],
+                          product.prices[this.props.currencySymbol[0]].amount,
+                          this.props.cartItems[idx].quantity
+                        )}
+                      </div>
                       <div className="cart-details-attributes-container">
                         {printAttributes}
                       </div>
@@ -321,7 +348,12 @@ export default class Header extends Component {
               </Query>
             </ul>
           </div>
-          <Link onClick={() => {this.props.changeCategory('all')}} to="/category/all">
+          <Link
+            onClick={() => {
+              this.props.changeCategory("all");
+            }}
+            to="/category/all"
+          >
             <img className="logo" src={logo} alt="logo" />
           </Link>
           <div className="top-right-buttons-container">

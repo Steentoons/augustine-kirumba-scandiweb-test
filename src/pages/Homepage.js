@@ -37,6 +37,9 @@ export default class Homepage extends Component {
           currencyHandler={this.props.currencyHandler}
           checkout={this.props.checkout}
           changeCategory={this.props.changeCategory}
+          calculateCurrencyHandler={this.props.calculateCurrencyHandler}
+          getTotalHandler={this.props.getTotalHandler}
+          setTotalHandler={this.props.setTotalHandler}
         />
         <BodySection
           currencyIdx={this.state.currencyIndex}

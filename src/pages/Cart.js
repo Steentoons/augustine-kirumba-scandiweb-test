@@ -19,12 +19,19 @@ export default class Cart extends Component {
 
     this.plusHandler = this.plusHandler.bind(this);
     this.minusHandler = this.minusHandler.bind(this);
+    this.itemTotalHandler = this.itemTotalHandler.bind(this)
   }
 
   plusHandler(idx) {
     this.setState((prev) => {
       return { quantity: prev.quantity + 1 };
     });
+  }
+
+  itemTotalHandler(symbol, price, quantity, id) {
+    return (
+      `${symbol}${(price * 100 * quantity)/100}`
+    )
   }
   minusHandler() {}
   render() {
@@ -87,9 +94,6 @@ export default class Cart extends Component {
                           className="attribute-value-text"
                           data-attribute_key={attribute.name.toLowerCase()}
                           style={selectedAttribute}
-                          onClick={(e) => {
-                            this.attributesHandler(e);
-                          }}
                         >
                           {value.value}
                         </div>
@@ -116,9 +120,6 @@ export default class Cart extends Component {
                           data-attribute_idx={idx}
                           data-attribute_key={attribute.name.toLowerCase()}
                           style={selectedAttribute}
-                          onClick={(e) => {
-                            this.attributesHandler(e);
-                          }}
                         >
                           <div
                             key={idx}
@@ -159,7 +160,14 @@ export default class Cart extends Component {
                     <div className="cart-details-container">
                       <div className="cart-details-brand">{product.brand}</div>
                       <div className="cart-details-name">{product.name}</div>
-                      <div className="cart-details-price">{`${product.prices[0].currency.symbol}${this.props.cartItems[idx].itemTotalPrice}`}</div>
+                      <div className="cart-details-price">
+                        {this.itemTotalHandler(
+                          this.props.currencySymbol[1],
+                          product.prices[this.props.currencySymbol[0]].amount,
+                          this.props.cartItems[idx].quantity,
+                          idx
+                        )}
+                      </div>
                       <div className="cart-details-attributes-container">
                         {printAttributes}
                       </div>
@@ -255,6 +263,9 @@ export default class Cart extends Component {
           currencyHandler={this.props.currencyHandler}
           checkout={this.props.checkout}
           changeCategory={this.props.changeCategory}
+          calculateCurrencyHandler={this.props.calculateCurrencyHandler}
+          getTotalHandler={this.props.getTotalHandler}
+          setTotalHandler={this.props.setTotalHandler}
         />
 
         <div className="cart-container-wrapper">
@@ -263,13 +274,15 @@ export default class Cart extends Component {
           <div className="total-container">
             <div className="total-border"></div>
             <div className="total-details">
-              Tax 21%: <span>{`$${this.props.tax}`}</span>
+              Tax 21%:
+              <span>{`${this.props.currencySymbol[1]}${((this.props.totalPrice * 100) * 20)/10000}`}</span>
             </div>
             <div className="total-details">
               Quantity: <span>{this.props.cartCount}</span>
             </div>
             <div className="total-details">
-              Total: <span>{`$${this.props.totalPrice}`}</span>
+              Total:
+              <span>{`${this.props.currencySymbol[1]}${this.props.totalPrice}`}</span>
             </div>
             <div className="total-button">
               <button

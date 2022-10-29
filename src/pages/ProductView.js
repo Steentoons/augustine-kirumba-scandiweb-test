@@ -53,6 +53,9 @@ export default class ProductView extends Component {
           currencyHandler={this.props.currencyHandler}
           checkout={this.props.checkout}
           changeCategory={this.props.changeCategory}
+          calculateCurrencyHandler={this.props.calculateCurrencyHandler}
+          getTotalHandler={this.props.getTotalHandler}
+          setTotalHandler={this.props.setTotalHandler}
         />
 
         <Query query={PRODUCT_VIEW_QUERY}>
@@ -71,6 +74,7 @@ export default class ProductView extends Component {
                   cartCountPlusHandler={this.props.cartCountPlusHandler}
                   cartCountMinusHandler={this.props.cartCountMinusHandler}
                   currencySymbol={this.props.currencySymbol}
+                  quantityPlusHandler={this.props.quantityPlusHandler}
                 />
               );
 
