@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import BodySection from "../components/BodySection";
-import Header from "../components/Header";
+import HeaderContainer from "../components/HeaderContainer";
 
 export default class Homepage extends Component {
   constructor(props) {
@@ -13,7 +13,6 @@ export default class Homepage extends Component {
   }
 
   // Handlers...
-  
 
   updateCurrencyHandler(e) {
     const idx = Number(e.currentTarget.dataset.currindex);
@@ -21,33 +20,53 @@ export default class Homepage extends Component {
   }
 
   render() {
+    const {
+      cartItems,
+      cartCount,
+      quantityMinusHandler,
+      quantityPlusHandler,
+      totalPrice,
+      navigateImageRight,
+      navigateImageLeft,
+      category,
+      currencySymbol,
+      currencyHandler,
+      checkout,
+      changeCategory,
+      calculateCurrencyHandler,
+      getTotalHandler,
+      setTotalHandler,
+      cartItemsHandler,
+      cartCountPlusHandler,
+      match
+    } = this.props;
     return (
       <>
-        <Header
+        <HeaderContainer
           updateCurrencyHandler={this.updateCurrencyHandler}
-          cartItems={this.props.cartItems}
-          cartCount={this.props.cartCount}
-          quantityMinusHandler={this.props.quantityMinusHandler}
-          quantityPlusHandler={this.props.quantityPlusHandler}
-          totalPrice={this.props.totalPrice}
-          navigateImageRight={this.props.navigateImageRight}
-          navigateImageLeft={this.props.navigateImageLeft}
-          category={this.props.category}
-          currencySymbol={this.props.currencySymbol}
-          currencyHandler={this.props.currencyHandler}
-          checkout={this.props.checkout}
-          changeCategory={this.props.changeCategory}
-          calculateCurrencyHandler={this.props.calculateCurrencyHandler}
-          getTotalHandler={this.props.getTotalHandler}
-          setTotalHandler={this.props.setTotalHandler}
+          cartItems={cartItems}
+          cartCount={cartCount}
+          quantityMinusHandler={quantityMinusHandler}
+          quantityPlusHandler={quantityPlusHandler}
+          totalPrice={totalPrice}
+          navigateImageRight={navigateImageRight}
+          navigateImageLeft={navigateImageLeft}
+          category={category}
+          currencySymbol={currencySymbol}
+          currencyHandler={currencyHandler}
+          checkout={checkout}
+          changeCategory={changeCategory}
+          calculateCurrencyHandler={calculateCurrencyHandler}
+          getTotalHandler={getTotalHandler}
+          setTotalHandler={setTotalHandler}
         />
         <BodySection
           currencyIdx={this.state.currencyIndex}
-          cartItemsHandler={this.props.cartItemsHandler}
-          cartCountPlusHandler={this.props.cartCountPlusHandler}
-          currencySymbol={this.props.currencySymbol}
-          category={this.props.category}
-          match={this.props.match}
+          cartItemsHandler={cartItemsHandler}
+          cartCountPlusHandler={cartCountPlusHandler}
+          currencySymbol={currencySymbol}
+          category={category}
+          match={match}
         />
       </>
     );

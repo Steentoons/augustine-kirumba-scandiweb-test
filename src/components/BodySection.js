@@ -1,58 +1,73 @@
+import { gql } from "apollo-boost";
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
 import "../assets/css/bodySection.css";
-import Product from "./Product";
+import { product_query } from "../lib/queries";
+import ProductContainer from "./ProductContainer";
 
-// PRODUCT_QUERY =
-
-export default class BodySection extends Component {
+export class BodySection extends Component {
   render() {
-    const PRODUCT_QUERY = gql`
-    {
-      category(input: {title: "${this.props.match.params.category}"}) {
-        products {
-          id
-          name
-          gallery
-          inStock
-          prices {
-            currency {
-              symbol
-            }
-            amount
-          }
-          attributes {
-            name
-          }
-          brand
-        }
-      }
-    }
-    `;
+    const {
+      category,
+      currencyIdx,
+      cartItemsHandler,
+      cartCountPlusHandler,
+      currencySymbol,
+      match,
+      // PRODUCT_QUERY
+    } = this.props;
+
+    const PRODUCT_QUERY = product_query(match.params.category)
+
+    console.log(match.params.category)
+
+  //   const PRODUCT_QUERY = gql `
+  //   {
+  //     category(input: {title: "${match.params.category}"}) {
+  //       products {
+  //         id
+  //         name
+  //         gallery
+  //         inStock
+  //         prices {
+  //           currency {
+  //             symbol
+  //           }
+  //           amount
+  //         }
+  //         attributes {
+  //           name
+  //         }
+  //         brand
+  //       }
+  //     }
+  //   }
+  // `;
 
     return (
       <div className="body-section-wrapper">
         <div className="body-section-container">
           <div className="category-title">
-            {this.props.category.charAt(0).toUpperCase() +
-              this.props.category.slice(1)}
+            {category.charAt(0).toUpperCase() + category.slice(1)}
           </div>
           <div className="product-list-wrapper">
-            <Query query={PRODUCT_QUERY}>
+            <Query
+              query={PRODUCT_QUERY}
+              // variables={{ input: { title: match.params.category } }}
+            >
               {({ loading, data }) => {
                 if (loading) return null;
 
                 const allProducts = data.category.products.map(
                   (product, idx) => {
                     return (
-                      <Product
+                      <ProductContainer
                         key={idx}
                         product={product}
-                        currencyIdx={this.props.currencyIdx}
-                        cartItemsHandler={this.props.cartItemsHandler}
-                        cartCountPlusHandler={this.props.cartCountPlusHandler}
-                        currencySymbol={this.props.currencySymbol}
+                        currencyIdx={currencyIdx}
+                        cartItemsHandler={cartItemsHandler}
+                        cartCountPlusHandler={cartCountPlusHandler}
+                        currencySymbol={currencySymbol}
                       />
                     );
                   }
@@ -67,3 +82,5 @@ export default class BodySection extends Component {
     );
   }
 }
+
+export default BodySection;

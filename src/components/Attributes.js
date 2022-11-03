@@ -1,11 +1,19 @@
- import React, { Component } from 'react'
+ import React from 'react'
+import { PureComponent } from 'react'
  
- export default class Attributes extends Component {
+ export default class Attributes extends PureComponent {
    render() {
+    const {
+      attrName,
+      index,
+      attrType,
+      attributesValueSwatch,
+      attributesValueText
+    } = this.props
      return (
         <div className='attribute-wrapper'>
-        <div className='attribute-title'>{`${this.props.attrName}:`}</div>
-        <div className='attribute-contents' data-attribute_idx={this.props.index}>{this.props.attrType === "swatch" ? this.props.attributesValueSwatch : this.props.attributesValueText}</div>
+        <div className='attribute-title'>{`${attrName}:`}</div>
+        <div className='attribute-contents' data-attribute_idx={index}>{attrType === "swatch" ? attributesValueSwatch : attributesValueText}</div>
       </div>
      )
    }

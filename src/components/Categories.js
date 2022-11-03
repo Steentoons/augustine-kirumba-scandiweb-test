@@ -1,15 +1,22 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 
-export default class Categories extends Component {
+export default class Categories extends PureComponent {
   render() {
+
+    const {
+      category,
+      categoryState,
+      changeCategory,
+    } = this.props
+
     const categoryStyle = {
-      color: this.props.category.toLowerCase() === this.props.categoryState ? "#5ECE7B" : "#1D1F22",
-      borderBottom: this.props.category.toLowerCase() === this.props.categoryState ? "solid #5ECE7B 2px" : "none"
+      color: category.toLowerCase() === categoryState ? "#5ECE7B" : "#1D1F22",
+      borderBottom: category.toLowerCase() === categoryState ? "solid #5ECE7B 2px" : "none"
     }
     return (
       <li style={categoryStyle} >
-        <Link onClick={() => this.props.changeCategory(this.props.category.toLowerCase())} to={`/category/${this.props.category.toLowerCase()}`}>{this.props.category}</Link>
+        <Link onClick={() => changeCategory(category.toLowerCase())} to={`/category/${category.toLowerCase()}`}>{category}</Link>
       </li>
     )
   }

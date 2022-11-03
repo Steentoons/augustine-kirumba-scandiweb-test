@@ -7,12 +7,11 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import _ from 'lodash'
 
 import "./assets/css/main.css";
 import Homepage from "./pages/Homepage";
 import ProductView from "./pages/ProductView";
-import Cart from "./pages/Cart";
+import CartContainer from "./pages/CartContainer";
 
 const client = new ApolloClient({
   uri: "http://localhost:4000/",
@@ -352,7 +351,7 @@ class App extends Component {
                 exact
                 path="/cart"
                 render={(props) => (
-                  <Cart
+                  <CartContainer
                     {...props}
                     cartItems={this.state.cartItems}
                     cartCount={this.state.cartCount}
