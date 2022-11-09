@@ -134,15 +134,12 @@ class App extends Component {
 
   // Adding items to the cart...
   cartItemsHandler(product) {
-    console.log('this was not to be called...')
+    const{ currencySymbol } = this.state
     const currentCartItems = this.state.cartItems
     const newItems = [].concat(currentCartItems, product)
-    console.log(currentCartItems)
-    console.log(newItems)
-    console.log(this.state.cartItems)
     this.setState({ cartItems: JSON.parse(JSON.stringify(newItems)) });
     const newTotal =
-      (this.state.totalPrice * 100 + product.itemFixedPrice * 100) / 100;
+      (this.state.totalPrice * 100 + product.itemFixedPrice[currencySymbol[0]].amount * 100) / 100;
 
     // Getting tax...
     const tax = (newTotal * 100 * (21 / 100)) / 100;
@@ -155,9 +152,10 @@ class App extends Component {
 
   // Calculating the grand total after currency change... 
   getTotalHandler(fixedAmount, quantity, grandTotal, idx) {
+    const{ currencySymbol } = this.state
     let items = [...this.state.cartItems];
     let item = { ...items[idx] };
-    item.itemFixedPrice = fixedAmount
+    item.itemFixedPrice[currencySymbol[0]].amount = fixedAmount
     items[idx] = item;
     this.setState({ cartItems: items })
 
@@ -193,7 +191,6 @@ class App extends Component {
 
   // Adding individual item quantity to the cart...
   cartCountPlusHandler() {
-    console.log('plus handler called!!!')
     this.setState((prev) => {
       return { cartCount: prev.cartCount + 1 };
     });
@@ -214,11 +211,12 @@ class App extends Component {
 
   // Adding quantity to the cart...
   quantityPlusHandler(idx) {
+    const{ currencySymbol } = this.state
     let items = [...this.state.cartItems];
     let item = { ...items[idx] };
     item.quantity = this.state.cartItems[idx].quantity + 1;
     item.itemTotalPrice =
-      (this.state.cartItems[idx].itemFixedPrice * 100 * item.quantity) / 100;
+      (this.state.cartItems[idx].itemFixedPrice[currencySymbol[0]].amount * 100 * item.quantity) / 100;
     items[idx] = item;
 
     this.setState({ cartItems: items });
@@ -226,7 +224,7 @@ class App extends Component {
     this.cartCountPlusHandler();
     const newTotal =
       (this.state.totalPrice * 100 +
-        this.state.cartItems[idx].itemFixedPrice * 100) /
+        this.state.cartItems[idx].itemFixedPrice[currencySymbol[0]].amount * 100) /
       100;
 
     // Getting tax...
@@ -238,19 +236,20 @@ class App extends Component {
 
   // Reducing quantity from the cart...
   quantityMinusHandler(idx) {
+    const{ currencySymbol } = this.state
     if (this.state.cartItems[idx].quantity > 0) {
       let items = [...this.state.cartItems];
       let item = { ...items[idx] };
       item.quantity = this.state.cartItems[idx].quantity - 1;
       item.itemTotalPrice =
-        (this.state.cartItems[idx].itemFixedPrice * 100 * item.quantity) / 100;
+        (this.state.cartItems[idx].itemFixedPrice[currencySymbol[0]].amount * 100 * item.quantity) / 100;
       items[idx] = item;
 
       this.setState({ cartItems: items });
       this.cartCountMinusHandler();
       const newTotal =
         ((this.state.totalPrice * 100) -
-          (this.state.cartItems[idx].itemFixedPrice * 100)) /
+          (this.state.cartItems[idx].itemFixedPrice[currencySymbol[0]].amount * 100)) /
         100;
 
       // Getting tax...

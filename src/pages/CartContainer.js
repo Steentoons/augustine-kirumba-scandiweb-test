@@ -51,8 +51,6 @@ export default class CartContainer extends Component {
       cartItems,
     } = this.props;
 
-    console.log("Working...");
-
     // Handle attributes per item in cart...
     const printCartItems = cartItems.map((item, idx) => {
       const id = item.productId;

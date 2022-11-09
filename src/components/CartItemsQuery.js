@@ -28,9 +28,9 @@ export class CartItemsQuery extends Component {
     return (
         <Query
         query={CART_ITEMS_QUERY}
-        onCompleted={(data) =>
-          setTotalHandler(data)
-        }
+        // onCompleted={(data) =>
+        //   setTotalHandler(data)
+        // }
       >
         {({ loading, data }) => {
           if (!loading) {

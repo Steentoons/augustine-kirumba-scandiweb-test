@@ -22,6 +22,7 @@ const cart_items_query = (id) => {
     const CART_ITEMS_QUERY = gql `
   {
     product (id: "${id}") {
+      id
       name
       brand
       gallery

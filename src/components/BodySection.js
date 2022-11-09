@@ -1,4 +1,3 @@
-import { gql } from "apollo-boost";
 import React, { Component } from "react";
 import { Query } from "react-apollo";
 import "../assets/css/bodySection.css";
@@ -14,35 +13,9 @@ export class BodySection extends Component {
       cartCountPlusHandler,
       currencySymbol,
       match,
-      // PRODUCT_QUERY
     } = this.props;
 
-    const PRODUCT_QUERY = product_query(match.params.category)
-
-    console.log(match.params.category)
-
-  //   const PRODUCT_QUERY = gql `
-  //   {
-  //     category(input: {title: "${match.params.category}"}) {
-  //       products {
-  //         id
-  //         name
-  //         gallery
-  //         inStock
-  //         prices {
-  //           currency {
-  //             symbol
-  //           }
-  //           amount
-  //         }
-  //         attributes {
-  //           name
-  //         }
-  //         brand
-  //       }
-  //     }
-  //   }
-  // `;
+    const PRODUCT_QUERY = product_query(match.params.category);
 
     return (
       <div className="body-section-wrapper">

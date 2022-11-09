@@ -24,18 +24,6 @@ export default class ProductContentContainer extends Component {
     this.freshAttributes();
   }
 
-  componentDidUpdate(prevProps, prevState) {
-
-    this.props.cartItems.forEach((item) => {
-      console.log(item.attributes)
-    })
-    
-    if (_.isEqual(prevState.attributes, this.state.attributes)) {
-      console.log("Captured!! and reset");
-      // this.setState({ cartItems: prevState.cartItems })
-    }
-  }
-
   // Handlers...
 
   // Freshening the attributes...
@@ -61,9 +49,6 @@ export default class ProductContentContainer extends Component {
       this.cartStateHandler();
     }
     cartItems.forEach((item, idx) => {
-      console.log('Lets Compare....')
-      console.log(item.attributes)
-      console.log(singleAttribute)
       if (_.isEqual(item.attributes, singleAttribute)) {
         quantityPlusHandler(idx);
         duplicate = true
@@ -83,7 +68,6 @@ export default class ProductContentContainer extends Component {
       e.currentTarget.parentElement.dataset.attribute_idx
     );
     const attributeKey = e.currentTarget.dataset.attribute_key;
-    console.log('attributeKey' + attributeKey)
     const { currentProduct } = this.props;
 
     const newAttributes = this.state.attributes.attribute;
@@ -111,9 +95,7 @@ export default class ProductContentContainer extends Component {
     const attributes = newAttributes;
 
     const quantity = 1;
-    const itemFixedPrice = Number(
-      currentProduct.prices[currencySymbol[0]].amount
-    );
+    const itemFixedPrice = currentProduct.prices
     const itemTotalPrice = itemFixedPrice;
     const currentImageIdx = 0;
 

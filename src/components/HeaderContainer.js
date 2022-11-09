@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Header from "./Header";
 import CartItemsQuery from "./CartItemsQuery";
 import { CATEGORIES_QUERY, CURRENCIES_QUERY } from "../lib/queries";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 export default class HeaderContainer extends Component {
   constructor() {
@@ -11,7 +11,7 @@ export default class HeaderContainer extends Component {
       currencyButtonClick: false,
       currentCurrencyIndex: 0,
       cartOverlayOpen: false,
-      totals: [],
+      totals: 0,
     };
     this.currencyButtonHandler = this.currencyButtonHandler.bind(this);
     this.calculateTotalHandler = this.calculateTotalHandler.bind(this);
@@ -22,23 +22,27 @@ export default class HeaderContainer extends Component {
       this.cartOverlayBackgroundHandler.bind(this);
     this.itemTotalHandler = this.itemTotalHandler.bind(this);
     this.cartOverlayActionHandler = this.cartOverlayActionHandler.bind(this);
-    this.setTotalHandler = this.setTotalHandler.bind(this)
   }
 
   componentDidUpdate(prevProps) {
-    const { currencySymbol, cartItems, getTotalHandler, setTotalHandler } =
-      this.props;
+    const { currencySymbol, cartItems, setTotalHandler } = this.props;
     if (prevProps.currencySymbol[0] !== currencySymbol[0]) {
       // Update every item price in the state...
       let grandTotal = 0;
-      console.log(this.state.totals);
-      console.log(this.state.totals.length + " " + cartItems.length);
       if (cartItems && cartItems.length > 0) {
-        this.state.totals.forEach((item, idx) => {
-          const fixedAmount = item[currencySymbol[0]].amount;
-          const quantity = cartItems[idx].quantity;
+        // this.state.totals.forEach((item, idx) => {
+        //   const fixedAmount = item[currencySymbol[0]].amount;
+        //   const quantity = cartItems[idx].quantity;
 
-          grandTotal = getTotalHandler(fixedAmount, quantity, grandTotal, idx);
+        //   grandTotal = getTotalHandler(fixedAmount, quantity, grandTotal, idx);
+        // });
+
+        cartItems.forEach((item, idx) => {
+          const newItemFixedTotal =
+            item.itemFixedPrice[currencySymbol[0]].amount;
+          const itemTotal = (newItemFixedTotal * item.quantity * 100) / 100;
+
+          grandTotal += itemTotal;
         });
       }
 
@@ -91,11 +95,27 @@ export default class HeaderContainer extends Component {
     });
   }
 
-  setTotalHandler(data) {
-    this.setState({
-      totals: data.product.prices,
-    })
-  }
+  // setTotalHandler(data) {
+  //   const { cartItems } = this.props
+  //   let dataExists = false
+  //   cartItems.forEach(item => {
+  //     if(item.productId === data.product.id) {
+  //       dataExists = true
+  //     }
+  //   })
+
+  //   if(!dataExists) {
+  //     this.setState({
+  //       totals: [
+  //         ...this.state.totals,
+  //         {
+  //           prices: [...data.product.prices],
+  //           id: data.product.id,
+  //         },
+  //       ],
+  //     });
+  //   }
+  // }
 
   render() {
     const {
@@ -118,15 +138,13 @@ export default class HeaderContainer extends Component {
 
     // Handle attributes per item in cart...
     const printCartItems = cartItems.map((item, idx) => {
-      console.log('CartItem')
-      console.log(item)
       const id = item.productId;
       const attributeArray = item.attributes;
 
       let result = null;
       const query = (
         <CartItemsQuery
-        key={idx}
+          key={idx}
           id={id}
           attributeArray={attributeArray}
           currencySymbol={currencySymbol}
@@ -166,7 +184,6 @@ export default class HeaderContainer extends Component {
         currencyButtonHandler={this.currencyButtonHandler}
         checkoutHandler={this.checkoutHandler}
       />
-
     );
   }
 }
