@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Header from "./Header";
 import CartItemsQuery from "./CartItemsQuery";
 import { CATEGORIES_QUERY, CURRENCIES_QUERY } from "../lib/queries";
+import { v4 as uuidv4 } from 'uuid';
 
 export default class HeaderContainer extends Component {
   constructor() {
@@ -92,7 +93,7 @@ export default class HeaderContainer extends Component {
 
   setTotalHandler(data) {
     this.setState({
-      totals: [...this.state.totals, data.product.prices],
+      totals: data.product.prices,
     })
   }
 
@@ -117,12 +118,15 @@ export default class HeaderContainer extends Component {
 
     // Handle attributes per item in cart...
     const printCartItems = cartItems.map((item, idx) => {
+      console.log('CartItem')
+      console.log(item)
       const id = item.productId;
       const attributeArray = item.attributes;
 
       let result = null;
       const query = (
         <CartItemsQuery
+        key={idx}
           id={id}
           attributeArray={attributeArray}
           currencySymbol={currencySymbol}
@@ -135,6 +139,7 @@ export default class HeaderContainer extends Component {
           result={result}
           itemTotalHandler={this.itemTotalHandler}
           setTotalHandler={this.setTotalHandler}
+          item={item.attributes.attribute}
         />
       );
 
@@ -161,6 +166,7 @@ export default class HeaderContainer extends Component {
         currencyButtonHandler={this.currencyButtonHandler}
         checkoutHandler={this.checkoutHandler}
       />
+
     );
   }
 }

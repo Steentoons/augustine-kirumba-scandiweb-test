@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import Attributes from "./Attributes";
+import ClickableAttribute from "./ClickableAttribute";
 import _ from "lodash";
 import ProductContent from "./ProductContent";
+import { v4 as uuidv4 } from "uuid";
 
 export default class ProductContentContainer extends Component {
   constructor(props) {
@@ -9,7 +10,7 @@ export default class ProductContentContainer extends Component {
 
     this.state = {
       thumbnailId: 0,
-      attributes: [],
+      attributes: {},
     };
 
     this.thumbnailHandler = this.thumbnailHandler.bind(this);
@@ -23,6 +24,18 @@ export default class ProductContentContainer extends Component {
     this.freshAttributes();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+
+    this.props.cartItems.forEach((item) => {
+      console.log(item.attributes)
+    })
+    
+    if (_.isEqual(prevState.attributes, this.state.attributes)) {
+      console.log("Captured!! and reset");
+      // this.setState({ cartItems: prevState.cartItems })
+    }
+  }
+
   // Handlers...
 
   // Freshening the attributes...
@@ -34,27 +47,33 @@ export default class ProductContentContainer extends Component {
 
       return { [attrName]: 0 };
     });
-    this.setState({ attributes: [...atrrArray] });
+    this.setState({
+      attributes: { id: this.props.currentId, attribute: atrrArray },
+    });
   }
 
   // Checking on cart duplicates...
   checkCartDuplicates() {
     const { cartItems, quantityPlusHandler } = this.props;
-    if (!_.isEqual(cartItems, [])) {
-      cartItems.forEach((item, idx) => {
-        const data = this.getCurrentData();
-        if (
-          item.productId === data.productId &&
-          _.isEqual(item.attributes, data.attributes)
-        ) {
-          quantityPlusHandler(idx);
-        } else {
-          this.cartStateHandler();
-        }
-      });
-    } else {
+    const singleAttribute = this.state.attributes;
+    let duplicate = false;
+    if (cartItems.length === 0) {
       this.cartStateHandler();
     }
+    cartItems.forEach((item, idx) => {
+      console.log('Lets Compare....')
+      console.log(item.attributes)
+      console.log(singleAttribute)
+      if (_.isEqual(item.attributes, singleAttribute)) {
+        quantityPlusHandler(idx);
+        duplicate = true
+      }
+
+      if(!duplicate) {
+        this.cartStateHandler();
+      }
+
+    });
   }
 
   // Handling them attributes...
@@ -64,14 +83,19 @@ export default class ProductContentContainer extends Component {
       e.currentTarget.parentElement.dataset.attribute_idx
     );
     const attributeKey = e.currentTarget.dataset.attribute_key;
+    console.log('attributeKey' + attributeKey)
+    const { currentProduct } = this.props;
 
-    const { attributes } = this.state;
-    attributes[parentAttributeIdx] = {
-      ...attributes[parentAttributeIdx],
-      [attributeKey]: currentAttributeIdx,
-    };
+    const newAttributes = this.state.attributes.attribute;
+    newAttributes[parentAttributeIdx][attributeKey] = currentAttributeIdx
+    // newAttributes[parentAttributeIdx] = {
+    //   ...newAttributes[parentAttributeIdx],
+    //   [attributeKey]: currentAttributeIdx,
+    // };
 
-    this.setState({ attributes });
+    this.setState({
+      attributes: { id: this.props.currentId, attribute: newAttributes },
+    });
   }
 
   thumbnailHandler(e) {
@@ -83,8 +107,9 @@ export default class ProductContentContainer extends Component {
   getCurrentData() {
     const { currentProduct, currentId, currencySymbol } = this.props;
     const productId = currentId;
-    const newAttributes = this.state;
-    const { attributes } = newAttributes;
+    const newAttributes = {...this.state.attributes};
+    const attributes = newAttributes;
+
     const quantity = 1;
     const itemFixedPrice = Number(
       currentProduct.prices[currencySymbol[0]].amount
@@ -105,8 +130,8 @@ export default class ProductContentContainer extends Component {
     // Setting the main cart item state to be used all over the project...
     const { cartItemsHandler, cartCountPlusHandler } = this.props;
     const data = this.getCurrentData();
-    cartItemsHandler(data);
-    cartCountPlusHandler();
+    const newData = data
+    cartItemsHandler(newData);
 
     // this.freshAttributes()
   }
@@ -142,10 +167,10 @@ export default class ProductContentContainer extends Component {
 
     // Handling Attributes...
     const attributes = currentProduct.attributes.map((attribute, index) => {
-      const currAttribute = this.state.attributes[index];
+      const currAttribute = this.state.attributes.attribute;
       let attributeIndex = null;
       if (currAttribute) {
-        attributeIndex = currAttribute[attribute.name.toLowerCase()];
+        attributeIndex = currAttribute[index][attribute.name.toLowerCase()];
       }
 
       // When type is text...
@@ -155,6 +180,11 @@ export default class ProductContentContainer extends Component {
           background: idx === attributeIndex ? "#1D1F22" : "white",
           color: idx === attributeIndex ? "white" : "#1D1F22",
         };
+
+        // const selectedAttribute = {
+        //   background: idx === attributeIndex ? "#1D1F22" : "white",
+        //   color: idx === attributeIndex ? "white" : "#1D1F22",
+        // };
 
         const attributeValueTemplate = (
           <div
@@ -204,7 +234,7 @@ export default class ProductContentContainer extends Component {
 
       // Main attribute template...
       const attributeTemplate = (
-        <Attributes
+        <ClickableAttribute
           key={index}
           attrName={attribute.name.toUpperCase()}
           attrType={attribute.type}

@@ -7,6 +7,7 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
+import _ from 'lodash'
 
 import "./assets/css/main.css";
 import Homepage from "./pages/Homepage";
@@ -69,22 +70,33 @@ class App extends Component {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevState) {
     const { cartCount, totalPrice, tax, currencySymbol } = this.state;
     const { cartItems } = this.state;
-    sessionStorage.setItem(
-      "oldState",
-      JSON.stringify({
-        cartCount,
-        totalPrice,
-        tax,
-        currencySymbol: JSON.stringify(currencySymbol),
-      })
-    );
-    sessionStorage.setItem(
-      "oldCartItems",
-      JSON.stringify({ cartItems: JSON.stringify(cartItems) })
-    );
+    
+    if(
+      cartCount !== prevState.cartCount ||
+      totalPrice !== prevState.totalPrice ||
+      tax !== prevState.tax ||
+      !(_.isEqual(currencySymbol, prevState.currencySymbol))
+    ) {
+      sessionStorage.setItem(
+        "oldState",
+        JSON.stringify({
+          cartCount,
+          totalPrice,
+          tax,
+          currencySymbol: JSON.stringify(currencySymbol),
+        })
+      );
+    }
+
+    if(!(_.isEqual(cartItems, prevState.cartItems))) {
+      sessionStorage.setItem(
+        "oldCartItems",
+        JSON.stringify({ cartItems: JSON.stringify(cartItems) })
+      );
+    }
   }
 
   // HANDLERS...
@@ -122,7 +134,13 @@ class App extends Component {
 
   // Adding items to the cart...
   cartItemsHandler(product) {
-    this.setState({ cartItems: [...this.state.cartItems, product] });
+    console.log('this was not to be called...')
+    const currentCartItems = this.state.cartItems
+    const newItems = [].concat(currentCartItems, product)
+    console.log(currentCartItems)
+    console.log(newItems)
+    console.log(this.state.cartItems)
+    this.setState({ cartItems: JSON.parse(JSON.stringify(newItems)) });
     const newTotal =
       (this.state.totalPrice * 100 + product.itemFixedPrice * 100) / 100;
 
@@ -131,6 +149,8 @@ class App extends Component {
 
     this.setState({ totalPrice: newTotal });
     this.setState({ tax: Number(tax.toFixed(2)) });
+
+    this.cartCountPlusHandler()
   }
 
   // Calculating the grand total after currency change... 
@@ -173,6 +193,7 @@ class App extends Component {
 
   // Adding individual item quantity to the cart...
   cartCountPlusHandler() {
+    console.log('plus handler called!!!')
     this.setState((prev) => {
       return { cartCount: prev.cartCount + 1 };
     });

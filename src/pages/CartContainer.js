@@ -72,6 +72,7 @@ export default class CartContainer extends Component {
           itemTotalHandler={this.itemTotalHandler}
           setTotalHandler={this.setTotalHandler}
           id={id}
+          item={item.attributes.attribute}
         />
       );
 

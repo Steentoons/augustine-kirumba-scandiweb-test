@@ -68,7 +68,8 @@
     padding: 32px 16px;
     overflow-y: auto;
     overflow-x: hidden;
-    height: 677px;
+    min-height: 677px;
+    max-height: 677px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -442,4 +443,11 @@
     width: 20px;
     height: 20px;
     cursor: pointer;
+}
+
+@media screen and (max-height: 757px) {
+    .cart-overlay {
+        min-height: calc(100vh - 80px);
+        max-height: calc(100vh - 80px);
+    }
 }

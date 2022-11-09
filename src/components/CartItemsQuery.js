@@ -3,6 +3,7 @@ import { Query } from 'react-apollo';
 import { cart_items_query } from '../lib/queries';
 import Attributes from './Attributes';
 import NavCartItems from './NavCartItems';
+import { v4 as uuidv4 } from 'uuid';
 
 export class CartItemsQuery extends Component {
   render() {
@@ -17,7 +18,8 @@ export class CartItemsQuery extends Component {
         quantityMinusHandler,
         itemTotalHandler,
         setTotalHandler,
-        id
+        id,
+        item
     } = this.props
 
     const CART_ITEMS_QUERY = cart_items_query(id)
@@ -43,19 +45,32 @@ export class CartItemsQuery extends Component {
                     const selectedAttribute = {
                       background:
                         idx ===
-                        attributeArray[index][attribute.name.toLowerCase()]
+                        item[index][attribute.name.toLowerCase()]
                           ? "#1D1F22"
                           : "white",
                       color:
                         idx ===
-                        attributeArray[index][attribute.name.toLowerCase()]
+                        item[index][attribute.name.toLowerCase()]
                           ? "white"
                           : "#1D1F22",
                     };
 
+                    // const selectedAttribute = {
+                    //   background:
+                    //     idx ===
+                    //     attributeArray[index][attribute.name.toLowerCase()]
+                    //       ? "#1D1F22"
+                    //       : "white",
+                    //   color:
+                    //     idx ===
+                    //     attributeArray[index][attribute.name.toLowerCase()]
+                    //       ? "white"
+                    //       : "#1D1F22",
+                    // };
+
                     const attributeValueTemplate = (
                       <div
-                        key={idx}
+                        key={uuidv4()}
                         data-attribute_idx={idx}
                         className="attribute-value-text"
                         data-attribute_key={attribute.name.toLowerCase()}
@@ -75,13 +90,13 @@ export class CartItemsQuery extends Component {
                     const selectedAttribute = {
                       border:
                         idx ===
-                        attributeArray[index][attribute.name.toLowerCase()]
+                        item[index][attribute.name.toLowerCase()]
                           ? "1px solid #5ECE7B"
                           : "none",
                     };
                     const attributeValueTemplate = (
                       <div
-                        key={idx}
+                        key={uuidv4()}
                         className="attribute-value-swatch-wrapper"
                         data-attribute_idx={idx}
                         data-attribute_key={attribute.name.toLowerCase()}
@@ -107,7 +122,7 @@ export class CartItemsQuery extends Component {
                 // Main attribute template...
                 const attributeTemplate = (
                   <Attributes
-                    key={index}
+                    key={uuidv4()}
                     attrName={
                       attribute.name.charAt(0).toUpperCase() +
                       attribute.name.slice(1)

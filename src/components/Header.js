@@ -7,6 +7,7 @@ import Categories from './Categories';
 import { Link } from 'react-router-dom';
 import { PureComponent } from 'react';
 import "../assets/css/header.css";
+import { v4 as uuidv4 } from 'uuid';
 
 export class Header extends PureComponent {
   render() {
@@ -43,7 +44,7 @@ export class Header extends PureComponent {
                   const allcategories = categories.map((actualCategory, idx) => {
                     return (
                       <Categories
-                        key={idx}
+                        key={uuidv4()}
                         category={actualCategory.name.toUpperCase()}
                         changeCategory={changeCategory}
                         categoryState={category}
@@ -89,7 +90,7 @@ export class Header extends PureComponent {
                         (currency, idx) => {
                           return (
                             <li
-                              key={idx}
+                              key={uuidv4()}
                               data-currindex={idx}
                               data-curr_currency={currency.symbol}
                               onClick={(e) => {
@@ -145,7 +146,7 @@ export class Header extends PureComponent {
                   >
                     <div className="cart-top-items">
                       <div className="cart-overlay-title">
-                        My Bag,{" "}
+                        My Bag,
                         <span>{`${cartCount} ${
                           cartCount === 1 ? "item" : "items"
                         }`}</span>

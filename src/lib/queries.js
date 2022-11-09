@@ -21,7 +21,7 @@ const CURRENCIES_QUERY = gql `
 const cart_items_query = (id) => {
     const CART_ITEMS_QUERY = gql `
   {
-    query product (id: "${id}") {
+    product (id: "${id}") {
       name
       brand
       gallery
@@ -44,8 +44,8 @@ const cart_items_query = (id) => {
     return CART_ITEMS_QUERY
 }
 
+// Product view query...
 const product_view_query = (id) => {
-    // Product view query...
     const PRODUCT_VIEW_QUERY = gql `
     {
       product(id: "${id}") {
@@ -76,6 +76,7 @@ const product_view_query = (id) => {
     return PRODUCT_VIEW_QUERY
 };
 
+// Products query...
 const product_query = (title) => {
     const PRODUCT_QUERY = gql `
   {
