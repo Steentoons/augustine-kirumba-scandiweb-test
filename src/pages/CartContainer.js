@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Cart from "./Cart";
 import CartItemsQuery from "../components/CartItemsQuery";
+import { v4 as uuidv4 } from "uuid";
 
 export default class CartContainer extends Component {
   constructor() {
@@ -14,7 +15,7 @@ export default class CartContainer extends Component {
     this.plusHandler = this.plusHandler.bind(this);
     this.minusHandler = this.minusHandler.bind(this);
     this.itemTotalHandler = this.itemTotalHandler.bind(this);
-    this.setTotalHandler = this.setTotalHandler.bind(this)
+    this.setTotalHandler = this.setTotalHandler.bind(this);
   }
 
   plusHandler(idx) {
@@ -26,7 +27,7 @@ export default class CartContainer extends Component {
   setTotalHandler(data) {
     this.setState({
       totals: [...this.state.totals, data.product.prices],
-    })
+    });
   }
 
   itemTotalHandler(symbol, price, quantity, id) {
@@ -58,6 +59,7 @@ export default class CartContainer extends Component {
       let result = null;
       const query = (
         <CartItemsQuery
+          key={uuidv4()}
           attributeArray={attributeArray}
           currencySymbol={currencySymbol}
           cartItems={cartItems}

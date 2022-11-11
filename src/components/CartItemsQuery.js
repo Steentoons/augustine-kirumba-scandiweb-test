@@ -1,14 +1,14 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Query } from 'react-apollo';
 import { cart_items_query } from '../lib/queries';
 import Attributes from './Attributes';
 import NavCartItems from './NavCartItems';
 import { v4 as uuidv4 } from 'uuid';
+import { PureComponent } from 'react';
 
-export class CartItemsQuery extends Component {
+export class CartItemsQuery extends PureComponent {
   render() {
     const {
-        attributeArray,
         currencySymbol,
         cartItems,
         quantityPlusHandler,
@@ -17,7 +17,6 @@ export class CartItemsQuery extends Component {
         navigateImageLeft,
         quantityMinusHandler,
         itemTotalHandler,
-        setTotalHandler,
         id,
         item
     } = this.props
@@ -28,9 +27,6 @@ export class CartItemsQuery extends Component {
     return (
         <Query
         query={CART_ITEMS_QUERY}
-        // onCompleted={(data) =>
-        //   setTotalHandler(data)
-        // }
       >
         {({ loading, data }) => {
           if (!loading) {
@@ -41,7 +37,6 @@ export class CartItemsQuery extends Component {
                 // When type is text...
                 const attributesValueText = attribute.items.map(
                   (value, idx) => {
-                    // const attrName = attribute.name.toLowerCase()
                     const selectedAttribute = {
                       background:
                         idx ===
@@ -54,19 +49,6 @@ export class CartItemsQuery extends Component {
                           ? "white"
                           : "#1D1F22",
                     };
-
-                    // const selectedAttribute = {
-                    //   background:
-                    //     idx ===
-                    //     attributeArray[index][attribute.name.toLowerCase()]
-                    //       ? "#1D1F22"
-                    //       : "white",
-                    //   color:
-                    //     idx ===
-                    //     attributeArray[index][attribute.name.toLowerCase()]
-                    //       ? "white"
-                    //       : "#1D1F22",
-                    // };
 
                     const attributeValueTemplate = (
                       <div

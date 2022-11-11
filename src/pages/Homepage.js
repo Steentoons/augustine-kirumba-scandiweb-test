@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
+import { PureComponent } from "react";
 import BodySection from "../components/BodySection";
 import HeaderContainer from "../components/HeaderContainer";
 
-export default class Homepage extends Component {
+export default class Homepage extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {

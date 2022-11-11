@@ -1,10 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
+import { PureComponent } from "react";
 import { Query } from "react-apollo";
 import "../assets/css/bodySection.css";
 import { product_query } from "../lib/queries";
 import ProductContainer from "./ProductContainer";
 
-export class BodySection extends Component {
+export class BodySection extends PureComponent {
   render() {
     const {
       category,
@@ -26,7 +27,6 @@ export class BodySection extends Component {
           <div className="product-list-wrapper">
             <Query
               query={PRODUCT_QUERY}
-              // variables={{ input: { title: match.params.category } }}
             >
               {({ loading, data }) => {
                 if (loading) return null;

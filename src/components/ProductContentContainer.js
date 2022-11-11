@@ -24,8 +24,6 @@ export default class ProductContentContainer extends Component {
     this.freshAttributes();
   }
 
-  // Handlers...
-
   // Freshening the attributes...
   freshAttributes() {
     const { currentProduct } = this.props;
@@ -68,14 +66,9 @@ export default class ProductContentContainer extends Component {
       e.currentTarget.parentElement.dataset.attribute_idx
     );
     const attributeKey = e.currentTarget.dataset.attribute_key;
-    const { currentProduct } = this.props;
 
     const newAttributes = this.state.attributes.attribute;
     newAttributes[parentAttributeIdx][attributeKey] = currentAttributeIdx
-    // newAttributes[parentAttributeIdx] = {
-    //   ...newAttributes[parentAttributeIdx],
-    //   [attributeKey]: currentAttributeIdx,
-    // };
 
     this.setState({
       attributes: { id: this.props.currentId, attribute: newAttributes },
@@ -89,7 +82,7 @@ export default class ProductContentContainer extends Component {
   }
 
   getCurrentData() {
-    const { currentProduct, currentId, currencySymbol } = this.props;
+    const { currentProduct, currentId } = this.props;
     const productId = currentId;
     const newAttributes = {...this.state.attributes};
     const attributes = newAttributes;
@@ -110,12 +103,11 @@ export default class ProductContentContainer extends Component {
   }
   cartStateHandler() {
     // Setting the main cart item state to be used all over the project...
-    const { cartItemsHandler, cartCountPlusHandler } = this.props;
+    const { cartItemsHandler } = this.props;
     const data = this.getCurrentData();
     const newData = data
     cartItemsHandler(newData);
 
-    // this.freshAttributes()
   }
 
   render() {
@@ -163,11 +155,6 @@ export default class ProductContentContainer extends Component {
           color: idx === attributeIndex ? "white" : "#1D1F22",
         };
 
-        // const selectedAttribute = {
-        //   background: idx === attributeIndex ? "#1D1F22" : "white",
-        //   color: idx === attributeIndex ? "white" : "#1D1F22",
-        // };
-
         const attributeValueTemplate = (
           <div
             key={idx}
@@ -193,6 +180,7 @@ export default class ProductContentContainer extends Component {
         };
         const attributeValueTemplate = (
           <div
+            key={uuidv4()}
             className="attribute-value-swatch-wrapper"
             data-attribute_idx={idx}
             data-attribute_key={attribute.name.toLowerCase()}

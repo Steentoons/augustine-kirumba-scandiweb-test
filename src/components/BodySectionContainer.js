@@ -1,7 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
+import { PureComponent } from "react";
 import BodySection from "./BodySection";
 
-export default class BodySectionContainer extends Component {
+export default class BodySectionContainer extends PureComponent {
   render() {
     const {
       match,
@@ -20,7 +21,6 @@ export default class BodySectionContainer extends Component {
         cartCountPlusHandler={cartCountPlusHandler}
         currencySymbol={currencySymbol}
         match={match}
-        // PRODUCT_QUERY={PRODUCT_QUERY}
       />
     );
   }

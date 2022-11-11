@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Header from "./Header";
 import CartItemsQuery from "./CartItemsQuery";
 import { CATEGORIES_QUERY, CURRENCIES_QUERY } from "../lib/queries";
-import { v4 as uuidv4 } from "uuid";
 
 export default class HeaderContainer extends Component {
   constructor() {
@@ -30,12 +29,6 @@ export default class HeaderContainer extends Component {
       // Update every item price in the state...
       let grandTotal = 0;
       if (cartItems && cartItems.length > 0) {
-        // this.state.totals.forEach((item, idx) => {
-        //   const fixedAmount = item[currencySymbol[0]].amount;
-        //   const quantity = cartItems[idx].quantity;
-
-        //   grandTotal = getTotalHandler(fixedAmount, quantity, grandTotal, idx);
-        // });
 
         cartItems.forEach((item, idx) => {
           const newItemFixedTotal =
@@ -94,28 +87,6 @@ export default class HeaderContainer extends Component {
       currencyButtonClick: false,
     });
   }
-
-  // setTotalHandler(data) {
-  //   const { cartItems } = this.props
-  //   let dataExists = false
-  //   cartItems.forEach(item => {
-  //     if(item.productId === data.product.id) {
-  //       dataExists = true
-  //     }
-  //   })
-
-  //   if(!dataExists) {
-  //     this.setState({
-  //       totals: [
-  //         ...this.state.totals,
-  //         {
-  //           prices: [...data.product.prices],
-  //           id: data.product.id,
-  //         },
-  //       ],
-  //     });
-  //   }
-  // }
 
   render() {
     const {

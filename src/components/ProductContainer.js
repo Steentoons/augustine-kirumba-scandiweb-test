@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Product from '../components/Product'
+import Product from "../components/Product";
 
 export default class ProductContainer extends Component {
   constructor(props) {
@@ -12,20 +12,17 @@ export default class ProductContainer extends Component {
 
     this.handleMouseOver = this.handleMouseOver.bind(this);
     this.plpCartHandler = this.plpCartHandler.bind(this);
-    this.toCartMouseOut = this.toCartMouseOut.bind(this)
+    this.toCartMouseOut = this.toCartMouseOut.bind(this);
   }
 
   // Handling the hover add to cart on PLP...
   handleMouseOver() {
-    const { product } = this.props
+    const { product } = this.props;
     const setToCart = (state) => {
       this.setState({ toCart: state });
     };
 
-    if (
-      product.attributes.length < 1 &&
-      product.inStock === true
-    ) {
+    if (product.attributes.length < 1 && product.inStock === true) {
       setToCart(true);
     } else {
       setToCart(false);
@@ -40,12 +37,8 @@ export default class ProductContainer extends Component {
   plpCartHandler(e) {
     e.preventDefault();
 
-    const {
-      cartCountPlusHandler,
-      cartItemsHandler,
-      product,
-      currencySymbol,
-    } = this.props
+    const { cartCountPlusHandler, cartItemsHandler, product, currencySymbol } =
+      this.props;
 
     const productId = product.id;
     const attributes = [];
@@ -57,30 +50,23 @@ export default class ProductContainer extends Component {
       attributes,
       productId,
       quantity,
-      itemFixedPrice: Number(
-        product.prices[currencySymbol[0]].amount
-      ),
-      itemTotalPrice: Number(
-        product.prices[currencySymbol[0]].amount
-      ),
+      itemFixedPrice: Number(product.prices[currencySymbol[0]].amount),
+      itemTotalPrice: Number(product.prices[currencySymbol[0]].amount),
       currentImageIdx,
     });
   }
 
   render() {
-    const {
-      product,
-      currencySymbol,
-    } = this.props
+    const { product, currencySymbol } = this.props;
 
     return (
       <Product
-      product={product}
-      currencySymbol={currencySymbol}
-      handleMouseOver={this.handleMouseOver}
-      toCart={this.state.toCart}
-      plpCartHandler={this.plpCartHandler}
-      toCartMouseOut={this.toCartMouseOut}
+        product={product}
+        currencySymbol={currencySymbol}
+        handleMouseOver={this.handleMouseOver}
+        toCart={this.state.toCart}
+        plpCartHandler={this.plpCartHandler}
+        toCartMouseOut={this.toCartMouseOut}
       />
     );
   }

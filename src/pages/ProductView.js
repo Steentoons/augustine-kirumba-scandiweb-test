@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { Query } from "react-apollo";
 import HeaderContainer from "../components/HeaderContainer";
 import ProductContentContainer from "../components/ProductContentContainer";
 import { product_view_query } from "../lib/queries";
 
-export default class ProductView extends Component {
+export default class ProductView extends PureComponent {
   constructor(props) {
     super(props);
 
