@@ -10,10 +10,8 @@
     width: 100%;
     height: 80px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     padding: 0 100px;
-    /* margin-top: -80px; */
     background-color: white;
 }
 
@@ -141,6 +139,8 @@
     display: flex;
     align-items: center;
     height: 100%;
+    flex: 1;
+    justify-content: flex-end;
 }
 
 .currency-symbol-button {
@@ -176,6 +176,9 @@
 }
 
 .categories-container {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
     height: 100%;
 }
 
@@ -244,6 +247,12 @@
 
 .currency-absolute-dropdown ul li:hover {
     background: #EEEEEE;
+}
+
+.header-logo {
+    flex: 1;
+    display: flex;
+    justify-content: center;
 }
 
 

@@ -61,6 +61,7 @@ export class Header extends PureComponent {
               changeCategory("all");
             }}
             to="/category/all"
+            className='header-logo'
           >
             <img className="logo" src={logo} alt="logo" />
           </Link>
