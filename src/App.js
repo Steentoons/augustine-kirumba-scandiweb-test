@@ -126,8 +126,7 @@ class App extends Component {
     // Getting tax...
     const tax = (newTotal * 100 * (21 / 100)) / 100;
 
-    this.setState({ totalPrice: newTotal });
-    this.setState({ tax: Number(tax.toFixed(2)) });
+    this.setState({ totalPrice: newTotal, tax: Number(tax.toFixed(2)) });
 
     this.cartCountPlusHandler()
   }
@@ -212,8 +211,7 @@ class App extends Component {
     // Getting tax...
     const tax = (newTotal * 100 * (21 / 100)) / 100;
 
-    this.setState({ totalPrice: newTotal });
-    this.setState({ tax: Number(tax.toFixed(2)) });
+    this.setState({ totalPrice: newTotal, tax: Number(tax.toFixed(2)) });
   }
 
   // Reducing quantity from the cart...
@@ -237,8 +235,7 @@ class App extends Component {
       // Getting tax...
       const tax = (newTotal * 100 * (21 / 100)) / 100;
 
-      this.setState({ totalPrice: Number(newTotal.toFixed(2)) });
-      this.setState({ tax: Number(tax.toFixed(2)) });
+      this.setState({ totalPrice: Number(newTotal.toFixed(2)), tax: Number(tax.toFixed(2)) });
 
       // Calling the delete item fn...
       if (item.quantity === 0) {
