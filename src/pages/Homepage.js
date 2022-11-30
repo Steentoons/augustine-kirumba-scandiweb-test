@@ -24,11 +24,9 @@ export default class Homepage extends PureComponent {
     const {
       cartItems,
       cartCount,
-      quantityMinusHandler,
-      quantityPlusHandler,
+      quantityHandler,
       totalPrice,
-      navigateImageRight,
-      navigateImageLeft,
+      navigateImage,
       category,
       currencySymbol,
       currencyHandler,
@@ -39,7 +37,7 @@ export default class Homepage extends PureComponent {
       setTotalHandler,
       cartItemsHandler,
       cartCountPlusHandler,
-      match
+      match,
     } = this.props;
     return (
       <>
@@ -47,11 +45,9 @@ export default class Homepage extends PureComponent {
           updateCurrencyHandler={this.updateCurrencyHandler}
           cartItems={cartItems}
           cartCount={cartCount}
-          quantityMinusHandler={quantityMinusHandler}
-          quantityPlusHandler={quantityPlusHandler}
+          quantityHandler={quantityHandler}
           totalPrice={totalPrice}
-          navigateImageRight={navigateImageRight}
-          navigateImageLeft={navigateImageLeft}
+          navigateImage={navigateImage}
           category={category}
           currencySymbol={currencySymbol}
           currencyHandler={currencyHandler}

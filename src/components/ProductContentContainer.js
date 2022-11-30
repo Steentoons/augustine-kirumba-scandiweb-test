@@ -31,7 +31,9 @@ export default class ProductContentContainer extends Component {
     const atrrArray = attributes.map((attribute) => {
       const attrName = attribute.name.toLowerCase();
 
-      return { [attrName]: 0 };
+      return {
+        [attrName]: 0,
+      };
     });
     this.setState({
       attributes: { id: this.props.currentId, attribute: atrrArray },
@@ -40,7 +42,7 @@ export default class ProductContentContainer extends Component {
 
   // Checking on cart duplicates...
   checkCartDuplicates() {
-    const { cartItems, quantityPlusHandler } = this.props;
+    const { cartItems, quantityHandler } = this.props;
     const singleAttribute = this.state.attributes;
     let duplicate = false;
     if (cartItems.length === 0) {
@@ -48,14 +50,13 @@ export default class ProductContentContainer extends Component {
     }
     cartItems.forEach((item, idx) => {
       if (_.isEqual(item.attributes, singleAttribute)) {
-        quantityPlusHandler(idx);
-        duplicate = true
+        quantityHandler(idx);
+        duplicate = true;
       }
 
-      if(!duplicate) {
+      if (!duplicate) {
         this.cartStateHandler();
       }
-
     });
   }
 
@@ -68,7 +69,7 @@ export default class ProductContentContainer extends Component {
     const attributeKey = e.currentTarget.dataset.attribute_key;
 
     const newAttributes = this.state.attributes.attribute;
-    newAttributes[parentAttributeIdx][attributeKey] = currentAttributeIdx
+    newAttributes[parentAttributeIdx][attributeKey] = currentAttributeIdx;
 
     this.setState({
       attributes: { id: this.props.currentId, attribute: newAttributes },
@@ -84,11 +85,11 @@ export default class ProductContentContainer extends Component {
   getCurrentData() {
     const { currentProduct, currentId } = this.props;
     const productId = currentId;
-    const newAttributes = {...this.state.attributes};
+    const newAttributes = { ...this.state.attributes };
     const attributes = newAttributes;
 
     const quantity = 1;
-    const itemFixedPrice = currentProduct.prices
+    const itemFixedPrice = currentProduct.prices;
     const itemTotalPrice = itemFixedPrice;
     const currentImageIdx = 0;
 
@@ -105,9 +106,8 @@ export default class ProductContentContainer extends Component {
     // Setting the main cart item state to be used all over the project...
     const { cartItemsHandler } = this.props;
     const data = this.getCurrentData();
-    const newData = data
+    const newData = data;
     cartItemsHandler(newData);
-
   }
 
   render() {

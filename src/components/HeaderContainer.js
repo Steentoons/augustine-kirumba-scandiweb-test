@@ -29,7 +29,6 @@ export default class HeaderContainer extends Component {
       // Update every item price in the state...
       let grandTotal = 0;
       if (cartItems && cartItems.length > 0) {
-
         cartItems.forEach((item, idx) => {
           const newItemFixedTotal =
             item.itemFixedPrice[currencySymbol[0]].amount;
@@ -92,10 +91,8 @@ export default class HeaderContainer extends Component {
     const {
       cartItems,
       currencySymbol,
-      quantityPlusHandler,
-      quantityMinusHandler,
-      navigateImageLeft,
-      navigateImageRight,
+      quantityHandler,
+      navigateImage,
       changeCategory,
       cartCount,
       totalPrice,
@@ -120,11 +117,9 @@ export default class HeaderContainer extends Component {
           attributeArray={attributeArray}
           currencySymbol={currencySymbol}
           cartItems={cartItems}
-          quantityPlusHandler={quantityPlusHandler}
+          quantityHandler={quantityHandler}
           idx={idx}
-          navigateImageRight={navigateImageRight}
-          navigateImageLeft={navigateImageLeft}
-          quantityMinusHandler={quantityMinusHandler}
+          navigateImage={navigateImage}
           result={result}
           itemTotalHandler={this.itemTotalHandler}
           setTotalHandler={this.setTotalHandler}

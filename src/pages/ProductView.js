@@ -17,11 +17,9 @@ export default class ProductView extends PureComponent {
     const {
       cartItems,
       cartCount,
-      quantityMinusHandler,
-      quantityPlusHandler,
+      quantityHandler,
       totalPrice,
-      navigateImageRight,
-      navigateImageLeft,
+      navigateImage,
       currencySymbol,
       currencyHandler,
       checkout,
@@ -35,18 +33,16 @@ export default class ProductView extends PureComponent {
       cartCountMinusHandler,
     } = this.props;
 
-    const PRODUCT_VIEW_QUERY = product_view_query(this.state.currentId)
+    const PRODUCT_VIEW_QUERY = product_view_query(this.state.currentId);
 
     return (
       <div>
         <HeaderContainer
           cartItems={cartItems}
           cartCount={cartCount}
-          quantityMinusHandler={quantityMinusHandler}
-          quantityPlusHandler={quantityPlusHandler}
+          quantityHandler={quantityHandler}
           totalPrice={totalPrice}
-          navigateImageRight={navigateImageRight}
-          navigateImageLeft={navigateImageLeft}
+          navigateImage={navigateImage}
           currencySymbol={currencySymbol}
           currencyHandler={currencyHandler}
           checkout={checkout}
@@ -55,10 +51,7 @@ export default class ProductView extends PureComponent {
           getTotalHandler={getTotalHandler}
           setTotalHandler={setTotalHandler}
         />
-
-        <Query
-          query={PRODUCT_VIEW_QUERY}
-        >
+        <Query query={PRODUCT_VIEW_QUERY}>
           {({ loading, data }) => {
             let result = null;
             if (!loading) {
@@ -74,7 +67,7 @@ export default class ProductView extends PureComponent {
                   cartCountPlusHandler={cartCountPlusHandler}
                   cartCountMinusHandler={cartCountMinusHandler}
                   currencySymbol={currencySymbol}
-                  quantityPlusHandler={quantityPlusHandler}
+                  quantityHandler={quantityHandler}
                 />
               );
 

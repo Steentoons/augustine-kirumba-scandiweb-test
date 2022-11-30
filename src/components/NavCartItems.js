@@ -1,28 +1,25 @@
-import React from 'react'
-import { PureComponent } from 'react';
+import React from "react";
+import { PureComponent } from "react";
 import navigatorLeft from "../assets/images/left-arrow.png";
 import navigatorRight from "../assets/images/right-arrow.png";
-import NavCartDetails from './NavCartDetails';
-import NavCartImg from './NavCartImg';
+import NavCartDetails from "./NavCartDetails";
+import NavCartImg from "./NavCartImg";
 
 export class NavCartItems extends PureComponent {
   render() {
-
     const {
-        product, 
-        currencySymbol,
-        cartItems,
-        idx,
-        printAttributes,
-        quantityPlusHandler,
-        quantityMinusHandler,
-        navigateImageLeft,
-        navigateImageRight,
-        itemTotalHandler
-    } = this.props
+      product,
+      currencySymbol,
+      cartItems,
+      idx,
+      printAttributes,
+      quantityHandler,
+      navigateImage,
+      itemTotalHandler,
+    } = this.props;
 
     return (
-        <div className="cart-item-container">
+      <div className="cart-item-container">
         <div className="cart-item-wrapper">
           <NavCartDetails
             product={product}
@@ -32,21 +29,19 @@ export class NavCartItems extends PureComponent {
             idx={idx}
             printAttributes={printAttributes}
           />
-          <NavCartImg 
-            quantityPlusHandler={quantityPlusHandler}
+          <NavCartImg
+            quantityHandler={quantityHandler}
             idx={idx}
             cartItems={cartItems}
-            quantityMinusHandler={quantityMinusHandler}
             product={product}
             navigatorLeft={navigatorLeft}
-            navigateImageLeft={navigateImageLeft}
+            navigateImage={navigateImage}
             navigatorRight={navigatorRight}
-            navigateImageRight={navigateImageRight}
           />
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default NavCartItems
+export default NavCartItems;

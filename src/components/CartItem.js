@@ -11,13 +11,11 @@ export class CartItem extends PureComponent {
         idx,
         printAttributes,
         plusIcon,
-        quantityPlusHandler,
+        quantityHandler,
         minusIcon,
-        quantityMinusHandler,
         navigatorLeft,
-        navigateImageLeft,
+        navigateImage,
         navigatorRight,
-        navigateImageRight,
         itemTotalHandler
     } = this.props
 
@@ -44,8 +42,9 @@ export class CartItem extends PureComponent {
               <img
                 src={plusIcon}
                 alt="plus-option"
-                onClick={() => {
-                  quantityPlusHandler(idx);
+                data-quantity='plus'
+                onClick={(e) => {
+                  quantityHandler(idx, e.currentTarget.dataset.quantity);
                 }}
               />
               <div className="cart-quantity-div">
@@ -54,8 +53,9 @@ export class CartItem extends PureComponent {
               <img
                 src={minusIcon}
                 alt="minus-option"
-                onClick={() => {
-                  quantityMinusHandler(idx);
+                data-quantity='minus'
+                onClick={(e) => {
+                  quantityHandler(idx, e.currentTarget.dataset.quantity);
                 }}
               />
             </div>
@@ -80,15 +80,17 @@ export class CartItem extends PureComponent {
                   <img
                     src={navigatorLeft}
                     alt="navigator-left"
-                    onClick={() => {
-                      navigateImageLeft(idx, product.gallery.length);
+                    data-nav='left'
+                    onClick={(e) => {
+                      navigateImage(idx, product.gallery.length, e.currentTarget.dataset.nav);
                     }}
                   />
                   <img
                     src={navigatorRight}
                     alt="navigator-right"
-                    onClick={() => {
-                      navigateImageRight(idx, product.gallery.length);
+                    data-nav='right'
+                    onClick={(e) => {
+                      navigateImage(idx, product.gallery.length, e.currentTarget.dataset.nav);
                     }}
                   />
                 </div>

@@ -37,10 +37,8 @@ export default class CartContainer extends Component {
   render() {
     const {
       currencySymbol,
-      quantityPlusHandler,
-      quantityMinusHandler,
-      navigateImageLeft,
-      navigateImageRight,
+      quantityHandler,
+      navigateImage,
       cartCount,
       totalPrice,
       checkout,
@@ -63,11 +61,9 @@ export default class CartContainer extends Component {
           attributeArray={attributeArray}
           currencySymbol={currencySymbol}
           cartItems={cartItems}
-          quantityPlusHandler={quantityPlusHandler}
+          quantityHandler={quantityHandler}
           idx={idx}
-          navigateImageRight={navigateImageRight}
-          navigateImageLeft={navigateImageLeft}
-          quantityMinusHandler={quantityMinusHandler}
+          navigateImage={navigateImage}
           result={result}
           itemTotalHandler={this.itemTotalHandler}
           setTotalHandler={this.setTotalHandler}
@@ -84,11 +80,9 @@ export default class CartContainer extends Component {
         printCartItems={printCartItems}
         cartItems={cartItems}
         cartCount={cartCount}
-        quantityMinusHandler={quantityMinusHandler}
-        quantityPlusHandler={quantityPlusHandler}
+        quantityHandler={quantityHandler}
         totalPrice={totalPrice}
-        navigateImageRight={navigateImageRight}
-        navigateImageLeft={navigateImageLeft}
+        navigateImage={navigateImage}
         currencySymbol={currencySymbol}
         currencyHandler={currencyHandler}
         checkout={checkout}

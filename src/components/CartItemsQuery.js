@@ -1,33 +1,29 @@
-import React from 'react'
-import { Query } from 'react-apollo';
-import { cart_items_query } from '../lib/queries';
-import Attributes from './Attributes';
-import NavCartItems from './NavCartItems';
-import { v4 as uuidv4 } from 'uuid';
-import { PureComponent } from 'react';
+import React from "react";
+import { Query } from "react-apollo";
+import { cart_items_query } from "../lib/queries";
+import Attributes from "./Attributes";
+import NavCartItems from "./NavCartItems";
+import { v4 as uuidv4 } from "uuid";
+import { PureComponent } from "react";
 
 export class CartItemsQuery extends PureComponent {
   render() {
     const {
-        currencySymbol,
-        cartItems,
-        quantityPlusHandler,
-        idx,
-        navigateImageRight,
-        navigateImageLeft,
-        quantityMinusHandler,
-        itemTotalHandler,
-        id,
-        item
-    } = this.props
+      currencySymbol,
+      cartItems,
+      quantityHandler,
+      idx,
+      navigateImage,
+      itemTotalHandler,
+      id,
+      item,
+    } = this.props;
 
-    const CART_ITEMS_QUERY = cart_items_query(id)
+    const CART_ITEMS_QUERY = cart_items_query(id);
 
-    let { result } = this.props
+    let { result } = this.props;
     return (
-        <Query
-        query={CART_ITEMS_QUERY}
-      >
+      <Query query={CART_ITEMS_QUERY}>
         {({ loading, data }) => {
           if (!loading) {
             const product = data.product;
@@ -39,13 +35,11 @@ export class CartItemsQuery extends PureComponent {
                   (value, idx) => {
                     const selectedAttribute = {
                       background:
-                        idx ===
-                        item[index][attribute.name.toLowerCase()]
+                        idx === item[index][attribute.name.toLowerCase()]
                           ? "#1D1F22"
                           : "white",
                       color:
-                        idx ===
-                        item[index][attribute.name.toLowerCase()]
+                        idx === item[index][attribute.name.toLowerCase()]
                           ? "white"
                           : "#1D1F22",
                     };
@@ -71,8 +65,7 @@ export class CartItemsQuery extends PureComponent {
                   (value, idx) => {
                     const selectedAttribute = {
                       border:
-                        idx ===
-                        item[index][attribute.name.toLowerCase()]
+                        idx === item[index][attribute.name.toLowerCase()]
                           ? "1px solid #5ECE7B"
                           : "none",
                     };
@@ -127,10 +120,8 @@ export class CartItemsQuery extends PureComponent {
                 cartItems={cartItems}
                 idx={idx}
                 printAttributes={printAttributes}
-                quantityPlusHandler={quantityPlusHandler}
-                quantityMinusHandler={quantityMinusHandler}
-                navigateImageLeft={navigateImageLeft}
-                navigateImageRight={navigateImageRight}
+                quantityHandler={quantityHandler}
+                navigateImage={navigateImage}
                 itemTotalHandler={itemTotalHandler}
               />
             );
@@ -139,8 +130,8 @@ export class CartItemsQuery extends PureComponent {
           } else return null;
         }}
       </Query>
-    )
+    );
   }
 }
 
-export default CartItemsQuery
+export default CartItemsQuery;
