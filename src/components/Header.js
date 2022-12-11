@@ -1,24 +1,23 @@
-import React from 'react'
+import React from "react";
 import logo from "../assets/images/logo.png";
 import currency_arrow_down from "../assets/images/currency-arrow-down.png";
 import empty_cart from "../assets/images/empty-cart.png";
-import { Query } from 'react-apollo';
-import Categories from './Categories';
-import { Link } from 'react-router-dom';
-import { PureComponent } from 'react';
+import { Query } from "react-apollo";
+import Categories from "./Categories";
+import { Link } from "react-router-dom";
+import { PureComponent } from "react";
 import "../assets/css/header.css";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 export class Header extends PureComponent {
   render() {
-
     const {
       CATEGORIES_QUERY,
       changeCategory,
       category,
       currencySymbol,
       currencyDropdownStyle,
-      CURRENCIES_QUERY, 
+      CURRENCIES_QUERY,
       cartCount,
       printCartItems,
       totalPrice,
@@ -29,8 +28,8 @@ export class Header extends PureComponent {
       cartOverlayHandler,
       updateCurrencyHandler,
       currencyButtonHandler,
-      checkoutHandler
-    } = this.props
+      checkoutHandler,
+    } = this.props;
 
     return (
       <div className="header-wrapper">
@@ -41,16 +40,18 @@ export class Header extends PureComponent {
                 {({ loading, data }) => {
                   if (loading) return null;
                   const { categories } = data;
-                  const allcategories = categories.map((actualCategory, idx) => {
-                    return (
-                      <Categories
-                        key={uuidv4()}
-                        category={actualCategory.name.toUpperCase()}
-                        changeCategory={changeCategory}
-                        categoryState={category}
-                      />
-                    );
-                  });
+                  const allcategories = categories.map(
+                    (actualCategory, idx) => {
+                      return (
+                        <Categories
+                          key={uuidv4()}
+                          category={actualCategory.name.toUpperCase()}
+                          changeCategory={changeCategory}
+                          categoryState={category}
+                        />
+                      );
+                    }
+                  );
                   return allcategories;
                 }}
               </Query>
@@ -61,7 +62,7 @@ export class Header extends PureComponent {
               changeCategory("all");
             }}
             to="/category/all"
-            className='header-logo'
+            className="header-logo"
           >
             <img className="logo" src={logo} alt="logo" />
           </Link>
@@ -72,9 +73,7 @@ export class Header extends PureComponent {
                 currencyButtonHandler();
               }}
             >
-              <div className="currency-symbol">
-                {currencySymbol[1]}
-              </div>
+              <div className="currency-symbol">{currencySymbol[1]}</div>
               <img src={currency_arrow_down} alt="currency arrow down" />
             </div>
             <div
@@ -113,7 +112,7 @@ export class Header extends PureComponent {
             <div
               className="empty-cart-button"
               onClick={() => {
-                cartOverlayActionHandler()
+                cartOverlayActionHandler();
               }}
             >
               <img src={empty_cart} alt="empty cart" />
@@ -156,27 +155,29 @@ export class Header extends PureComponent {
                         {printCartItems}
                       </div>
                     </div>
-                    <div className="cart-bottom-items">
-                      <div className="cart-overlay-total-container">
-                        <div className="total-title">Total</div>
-                        <div className="total-content">{`${currencySymbol[1]}${totalPrice}`}</div>
-                      </div>
-                      <div className="cart-overlay-buttons">
-                        <Link
-                          to="/cart"
-                          onClick={() => {
-                            checkoutHandler();
-                          }}
-                        >
-                          <button>VIEW BAG</button>
-                        </Link>
-                        <button
-                          onClick={() => {
-                            checkout();
-                          }}
-                        >
-                          CHECK OUT
-                        </button>
+                    <div className="cart-bottom-items-wrapper">
+                      <div className="cart-bottom-items">
+                        <div className="cart-overlay-total-container">
+                          <div className="total-title">Total</div>
+                          <div className="total-content">{`${currencySymbol[1]}${totalPrice}`}</div>
+                        </div>
+                        <div className="cart-overlay-buttons">
+                          <Link
+                            to="/cart"
+                            onClick={() => {
+                              checkoutHandler();
+                            }}
+                          >
+                            <button>VIEW BAG</button>
+                          </Link>
+                          <button
+                            onClick={() => {
+                              checkout();
+                            }}
+                          >
+                            CHECK OUT
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -186,8 +187,8 @@ export class Header extends PureComponent {
           </div>
         </header>
       </div>
-    )
+    );
   }
 }
 
-export default Header
+export default Header;

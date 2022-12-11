@@ -22,12 +22,15 @@ class App extends Component {
   constructor() {
     super();
 
+    const oldState = JSON.parse(sessionStorage.getItem("oldState"));
+    const oldCartItems = JSON.parse(sessionStorage.getItem("oldCartItems"));
+
     this.state = {
-      cartItems: [],
-      cartCount: 0,
-      totalPrice: 0,
-      tax: 0,
-      currencySymbol: [0, "$"],
+      cartItems: oldCartItems ? JSON.parse(oldCartItems?.cartItems) : [],
+      cartCount: oldState?.cartCount ?? 0,
+      totalPrice: oldState?.totalPrice ?? 0,
+      tax: oldState?.tax ?? 0,
+      currencySymbol: oldState ? JSON.parse(oldState?.currencySymbol) : [0, "$"],
       category: "all",
     };
 
@@ -44,27 +47,6 @@ class App extends Component {
     this.getTotalHandler = this.getTotalHandler.bind(this);
     this.setTotalHandler = this.setTotalHandler.bind(this);
     this.newTotalFn = this.newTotalFn.bind(this);
-  }
-
-  componentDidMount() {
-    const oldState = JSON.parse(sessionStorage.getItem("oldState"));
-    const oldCartItems = JSON.parse(sessionStorage.getItem("oldCartItems"));
-    if (oldState) {
-      const { cartCount, totalPrice, tax, currencySymbol } = oldState;
-
-      this.setState({
-        cartCount,
-        totalPrice,
-        tax,
-        currencySymbol: JSON.parse(currencySymbol),
-      });
-    }
-    if (oldCartItems) {
-      const { cartItems } = oldCartItems;
-      const items = JSON.parse(cartItems);
-
-      this.setState({ cartItems: items });
-    }
   }
 
   componentDidUpdate(prevState) {

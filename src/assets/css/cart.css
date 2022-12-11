@@ -58,7 +58,7 @@
     padding-top: 20px;
 }
 
-.cart-images-container .cart-images-actions {
+.cart-container-wrapper .cart-images-container .cart-images-actions {
     height: 288px;
     display: flex;
     flex-direction: column;
@@ -70,8 +70,8 @@
     display: flex;
 }
 
-.cart-plus,
-.cart-minus {
+.cart-container-wrapper .cart-plus,
+.cart-container-wrapper .cart-minus {
     width: 45px;
     height: 45px;
     cursor: pointer;
@@ -85,7 +85,7 @@
     font-family: raleway-300;
 }
 
-.cart-minus {
+.cart-container-wrapper .cart-minus {
     align-items: flex-start;
     padding-top: 17px;
 }
