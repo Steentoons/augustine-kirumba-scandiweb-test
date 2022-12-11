@@ -1,18 +1,21 @@
 .header-wrapper {
-    width: 100%;
+    width: 100vw;
+    position: fixed;
+    z-index: +4;
     position: relative;
     height: 80px;
 }
 
 .header-container {
-    position: fixed;
-    z-index: +4;
     width: 100%;
     height: 80px;
     display: flex;
     align-items: center;
     padding: 0 100px;
     background-color: white;
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .cart-notification-container {
@@ -307,6 +310,14 @@
     justify-content: space-between;
 }
 
+.header-container .cart-images-actions {
+    margin-right: 8px;
+}
+
+.header-container .cart-details-container {
+    margin-right: 4px;
+}
+
 .header-container .cart-images-container {
     display: flex;
 }
@@ -316,8 +327,8 @@
     width: 100%;
 }
 
-.cart-plus,
-.cart-minus {
+.header-container .cart-plus,
+.header-container .cart-minus {
     width: 24px;
     height: 24px;
     cursor: pointer;
@@ -331,26 +342,25 @@
     font-family: raleway-300;
 }
 
-.cart-minus {
+.header-container .cart-minus {
     align-items: flex-start;
     padding-top: 9px;
 }
 
-.mini-cart-image-wrapper {
+.header-container .mini-cart-image-wrapper {
     width: 121px;
     height: 190px;
-    margin-left: 24px;
 }
 
 .header-container .cart-images-container .cart-images-img {
-    width: 100%;
+    width: 121px;
     height: 100%;
     display: flex;
     align-items: center;
 }
 
 .header-container .cart-images-container .cart-images-img img {
-    width: 100%;
+    width: 121px;
     height: auto;
 }
 
@@ -433,19 +443,19 @@
     line-height: 26px;
 }
 
-.image-navigator-wrapper {
+.header-container .image-navigator-wrapper {
     width: 100%;
     position: relative;
     height: 0;
 }
 
-.image-navigator {
+.header-container .image-navigator {
     position: absolute;
     width: 100%;
     display: flex;
     justify-content: flex-end;
-    margin-left: -16px;
     margin-top: -36px;
+    padding-right: 16px;
 }
 
 .header-container .image-navigator img {
@@ -458,5 +468,14 @@
     .cart-overlay {
         min-height: calc(100vh - 80px);
         max-height: calc(100vh - 80px);
+    }
+}
+
+@media screen and (min-width: 1440px) {
+    .cart-overlay-background {
+        margin-left: calc(-1340px - ((100vw - 1440px)/2));
+    }
+    .cart-overlay-wrapper {
+        margin-left: calc((100vw - (100vw - 1440px)/2) - 400px);
     }
 }
