@@ -43,7 +43,7 @@ class App extends Component {
     this.changeCategory = this.changeCategory.bind(this);
     this.getTotalHandler = this.getTotalHandler.bind(this);
     this.setTotalHandler = this.setTotalHandler.bind(this);
-    this.newTotalFn = this.newTotalFn.bind(this)
+    this.newTotalFn = this.newTotalFn.bind(this);
   }
 
   componentDidMount() {
@@ -115,6 +115,7 @@ class App extends Component {
 
   // Adding items to the cart...
   cartItemsHandler(product) {
+    console.log(product)
     const { currencySymbol } = this.state;
     const currentCartItems = this.state.cartItems;
     const newItems = [].concat(currentCartItems, product);
@@ -198,10 +199,9 @@ class App extends Component {
     const fixedPrice =
       this.state.cartItems[idx].itemFixedPrice[currencySymbol[0]].amount * 100;
 
-      item.itemTotalPrice = (fixedPrice * 100 * item.quantity) / 100;
-      items[idx] = item;
-  
-      this.setState({ cartItems: items });
+    item.itemTotalPrice = (fixedPrice * 100 * item.quantity) / 100;
+    items[idx] = item;
+    this.setState({ cartItems: items });
 
     if (quantity === "plus") {
       item.quantity = this.state.cartItems[idx].quantity + 1;

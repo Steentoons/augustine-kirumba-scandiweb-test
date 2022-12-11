@@ -55,7 +55,7 @@ export default class ProductView extends PureComponent {
           {({ loading, data }) => {
             let result = null;
             if (!loading) {
-              const currentProduct = data.product;
+              const currentProduct = data?.product;
               const currentProjectComponent = (
                 <ProductContentContainer
                   history={history}
