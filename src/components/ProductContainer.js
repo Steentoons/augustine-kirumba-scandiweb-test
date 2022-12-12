@@ -2,8 +2,8 @@ import React, { PureComponent } from "react";
 import Product from "../components/Product";
 
 export default class ProductContainer extends PureComponent {
-    constructor(props) {
-        super(props);
+    constructor( props ) {
+        super( props );
 
         this.state = {
             id: this.props,
@@ -18,14 +18,14 @@ export default class ProductContainer extends PureComponent {
     // Handling the hover add to cart on PLP...
     handleMouseOver() {
         const { product } = this.props;
-        const setToCart = (state) => {
+        const setToCart = state => {
             this.setState({ toCart: state });
         };
 
-        if (product.attributes.length < 1 && product.inStock === true) {
-            setToCart(true);
+        if ( product.attributes.length < 1 && product.inStock === true ) {
+            setToCart( true );
         } else {
-            setToCart(false);
+            setToCart( false );
         }
     }
 
@@ -34,10 +34,10 @@ export default class ProductContainer extends PureComponent {
     }
 
     // The PLP cart handler...
-    plpCartHandler(e) {
+    plpCartHandler( e ) {
         e.preventDefault();
 
-        const { cartCountPlusHandler, cartItemsHandler, product, currencySymbol } =
+        const { cartCountHandler, cartItemsHandler, product, currencySymbol } =
         this.props;
 
         const productId = product.id;
@@ -45,13 +45,13 @@ export default class ProductContainer extends PureComponent {
         const quantity = 1;
         const currentImageIdx = 0;
 
-        cartCountPlusHandler();
+        cartCountHandler();
         cartItemsHandler({
             attributes,
             productId,
             quantity,
-            itemFixedPrice: Number(product.prices[currencySymbol[0]].amount),
-            itemTotalPrice: Number(product.prices[currencySymbol[0]].amount),
+            itemFixedPrice: Number( product.prices[currencySymbol[0]].amount ),
+            itemTotalPrice: Number( product.prices[currencySymbol[0]].amount ),
             currentImageIdx,
         });
     }

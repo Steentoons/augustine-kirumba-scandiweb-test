@@ -28,7 +28,6 @@ export class Header extends PureComponent {
       cartOverlayHandler,
       updateCurrencyHandler,
       currencyButtonHandler,
-      checkoutHandler,
     } = this.props;
 
     return (
@@ -133,8 +132,8 @@ export class Header extends PureComponent {
               <div
                 className="cart-overlay-background"
                 data-overlay_background={true}
-                onClick={(e) => {
-                  cartOverlayBackgroundHandler(e);
+                onClick={() => {
+                  cartOverlayBackgroundHandler();
                 }}
               >
                 <div className="cart-overlay-wrapper">
@@ -165,7 +164,7 @@ export class Header extends PureComponent {
                           <Link
                             to="/cart"
                             onClick={() => {
-                              checkoutHandler();
+                              cartOverlayBackgroundHandler();
                             }}
                           >
                             <button>VIEW BAG</button>

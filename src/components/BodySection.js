@@ -11,7 +11,6 @@ export class BodySection extends PureComponent {
       category,
       currencyIdx,
       cartItemsHandler,
-      cartCountPlusHandler,
       currencySymbol,
       match,
     } = this.props;
@@ -39,7 +38,6 @@ export class BodySection extends PureComponent {
                         product={product}
                         currencyIdx={currencyIdx}
                         cartItemsHandler={cartItemsHandler}
-                        cartCountPlusHandler={cartCountPlusHandler}
                         currencySymbol={currencySymbol}
                       />
                     );

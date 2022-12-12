@@ -9,7 +9,7 @@ export default class BodySectionContainer extends PureComponent {
       category,
       currencyIdx,
       cartItemsHandler,
-      cartCountPlusHandler,
+      cartCountHandler,
       currencySymbol,
     } = this.props;
 
@@ -18,7 +18,7 @@ export default class BodySectionContainer extends PureComponent {
         category={category}
         currencyIdx={currencyIdx}
         cartItemsHandler={cartItemsHandler}
-        cartCountPlusHandler={cartCountPlusHandler}
+        cartCountHandler={cartCountHandler}
         currencySymbol={currencySymbol}
         match={match}
       />

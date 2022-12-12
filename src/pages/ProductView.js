@@ -5,8 +5,8 @@ import ProductContentContainer from "../components/ProductContentContainer";
 import { product_view_query } from "../lib/queries";
 
 export default class ProductView extends PureComponent {
-  constructor(props) {
-    super(props);
+  constructor( props ) {
+    super( props );
 
     const { match } = this.props;
     this.state = {
@@ -29,45 +29,43 @@ export default class ProductView extends PureComponent {
       setTotalHandler,
       history,
       cartItemsHandler,
-      cartCountPlusHandler,
-      cartCountMinusHandler,
+      cartCountHandler,
     } = this.props;
 
-    const PRODUCT_VIEW_QUERY = product_view_query(this.state.currentId);
+    const PRODUCT_VIEW_QUERY = product_view_query( this.state.currentId );
 
     return (
       <div>
         <HeaderContainer
-          cartItems={cartItems}
-          cartCount={cartCount}
-          quantityHandler={quantityHandler}
-          totalPrice={totalPrice}
-          navigateImage={navigateImage}
-          currencySymbol={currencySymbol}
-          currencyHandler={currencyHandler}
-          checkout={checkout}
-          changeCategory={changeCategory}
-          calculateCurrencyHandler={calculateCurrencyHandler}
-          getTotalHandler={getTotalHandler}
-          setTotalHandler={setTotalHandler}
+          cartItems={ cartItems }
+          cartCount={ cartCount }
+          quantityHandler={ quantityHandler }
+          totalPrice={ totalPrice }
+          navigateImage={ navigateImage }
+          currencySymbol={ currencySymbol }
+          currencyHandler={ currencyHandler }
+          checkout={ checkout }
+          changeCategory={ changeCategory }
+          calculateCurrencyHandler={ calculateCurrencyHandler }
+          getTotalHandler={ getTotalHandler }
+          setTotalHandler={ setTotalHandler }
         />
-        <Query query={PRODUCT_VIEW_QUERY}>
+        <Query query={ PRODUCT_VIEW_QUERY }>
           {({ loading, data }) => {
             let result = null;
-            if (!loading) {
+            if ( !loading ) {
               const currentProduct = data?.product;
               const currentProjectComponent = (
                 <ProductContentContainer
-                  history={history}
-                  currentProduct={currentProduct}
-                  currentId={this.state.currentId}
-                  cartItemsHandler={cartItemsHandler}
-                  cartItems={cartItems}
-                  cartCount={cartCount}
-                  cartCountPlusHandler={cartCountPlusHandler}
-                  cartCountMinusHandler={cartCountMinusHandler}
-                  currencySymbol={currencySymbol}
-                  quantityHandler={quantityHandler}
+                  history={ history }
+                  currentProduct={ currentProduct }
+                  currentId={ this.state.currentId }
+                  cartItemsHandler={ cartItemsHandler }
+                  cartItems={ cartItems }
+                  cartCount={ cartCount }
+                  cartCountHandler={ cartCountHandler }
+                  currencySymbol={ currencySymbol }
+                  quantityHandler={ quantityHandler }
                 />
               );
 

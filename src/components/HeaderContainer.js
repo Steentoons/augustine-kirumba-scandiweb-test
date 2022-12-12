@@ -15,7 +15,6 @@ export default class HeaderContainer extends PureComponent {
         this.currencyButtonHandler = this.currencyButtonHandler.bind(this);
         this.calculateTotalHandler = this.calculateTotalHandler.bind(this);
         this.updateCurrencyHandler = this.updateCurrencyHandler.bind(this);
-        this.checkoutHandler = this.checkoutHandler.bind(this);
         this.cartOverlayHandler = this.cartOverlayHandler.bind(this);
         this.cartOverlayBackgroundHandler =
             this.cartOverlayBackgroundHandler.bind(this);
@@ -68,16 +67,12 @@ export default class HeaderContainer extends PureComponent {
         currencyHandler(e);
     }
 
-    checkoutHandler() {
+    cartOverlayBackgroundHandler() {
         this.setState({ cartOverlayOpen: false });
     }
 
     cartOverlayHandler(e) {
         e.stopPropagation();
-    }
-
-    cartOverlayBackgroundHandler(e) {
-        this.setState({ cartOverlayOpen: false });
     }
 
     cartOverlayActionHandler() {
@@ -146,7 +141,6 @@ export default class HeaderContainer extends PureComponent {
             cartOverlayHandler = { this.cartOverlayHandler }
             updateCurrencyHandler = { this.updateCurrencyHandler }
             currencyButtonHandler = { this.currencyButtonHandler }
-            checkoutHandler = { this.checkoutHandler }
             />
         );
     }

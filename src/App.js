@@ -8,7 +8,6 @@ import {
   Redirect,
 } from "react-router-dom";
 import _ from "lodash";
-
 import "./assets/css/main.css";
 import Homepage from "./pages/Homepage";
 import ProductView from "./pages/ProductView";
@@ -30,34 +29,58 @@ class App extends PureComponent {
       cartCount: oldState?.cartCount ?? 0,
       totalPrice: oldState?.totalPrice ?? 0,
       tax: oldState?.tax ?? 0,
-      currencySymbol: oldState ? JSON.parse(oldState?.currencySymbol) : [0, "$"],
+      currencySymbol: oldState
+        ? JSON.parse(oldState?.currencySymbol)
+        : [0, "$"],
       category: "all",
     };
 
     // Binding Handlers...
-    this.cartItemsHandler = this.cartItemsHandler.bind(this);
-    this.cartCountPlusHandler = this.cartCountPlusHandler.bind(this);
-    this.cartCountMinusHandler = this.cartCountMinusHandler.bind(this);
-    this.quantityHandler = this.quantityHandler.bind(this);
-    this.navigateImage = this.navigateImage.bind(this);
-    this.currencyHandler = this.currencyHandler.bind(this);
-    this.deleteItem = this.deleteItem.bind(this);
-    this.checkout = this.checkout.bind(this);
-    this.changeCategory = this.changeCategory.bind(this);
-    this.getTotalHandler = this.getTotalHandler.bind(this);
-    this.setTotalHandler = this.setTotalHandler.bind(this);
-    this.newTotalFn = this.newTotalFn.bind(this);
+    this.persistState = this.persistState.bind( this );
+    this.persistCartItems = this.persistCartItems.bind( this );
+    this.cartItemsHandler = this.cartItemsHandler.bind( this );
+    this.cartCountHandler = this.cartCountHandler.bind( this );
+    this.cartCountPlusMinus = this.cartCountPlusMinus.bind( this )
+    this.updateCartItems = this.updateCartItems.bind( this );
+    this.quantityHandler = this.quantityHandler.bind( this );
+    this.updateCartItemsFromQuantity = this.updateCartItemsFromQuantity.bind( this )
+    this.getTotalFromQuantity = this.getTotalFromQuantity.bind( this )
+    this.updateQuantityPlusMinus = this.updateQuantityPlusMinus.bind( this ) 
+    this.getFixedPrice = this.getFixedPrice.bind( this )
+    this.updateCartItemsWithQuantity = this.updateCartItemsWithQuantity.bind( this )
+    this.navigateImage = this.navigateImage.bind( this );
+    this.navigateImageHelper = this.navigateImageHelper.bind( this );
+    this.navigateImageRight = this.navigateImageRight.bind( this );
+    this.navigateImageLeft = this.navigateImageLeft.bind( this );
+    this.currencyHandler = this.currencyHandler.bind( this );
+    this.updateCurrency = this.updateCurrency.bind( this );
+    this.deleteItem = this.deleteItem.bind( this );
+    this.checkout = this.checkout.bind( this );
+    this.changeCategory = this.changeCategory.bind( this );
+    this.getTotalHandler = this.getTotalHandler.bind( this );
+    this.getGrandTotal = this.getGrandTotal.bind( this );
+    this.setTotalHandler = this.setTotalHandler.bind( this );
+    this.newTotalFn = this.newTotalFn.bind( this );
+    this.newTotal = this.newTotal.bind( this );
+    this.getTax = this.getTax.bind( this );
   }
 
-  componentDidUpdate(prevState) {
-    const { cartCount, totalPrice, tax, currencySymbol } = this.state;
-    const { cartItems } = this.state;
+  componentDidUpdate( prevState ) {  
+    this.persistState(
+      prevState.cartCount, 
+      prevState.totalPrice, 
+      prevState.tax, 
+      prevState.currencySymbol )
+      this.persistCartItems( prevState.cartItems )
+  }
 
+  persistState( prevCartCount, prevTotalPrice, prevTax, prevCurrencySymbol ) {
+    const { cartCount, totalPrice, tax, currencySymbol } = this.state;
     if (
-      cartCount !== prevState.cartCount ||
-      totalPrice !== prevState.totalPrice ||
-      tax !== prevState.tax ||
-      !_.isEqual(currencySymbol, prevState.currencySymbol)
+      cartCount !== prevCartCount ||
+      totalPrice !== prevTotalPrice ||
+      tax !== prevTax ||
+      !_.isEqual( currencySymbol, prevCurrencySymbol )
     ) {
       sessionStorage.setItem(
         "oldState",
@@ -65,12 +88,15 @@ class App extends PureComponent {
           cartCount,
           totalPrice,
           tax,
-          currencySymbol: JSON.stringify(currencySymbol),
+          currencySymbol: JSON.stringify( currencySymbol ),
         })
       );
     }
+  }
 
-    if (!_.isEqual(cartItems, prevState.cartItems)) {
+  persistCartItems( prevCartItems ) {
+    const { cartItems } = this.state;
+    if ( !_.isEqual( cartItems, prevCartItems )) {
       sessionStorage.setItem(
         "oldCartItems",
         JSON.stringify({ cartItems: JSON.stringify(cartItems) })
@@ -78,74 +104,100 @@ class App extends PureComponent {
     }
   }
 
-  // HANDLERS...
-
   // Changing category...
-  changeCategory(currentCategory) {
+  changeCategory( currentCategory ) {
     this.setState({ category: currentCategory });
   }
 
   // Changing currency...
-  currencyHandler(e) {
-    const idx = Number(e.currentTarget.dataset.currindex);
+  currencyHandler( e ) {
+    const newCurrency = this.updateCurrency( e );
+    this.setState({ currencySymbol: newCurrency });
+  }
+
+  updateCurrency( e ) {
+    const idx = Number( e.currentTarget.dataset.currindex );
     const currentCurrency = e.currentTarget.dataset.curr_currency;
-    const items = [...this.state.currencySymbol];
-    items[0] = idx;
-    items[1] = currentCurrency;
-    this.setState({ currencySymbol: items });
+    const newCurrency = [...this.state.currencySymbol];
+    newCurrency[ 0 ] = idx;
+    newCurrency[ 1 ] = currentCurrency;
+
+    return newCurrency;
   }
 
   // Adding items to the cart...
-  cartItemsHandler(product) {
-    const { currencySymbol } = this.state;
+  cartItemsHandler( product ) {
+    this.updateCartItemsFromJSON( product )
+    const newTotal = this.newTotal( product );
+    this.getTax( newTotal );
+    this.cartCountHandler( "plus" );
+  }
+
+  updateCartItemsFromJSON ( product ) {
     const currentCartItems = this.state.cartItems;
-    const newItems = [].concat(currentCartItems, product);
-    this.setState({ cartItems: JSON.parse(JSON.stringify(newItems)) });
+    const newItems = [].concat( currentCartItems, product );
+
+    this.setState({ cartItems: JSON.parse(JSON.stringify( newItems )) });
+  }
+
+  // Getting tax...
+  getTax( newTotal ) {
+    const tax = ( newTotal * 100 * (21 / 100 )) / 100;
+
+    this.setState({ totalPrice: newTotal, tax: Number( tax.toFixed(2)) });
+  }
+
+  newTotal( product ) {
+    const { currencySymbol } = this.state;
     const newTotal =
-      (this.state.totalPrice * 100 +
-        product.itemFixedPrice[currencySymbol[0]].amount * 100) /
+      ( this.state.totalPrice * 100 +
+        product.itemFixedPrice[ currencySymbol[0]].amount * 100 ) /
       100;
 
-    // Getting tax...
-    const tax = (newTotal * 100 * (21 / 100)) / 100;
+    return newTotal;
+  }
 
-    this.setState({ totalPrice: newTotal, tax: Number(tax.toFixed(2)) });
+  // Adding individual item quantity to the cart...
+  cartCountHandler( duty ) {
+    this.setState( prev => this.cartCountPlusMinus ( prev, duty )); 
+  }
 
-    this.cartCountPlusHandler();
+  cartCountPlusMinus ( prev, duty ) {
+    if ( duty === "plus" )
+      return { cartCount: prev.cartCount + 1 };
+    else if ( duty === "minus" ) 
+      return { cartCount: prev.cartCount - 1 };
   }
 
   // Calculating the grand total after currency change...
-  getTotalHandler(fixedAmount, quantity, grandTotal, idx) {
-    const { currencySymbol } = this.state;
-    const items = [...this.state.cartItems];
-    const item = { ...items[idx] };
-    item.itemFixedPrice[currencySymbol[0]].amount = fixedAmount;
-    items[idx] = item;
-    this.setState({ cartItems: items });
+  getTotalHandler( fixedAmount, quantity, grandTotal, idx ) {
+    const newCartItems = this.updateCartItems( idx, fixedAmount );
+    this.setState({ cartItems: newCartItems });
+    this.getGrandTotal( fixedAmount, quantity, grandTotal );
 
+    return grandTotal;
+  }
+
+  getGrandTotal( fixedAmount, quantity, grandTotal ) {
     const itemPrice = (fixedAmount * quantity * 100) / 100;
-
     grandTotal = (grandTotal * 100 + itemPrice * 100) / 100;
 
     return grandTotal;
   }
 
-  // Setting the total to state after currency change...
-  setTotalHandler(grandTotal) {
-    this.setState({ totalPrice: grandTotal });
+  updateCartItems( idx, fixedAmount ) {
+    const { currencySymbol } = this.state;
+    const newCartItems = [...this.state.cartItems];
+    const item = { ...newCartItems[idx] };
+    item.itemFixedPrice[currencySymbol[0]].amount = fixedAmount;
+    newCartItems[ idx ] = item;
+
+    return newCartItems;
   }
 
-  // Deleting items from the cart...
-  deleteItem(idx) {
-    const items = [...this.state.cartItems];
-
-    for (let i = 0; i < items.length; i++) {
-      if (i === idx) {
-        items.splice(i, 1);
-      }
-    }
-
-    this.setState({ cartItems: items });
+  // Setting the total to state after currency change...
+  setTotalHandler( grandTotal ) {
+    this.setState({ totalPrice: grandTotal });
   }
 
   // Ordering and clearing cart...
@@ -153,102 +205,123 @@ class App extends PureComponent {
     this.setState({ cartItems: [], cartCount: 0, totalPrice: 0, tax: 0 });
   }
 
-  // Adding individual item quantity to the cart...
-  cartCountPlusHandler() {
-    this.setState((prev) => {
-      return { cartCount: prev.cartCount + 1 };
-    });
-  }
-
-  // Reducing individual item quantity from the cart...
-  cartCountMinusHandler() {
-    this.setState((prev) => {
-      return { cartCount: prev.cartCount - 1 };
-    });
-  }
-
-  itemTotalHandler(symbol, price, quantity, id) {
-    return `${symbol}${(price * 100 * quantity) / 100}`;
-  }
-
   // Adding and reducing quantity to the cart...
-  quantityHandler(idx, quantity) {
-    const { currencySymbol } = this.state;
-    const items = [...this.state.cartItems];
-    const item = { ...items[idx] };
+  quantityHandler( idx, quantity ) {
+    const { cartItem, fixedPrice } = this.updateCartItemsWithQuantity( idx )
+    const newTotal = this.updateQuantityPlusMinus( quantity, cartItem, idx, fixedPrice )
+    this.getTax( newTotal );
+  }
+
+  updateQuantityPlusMinus( quantity, cartItem, idx, fixedPrice ) {
     let newTotal = 0;
-    const fixedPrice =
-      this.state.cartItems[idx].itemFixedPrice[currencySymbol[0]].amount * 100;
+    if ( quantity === "plus" ) {
+      cartItem.quantity = this.state.cartItems[ idx ].quantity + 1;
 
-    item.itemTotalPrice = (fixedPrice * 100 * item.quantity) / 100;
-    items[idx] = item;
-    this.setState({ cartItems: items });
+      return this.getTotalFromQuantity( quantity, fixedPrice, newTotal )
+    } else if ( quantity === "minus" ) {
+      if (this.state.cartItems[ idx ].quantity > 0) {
+        cartItem.quantity = this.state.cartItems[ idx ].quantity - 1;
+        if ( cartItem.quantity === 0 )
+          this.deleteItem( idx );
 
-    if (quantity === "plus") {
-      item.quantity = this.state.cartItems[idx].quantity + 1;
-
-      this.cartCountPlusHandler();
-      newTotal = this.newTotalFn("plus", fixedPrice);
-    } else if (quantity === "minus") {
-      if (this.state.cartItems[idx].quantity > 0) {
-        item.quantity = this.state.cartItems[idx].quantity - 1;
-
-        this.cartCountMinusHandler();
-        newTotal = this.newTotalFn("minus", fixedPrice);
-
-        if (item.quantity === 0) {
-          this.deleteItem(idx);
-        }
+        return this.getTotalFromQuantity( quantity, fixedPrice, newTotal )
       }
     }
-
-    // Getting tax...
-    const tax = (newTotal * 100 * (21 / 100)) / 100;
-
-    this.setState({
-      totalPrice: newTotal,
-      tax: tax,
-    });
   }
 
-  newTotalFn(quantity, fixedPrice) {
-    const totalPrice = this.state.totalPrice * 100;
+  getTotalFromQuantity ( quantity, fixedPrice, total ) {
+    this.cartCountHandler( quantity );
+    total = this.newTotalFn( quantity, fixedPrice );
 
-    if (quantity === "minus") {
-      return (totalPrice - fixedPrice) / 100;
-    } else if (quantity === "plus") {
-      return (totalPrice + fixedPrice) / 100;
+    return total
+  }
+
+  // Updating the cart items with the quantity...
+  updateCartItemsWithQuantity ( idx ) {
+    const fixedPrice = this.getFixedPrice( idx )
+    const cartItem = this.updateCartItemsFromQuantity( idx, fixedPrice )
+
+    return { cartItem, fixedPrice }
+  }
+
+  updateCartItemsFromQuantity( idx, fixedPrice ) {
+    const newCartItems = [...this.state.cartItems];
+    const cartItem = { ...newCartItems[ idx ] };
+    cartItem.itemTotalPrice = ( fixedPrice * 100 * cartItem.quantity ) / 100;
+    newCartItems[idx] = cartItem;
+    this.setState({ cartItems: newCartItems });
+
+    return cartItem
+  }
+
+  getFixedPrice( idx ) {
+    const { currencySymbol } = this.state;
+    const fixedPrice = this.state.cartItems[ idx ].itemFixedPrice[ currencySymbol[0] ].amount * 100;
+
+    return fixedPrice
+  }
+
+  // Deleting items from the cart...
+  deleteItem( idx ) {
+    const items = [...this.state.cartItems ];
+    for (let i = 0; i < items.length; i++) {
+      if ( i === idx )
+        items.splice( i, 1 );
     }
+
+    this.setState({ cartItems: items });
   }
 
-  // Navigate displayed image to the right...
-  navigateImage(idx, length, nav) {
+  newTotalFn( quantity, fixedPrice ) {
+    const totalPrice = this.state.totalPrice * 100;
+    if ( quantity === "minus" )
+      return ( totalPrice - fixedPrice ) / 100;
+    else if ( quantity === "plus" )
+      return ( totalPrice + fixedPrice ) / 100;
+  }
+
+  // Navigate displayed image to the right and left...
+  navigateImage( idx, length, nav ) {
+    const newCartItems = this.navigateImageHelper( idx, nav, length )
+
+    this.setState({ cartItems: newCartItems });
+  }
+
+  navigateImageHelper( idx, nav, length ) {
     const currentIdx = this.state.cartItems[idx].currentImageIdx;
-    const items = [...this.state.cartItems];
+    const items = [...this.state.cartItems ];
     const item = { ...items[idx] };
 
-    if (nav === "left") {
-      if (currentIdx > 0) {
-        item.currentImageIdx = currentIdx - 1;
-      } else if (currentIdx === 0) {
-        item.currentImageIdx = length - 1;
-      }
-    } else if (nav === "right") {
-      if (currentIdx !== length - 1) {
-        item.currentImageIdx = currentIdx + 1;
-      } else if (currentIdx === length - 1) {
-        item.currentImageIdx = 0;
-      }
-    }
+    if ( nav === "left" ) 
+      return this.navigateImageLeft( currentIdx, length, item, items, idx ) 
+    else if ( nav === "right" ) 
+      return this.navigateImageRight( currentIdx, length, item, items, idx )
+  }
 
-    items[idx] = item;
-    this.setState({ cartItems: items });
+  navigateImageRight( currentIdx, length, item, rightItem, idx ) {
+    if ( currentIdx !== length - 1 )
+      item.currentImageIdx = currentIdx + 1;
+    else if ( currentIdx === length - 1 )
+      item.currentImageIdx = 0;
+    rightItem[ idx ] = item;
+
+    return rightItem
+  }
+
+  navigateImageLeft( currentIdx, length, item, leftItem, idx ) {
+    if ( currentIdx > 0 )
+      item.currentImageIdx = currentIdx - 1;
+    else if ( currentIdx === 0 )
+      item.currentImageIdx = length - 1;
+    leftItem[ idx ] = item;
+
+    return leftItem
   }
 
   render() {
     return (
       <Router>
-        <ApolloProvider client={client}>
+        <ApolloProvider client={ client }>
           <div className="container">
             <Switch>
               <Route exact path="/">
@@ -257,67 +330,66 @@ class App extends PureComponent {
               <Route
                 exact
                 path="/category/:category"
-                render={(props) => (
+                render={ props => (
                   <Homepage
                     {...props}
-                    cartItems={this.state.cartItems}
-                    cartCount={this.state.cartCount}
-                    quantityHandler={this.quantityHandler}
-                    navigateImage={this.navigateImage}
-                    totalPrice={this.state.totalPrice}
-                    cartItemsHandler={this.cartItemsHandler}
-                    cartCountPlusHandler={this.cartCountPlusHandler}
-                    currencySymbol={this.state.currencySymbol}
-                    currencyHandler={this.currencyHandler}
-                    checkout={this.checkout}
-                    changeCategory={this.changeCategory}
-                    category={this.state.category}
-                    getTotalHandler={this.getTotalHandler}
-                    setTotalHandler={this.setTotalHandler}
+                    cartItems={ this.state.cartItems }
+                    cartCount={ this.state.cartCount }
+                    quantityHandler={ this.quantityHandler }
+                    navigateImage={ this.navigateImage }
+                    totalPrice={ this.state.totalPrice }
+                    cartItemsHandler={ this.cartItemsHandler }
+                    cartCountHandler={ this.cartCountHandler }
+                    currencySymbol={ this.state.currencySymbol }
+                    currencyHandler={ this.currencyHandler }
+                    checkout={ this.checkout }
+                    changeCategory={ this.changeCategory }
+                    category={ this.state.category }
+                    getTotalHandler={ this.getTotalHandler }
+                    setTotalHandler={ this.setTotalHandler }
                   />
                 )}
               ></Route>
               <Route
                 exact
                 path="/product/:id"
-                render={(props) => (
+                render={ props => (
                   <ProductView
-                    {...props}
-                    cartItemsHandler={this.cartItemsHandler}
-                    cartItems={this.state.cartItems}
-                    cartCount={this.state.cartCount}
-                    cartCountPlusHandler={this.cartCountPlusHandler}
-                    cartCountMinusHandler={this.cartCountMinusHandler}
-                    quantityHandler={this.quantityHandler}
-                    totalPrice={this.state.totalPrice}
-                    navigateImage={this.navigateImage}
-                    currencySymbol={this.state.currencySymbol}
-                    currencyHandler={this.currencyHandler}
-                    checkout={this.checkout}
-                    changeCategory={this.changeCategory}
-                    getTotalHandler={this.getTotalHandler}
-                    setTotalHandler={this.setTotalHandler}
+                    {...props }
+                    cartItemsHandler={ this.cartItemsHandler }
+                    cartItems={ this.state.cartItems }
+                    cartCount={ this.state.cartCount }
+                    cartCountHandler={ this.cartCountHandler }
+                    quantityHandler={ this.quantityHandler }
+                    totalPrice={ this.state.totalPrice }
+                    navigateImage={ this.navigateImage }
+                    currencySymbol={ this.state.currencySymbol }
+                    currencyHandler={ this.currencyHandler }
+                    checkout={ this.checkout }
+                    changeCategory={ this.changeCategory }
+                    getTotalHandler={ this.getTotalHandler }
+                    setTotalHandler={ this.setTotalHandler }
                   />
                 )}
               />
               <Route
                 exact
                 path="/cart"
-                render={(props) => (
+                render={ props => (
                   <CartContainer
-                    {...props}
-                    cartItems={this.state.cartItems}
-                    cartCount={this.state.cartCount}
-                    quantityHandler={this.quantityHandler}
-                    totalPrice={this.state.totalPrice}
-                    navigateImage={this.navigateImage}
-                    tax={this.state.tax}
-                    currencySymbol={this.state.currencySymbol}
-                    currencyHandler={this.currencyHandler}
-                    checkout={this.checkout}
-                    changeCategory={this.changeCategory}
-                    getTotalHandler={this.getTotalHandler}
-                    setTotalHandler={this.setTotalHandler}
+                    {...props }
+                    cartItems={ this.state.cartItems }
+                    cartCount={ this.state.cartCount }
+                    quantityHandler={ this.quantityHandler }
+                    totalPrice={ this.state.totalPrice }
+                    navigateImage={ this.navigateImage }
+                    tax={ this.state.tax }
+                    currencySymbol={ this.state.currencySymbol }
+                    currencyHandler={ this.currencyHandler }
+                    checkout={ this.checkout }
+                    changeCategory={ this.changeCategory }
+                    getTotalHandler={ this.getTotalHandler }
+                    setTotalHandler={ this.setTotalHandler }
                   />
                 )}
               />

@@ -22,11 +22,11 @@ export class ProductContent extends PureComponent {
         <div className="product-view-image">
           <div className="product-view-image-div">
             <img
-              src={currentProduct.gallery[thumbnailId]}
-              alt={currentProduct.name}
+              src={ currentProduct.gallery[ thumbnailId ] }
+              alt={ currentProduct.name }
             />
           </div>
-          <div
+          <div 
             className="instock-container"
             style={{
               display: currentProduct.inStock ? "none" : "block",
@@ -39,10 +39,10 @@ export class ProductContent extends PureComponent {
         </div>
         <div className="product-view-details-wrapper">
           <div className="product-view-details-brand">
-            {currentProduct.brand}
+            { currentProduct.brand }
           </div>
           <div className="product-view-details-name">
-            {currentProduct.name}
+            { currentProduct.name }
           </div>
           {
             // Atributes goes here...
@@ -50,15 +50,15 @@ export class ProductContent extends PureComponent {
           {attributes}
           <div className="product-view-details-price-wrapper">
             <div className="price-name">PRICE: </div>
-            <div className="price">{`${currencySymbol[1]}${
-              currentProduct.prices[currencySymbol[0]]
+            <div className="price">{`${ currencySymbol[1] }${
+              currentProduct.prices[ currencySymbol[0] ]
                 .amount
             }`}</div>
           </div>
           <div className="product-view-details-button">
             <button
               onClick={() => {
-                if (currentProduct.inStock)
+                if ( currentProduct.inStock )
                   checkCartDuplicates();
               }}
               style={{
@@ -68,7 +68,7 @@ export class ProductContent extends PureComponent {
               ADD TO CART
             </button>
           </div>
-          <div className="product-view-details-desc">{parsedDescription}</div>
+          <div className="product-view-details-desc">{ parsedDescription }</div>
         </div>
       </div>
     )
