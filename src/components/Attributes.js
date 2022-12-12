@@ -12,8 +12,13 @@ import { PureComponent } from 'react'
     } = this.props
      return (
         <div className='attribute-wrapper'>
-        <div className='attribute-title'>{`${attrName}:`}</div>
-        <div className='attribute-contents' data-attribute_idx={index}>{attrType === "swatch" ? attributesValueSwatch : attributesValueText}</div>
+        <div className='attribute-title'>{`${ attrName }:`}</div>
+        <div 
+          className='attribute-contents' 
+          data-attribute_idx={ index }>{ attrType === "swatch" ?
+          attributesValueSwatch :
+          attributesValueText }
+        </div>
       </div>
      )
    }

@@ -21,11 +21,11 @@ class App extends PureComponent {
   constructor() {
     super();
 
-    const oldState = JSON.parse(sessionStorage.getItem("oldState"));
-    const oldCartItems = JSON.parse(sessionStorage.getItem("oldCartItems"));
+    const oldState = JSON.parse(sessionStorage.getItem( "oldState" ));
+    const oldCartItems = JSON.parse(sessionStorage.getItem( "oldCartItems" ));
 
     this.state = {
-      cartItems: oldCartItems ? JSON.parse(oldCartItems?.cartItems) : [],
+      cartItems: oldCartItems ? JSON.parse( oldCartItems?.cartItems ) : [],
       cartCount: oldState?.cartCount ?? 0,
       totalPrice: oldState?.totalPrice ?? 0,
       tax: oldState?.tax ?? 0,

@@ -15,8 +15,11 @@ export default class Categories extends PureComponent {
       borderBottom: category.toLowerCase() === categoryState ? "solid #5ECE7B 2px" : "none"
     }
     return (
-      <li style={categoryStyle} >
-        <Link onClick={() => changeCategory(category.toLowerCase())} to={`/category/${category.toLowerCase()}`}>{category}</Link>
+      <li style={ categoryStyle } >
+        <Link 
+          onClick={ () => changeCategory( category.toLowerCase())} 
+          to={ `/category/${ category.toLowerCase() }` }
+        >{ category }</Link>
       </li>
     )
   }

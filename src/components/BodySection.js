@@ -15,30 +15,30 @@ export class BodySection extends PureComponent {
       match,
     } = this.props;
 
-    const PRODUCT_QUERY = product_query(match.params.category);
+    const PRODUCT_QUERY = product_query( match.params.category );
 
     return (
       <div className="body-section-wrapper">
         <div className="body-section-container">
           <div className="category-title">
-            {category.charAt(0).toUpperCase() + category.slice(1)}
+            { category.charAt(0).toUpperCase() + category.slice(1) }
           </div>
           <div className="product-list-wrapper">
             <Query
-              query={PRODUCT_QUERY}
+              query={ PRODUCT_QUERY }
             >
               {({ loading, data }) => {
-                if (loading) return null;
+                if ( loading ) return null;
 
                 const allProducts = data.category.products.map(
-                  (product, idx) => {
+                  ( product, idx ) => {
                     return (
                       <ProductContainer
-                        key={idx}
-                        product={product}
-                        currencyIdx={currencyIdx}
-                        cartItemsHandler={cartItemsHandler}
-                        currencySymbol={currencySymbol}
+                        key={ idx }
+                        product={ product }
+                        currencyIdx={ currencyIdx }
+                        cartItemsHandler={ cartItemsHandler }
+                        currencySymbol={ currencySymbol }
                       />
                     );
                   }

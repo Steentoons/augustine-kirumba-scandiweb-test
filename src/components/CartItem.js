@@ -23,39 +23,39 @@ export class CartItem extends PureComponent {
         <div className="cart-item-container">
         <div className="cart-item-wrapper">
           <div className="cart-details-container">
-            <div className="cart-details-brand">{product.brand}</div>
-            <div className="cart-details-name">{product.name}</div>
+            <div className="cart-details-brand">{ product.brand }</div>
+            <div className="cart-details-name">{ product.name }</div>
             <div className="cart-details-price">
               {itemTotalHandler(
-                currencySymbol[1],
-                product.prices[currencySymbol[0]].amount,
-                cartItems[idx].quantity,
+                currencySymbol[ 1 ],
+                product.prices[ currencySymbol[0] ].amount,
+                cartItems[ idx ].quantity,
                 idx
               )}
             </div>
             <div className="cart-details-attributes-container">
-              {printAttributes}
+              { printAttributes }
             </div>
           </div>
           <div className="cart-images-container">
             <div className="cart-images-actions">
               <img
-                src={plusIcon}
+                src={ plusIcon }
                 alt="plus-option"
                 data-quantity='plus'
-                onClick={(e) => {
-                  quantityHandler(idx, e.currentTarget.dataset.quantity);
+                onClick={ e => {
+                  quantityHandler( idx, e.currentTarget.dataset.quantity );
                 }}
               />
               <div className="cart-quantity-div">
-                {cartItems[idx].quantity}
+                { cartItems[idx].quantity }
               </div>
               <img
-                src={minusIcon}
+                src={ minusIcon }
                 alt="minus-option"
                 data-quantity='minus'
-                onClick={(e) => {
-                  quantityHandler(idx, e.currentTarget.dataset.quantity);
+                onClick={ e => {
+                  quantityHandler( idx, e.currentTarget.dataset.quantity );
                 }}
               />
             </div>
@@ -63,9 +63,9 @@ export class CartItem extends PureComponent {
               <div className="cart-images-img">
                 <img
                   src={
-                    product.gallery[cartItems[idx].currentImageIdx]
+                    product.gallery[ cartItems[idx].currentImageIdx ]
                   }
-                  alt={product.name}
+                  alt={ product.name }
                   className="cart-actual-image"
                 />
               </div>
@@ -78,19 +78,19 @@ export class CartItem extends PureComponent {
                   }}
                 >
                   <img
-                    src={navigatorLeft}
+                    src={ navigatorLeft }
                     alt="navigator-left"
                     data-nav='left'
-                    onClick={(e) => {
-                      navigateImage(idx, product.gallery.length, e.currentTarget.dataset.nav);
+                    onClick={ e => {
+                      navigateImage( idx, product.gallery.length, e.currentTarget.dataset.nav );
                     }}
                   />
                   <img
-                    src={navigatorRight}
+                    src={ navigatorRight }
                     alt="navigator-right"
                     data-nav='right'
-                    onClick={(e) => {
-                      navigateImage(idx, product.gallery.length, e.currentTarget.dataset.nav);
+                    onClick={ e => {
+                      navigateImage( idx, product.gallery.length, e.currentTarget.dataset.nav );
                     }}
                   />
                 </div>

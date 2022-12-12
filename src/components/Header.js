@@ -28,6 +28,9 @@ export class Header extends PureComponent {
       cartOverlayHandler,
       updateCurrencyHandler,
       currencyButtonHandler,
+      cartCountStyle,
+      overlayBgStyle, 
+      itemTitleStyle
     } = this.props;
 
     return (
@@ -72,8 +75,8 @@ export class Header extends PureComponent {
                 currencyButtonHandler();
               }}
             >
-              <div className="currency-symbol">{currencySymbol[1]}</div>
-              <img src={currency_arrow_down} alt="currency arrow down" />
+              <div className="currency-symbol">{ currencySymbol[1] }</div>
+              <img src={ currency_arrow_down } alt="currency arrow down" />
             </div>
             <div
               className="currency-dropdown-div"
@@ -81,7 +84,7 @@ export class Header extends PureComponent {
             >
               <div className="currency-absolute-dropdown">
                 <ul>
-                  <Query query={CURRENCIES_QUERY}>
+                  <Query query={ CURRENCIES_QUERY }>
                     {({ loading, data }) => {
                       if (loading) return null;
 
@@ -117,21 +120,19 @@ export class Header extends PureComponent {
               <img src={empty_cart} alt="empty cart" />
               <div
                 className="cart-notification-container"
-                style={{
-                  display: cartCount <= 0 ? "none" : "block",
-                }}
+                style={{ display: cartCountStyle( cartCount ) }}
               >
-                <div className="cart-notification">{cartCount}</div>
+                <div className="cart-notification">{ cartCount }</div>
               </div>
             </div>
 
             <div
               className="cart-overlay-background-container"
-              style={{ display: cartOverlayOpen ? "block" : "none" }}
+              style={{ display: overlayBgStyle( cartOverlayOpen ) }}
             >
               <div
                 className="cart-overlay-background"
-                data-overlay_background={true}
+                data-overlay_background={ true }
                 onClick={() => {
                   cartOverlayBackgroundHandler();
                 }}
@@ -139,26 +140,26 @@ export class Header extends PureComponent {
                 <div className="cart-overlay-wrapper">
                   <div
                     className="cart-overlay"
-                    onClick={(e) => {
-                      cartOverlayHandler(e);
+                    onClick={ e => {
+                      cartOverlayHandler( e );
                     }}
                   >
                     <div className="cart-top-items">
                       <div className="cart-overlay-title">
                         My Bag,
-                        <span>{`${cartCount} ${
-                          cartCount === 1 ? "item" : "items"
+                        <span>{`${ cartCount } ${
+                          itemTitleStyle( cartCount )
                         }`}</span>
                       </div>
                       <div className="cart-overlay-items-container">
-                        {printCartItems}
+                        { printCartItems }
                       </div>
                     </div>
                     <div className="cart-bottom-items-wrapper">
                       <div className="cart-bottom-items">
                         <div className="cart-overlay-total-container">
                           <div className="total-title">Total</div>
-                          <div className="total-content">{`${currencySymbol[1]}${totalPrice}`}</div>
+                          <div className="total-content">{`${ currencySymbol[1] }${ totalPrice }`}</div>
                         </div>
                         <div className="cart-overlay-buttons">
                           <Link

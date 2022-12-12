@@ -15,12 +15,12 @@ export default class BodySectionContainer extends PureComponent {
 
     return (
       <BodySection
-        category={category}
-        currencyIdx={currencyIdx}
-        cartItemsHandler={cartItemsHandler}
-        cartCountHandler={cartCountHandler}
-        currencySymbol={currencySymbol}
-        match={match}
+        category={ category }
+        currencyIdx={ currencyIdx }
+        cartItemsHandler={ cartItemsHandler }
+        cartCountHandler={ cartCountHandler }
+        currencySymbol={ currencySymbol }
+        match={ match }
       />
     );
   }
