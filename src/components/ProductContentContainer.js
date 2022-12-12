@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import ClickableAttribute from "./ClickableAttribute";
 import _ from "lodash";
 import ProductContent from "./ProductContent";
 import { v4 as uuidv4 } from "uuid";
 
-export default class ProductContentContainer extends Component {
+export default class ProductContentContainer extends PureComponent {
   constructor(props) {
     super(props);
 

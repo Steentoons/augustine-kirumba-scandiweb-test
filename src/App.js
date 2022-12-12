@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 import {
@@ -18,7 +18,7 @@ const client = new ApolloClient({
   uri: "http://localhost:4000/",
 });
 
-class App extends Component {
+class App extends PureComponent {
   constructor() {
     super();
 
@@ -89,7 +89,7 @@ class App extends Component {
   currencyHandler(e) {
     const idx = Number(e.currentTarget.dataset.currindex);
     const currentCurrency = e.currentTarget.dataset.curr_currency;
-    let items = [...this.state.currencySymbol];
+    const items = [...this.state.currencySymbol];
     items[0] = idx;
     items[1] = currentCurrency;
     this.setState({ currencySymbol: items });
@@ -97,7 +97,6 @@ class App extends Component {
 
   // Adding items to the cart...
   cartItemsHandler(product) {
-    console.log(product)
     const { currencySymbol } = this.state;
     const currentCartItems = this.state.cartItems;
     const newItems = [].concat(currentCartItems, product);
@@ -118,8 +117,8 @@ class App extends Component {
   // Calculating the grand total after currency change...
   getTotalHandler(fixedAmount, quantity, grandTotal, idx) {
     const { currencySymbol } = this.state;
-    let items = [...this.state.cartItems];
-    let item = { ...items[idx] };
+    const items = [...this.state.cartItems];
+    const item = { ...items[idx] };
     item.itemFixedPrice[currencySymbol[0]].amount = fixedAmount;
     items[idx] = item;
     this.setState({ cartItems: items });
@@ -138,7 +137,7 @@ class App extends Component {
 
   // Deleting items from the cart...
   deleteItem(idx) {
-    let items = [...this.state.cartItems];
+    const items = [...this.state.cartItems];
 
     for (let i = 0; i < items.length; i++) {
       if (i === idx) {
@@ -175,8 +174,8 @@ class App extends Component {
   // Adding and reducing quantity to the cart...
   quantityHandler(idx, quantity) {
     const { currencySymbol } = this.state;
-    let items = [...this.state.cartItems];
-    let item = { ...items[idx] };
+    const items = [...this.state.cartItems];
+    const item = { ...items[idx] };
     let newTotal = 0;
     const fixedPrice =
       this.state.cartItems[idx].itemFixedPrice[currencySymbol[0]].amount * 100;
@@ -225,8 +224,8 @@ class App extends Component {
   // Navigate displayed image to the right...
   navigateImage(idx, length, nav) {
     const currentIdx = this.state.cartItems[idx].currentImageIdx;
-    let items = [...this.state.cartItems];
-    let item = { ...items[idx] };
+    const items = [...this.state.cartItems];
+    const item = { ...items[idx] };
 
     if (nav === "left") {
       if (currentIdx > 0) {
