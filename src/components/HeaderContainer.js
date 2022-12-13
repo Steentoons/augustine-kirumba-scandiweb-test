@@ -13,6 +13,7 @@ export default class HeaderContainer extends PureComponent {
             cartOverlayOpen: false,
             totals: 0,
         };
+        this.grandTotal = this.grandTotal.bind( this )
         this.currencyButtonHandler = this.currencyButtonHandler.bind( this );
         this.calculateTotalHandler = this.calculateTotalHandler.bind( this );
         this.updateCurrencyHandler = this.updateCurrencyHandler.bind( this );
@@ -29,9 +30,16 @@ export default class HeaderContainer extends PureComponent {
         const { currencySymbol, cartItems, setTotalHandler } = this.props;
         if ( prevProps.currencySymbol[0] !== currencySymbol[0] ) {
             // Update every item price in the state...
-            let grandTotal = 0;
+            const grandTotal = this.grandTotal( cartItems, currencySymbol )
+
+            setTotalHandler( grandTotal );
+        }
+    }
+
+    grandTotal( cartItems, currencySymbol ) {
+        let grandTotal = 0;
             if (cartItems && cartItems.length > 0) {
-                cartItems.forEach((item, idx) => {
+                cartItems.forEach( item => {
                     const newItemFixedTotal =
                         item.itemFixedPrice[currencySymbol[0]].amount;
                     const itemTotal = ( newItemFixedTotal * item.quantity * 100 ) / 100;
@@ -40,8 +48,7 @@ export default class HeaderContainer extends PureComponent {
                 });
             }
 
-            setTotalHandler(grandTotal);
-        }
+        return (grandTotal).toFixed(2)
     }
 
     currencyButtonHandler() {
@@ -50,7 +57,7 @@ export default class HeaderContainer extends PureComponent {
 
     // Calculating the total for each item...
     itemTotalHandler(symbol, price, quantity) {
-        return `${symbol}${(price * 100 * quantity) / 100}`;
+        return `${symbol}${((price * 100 * quantity) / 100).toFixed(2)}`;
     }
 
     // Calculate the total...

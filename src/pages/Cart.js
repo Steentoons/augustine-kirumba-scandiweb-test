@@ -18,6 +18,7 @@ export class Cart extends PureComponent {
       getTotalHandler,
       setTotalHandler,
       printCartItems,
+      getTax
     } = this.props;
     return (
       <div>
@@ -44,7 +45,7 @@ export class Cart extends PureComponent {
               Tax 21 %:
               <span>
                 
-                {`${currencySymbol[1]}${(totalPrice * 100 * 20) / 10000}`}
+                {`${currencySymbol[1]}${getTax( totalPrice )}`}
               </span>
             </div>
             <div className="total-details">

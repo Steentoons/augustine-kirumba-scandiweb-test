@@ -129,7 +129,8 @@ class App extends PureComponent {
   cartItemsHandler( product ) {
     this.updateCartItemsFromJSON( product )
     const newTotal = this.newTotal( product );
-    this.getTax( newTotal );
+    const tax = this.getTax( newTotal );
+    this.setState({ totalPrice: newTotal, tax: tax });
     this.cartCountHandler( "plus" );
   }
 
@@ -142,17 +143,17 @@ class App extends PureComponent {
 
   // Getting tax...
   getTax( newTotal ) {
-    const tax = ( newTotal * 100 * (21 / 100 )) / 100;
+    const tax = (( newTotal * 100 * (21 / 100 )) / 100).toFixed(2);
 
-    this.setState({ totalPrice: newTotal, tax: Number( tax.toFixed(2)) });
+    return tax
   }
 
   newTotal( product ) {
     const { currencySymbol } = this.state;
     const newTotal =
-      ( this.state.totalPrice * 100 +
+      (( this.state.totalPrice * 100 +
         product.itemFixedPrice[ currencySymbol[0]].amount * 100 ) /
-      100;
+      100).toFixed(2);
 
     return newTotal;
   }
@@ -209,7 +210,8 @@ class App extends PureComponent {
   quantityHandler( idx, quantity ) {
     const { cartItem, fixedPrice } = this.updateCartItemsWithQuantity( idx )
     const newTotal = this.updateQuantityPlusMinus( quantity, cartItem, idx, fixedPrice )
-    this.getTax( newTotal );
+    const tax = this.getTax( newTotal );
+    this.setState({ totalPrice: newTotal, tax: tax });
   }
 
   updateQuantityPlusMinus( quantity, cartItem, idx, fixedPrice ) {
@@ -234,6 +236,14 @@ class App extends PureComponent {
     total = this.newTotalFn( quantity, fixedPrice );
 
     return total
+  }
+
+  newTotalFn( quantity, fixedPrice ) {
+    const totalPrice = this.state.totalPrice * 100;
+    if ( quantity === "minus" )
+      return (( totalPrice - fixedPrice ) / 100).toFixed(2);
+    else if ( quantity === "plus" )
+      return (( totalPrice + fixedPrice ) / 100).toFixed(2);
   }
 
   // Updating the cart items with the quantity...
@@ -272,13 +282,7 @@ class App extends PureComponent {
     this.setState({ cartItems: items });
   }
 
-  newTotalFn( quantity, fixedPrice ) {
-    const totalPrice = this.state.totalPrice * 100;
-    if ( quantity === "minus" )
-      return ( totalPrice - fixedPrice ) / 100;
-    else if ( quantity === "plus" )
-      return ( totalPrice + fixedPrice ) / 100;
-  }
+  
 
   // Navigate displayed image to the right and left...
   navigateImage( idx, length, nav ) {
@@ -390,6 +394,7 @@ class App extends PureComponent {
                     changeCategory={ this.changeCategory }
                     getTotalHandler={ this.getTotalHandler }
                     setTotalHandler={ this.setTotalHandler }
+                    getTax={this.getTax}
                   />
                 )}
               />
