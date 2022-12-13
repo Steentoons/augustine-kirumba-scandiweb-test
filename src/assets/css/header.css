@@ -69,7 +69,7 @@
     position: relative;
     width: 325px;
     background-color: white;
-    padding: 32px 16px;
+    padding: 32px 16px 0;
     overflow-y: auto;
     overflow-x: hidden;
     min-height: 677px;
@@ -332,7 +332,9 @@
 
 .cart-bottom-items-wrapper {
     position: fixed;
-    margin-top: 477px;
+    margin-top: 478px;
+    padding-bottom: 32px;
+    background-color: white;
 }
 
 .cart-top-items,
