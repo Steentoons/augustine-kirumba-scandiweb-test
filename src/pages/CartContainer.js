@@ -13,12 +13,11 @@ export default class CartContainer extends PureComponent {
     };
 
     this.plusHandler = this.plusHandler.bind(this);
-    this.minusHandler = this.minusHandler.bind(this);
     this.itemTotalHandler = this.itemTotalHandler.bind(this);
     this.setTotalHandler = this.setTotalHandler.bind(this);
   }
 
-  plusHandler(idx) {
+  plusHandler() {
     this.setState((prev) => {
       return { quantity: prev.quantity + 1 };
     });
@@ -33,7 +32,6 @@ export default class CartContainer extends PureComponent {
   itemTotalHandler(symbol, price, quantity) {
     return `${ symbol}${((price * 100 * quantity) / 100).toFixed(2) }`;
   }
-  minusHandler() {}
   render() {
     const {
       currencySymbol,

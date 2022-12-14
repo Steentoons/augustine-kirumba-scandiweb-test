@@ -5,197 +5,197 @@ import { CATEGORIES_QUERY, CURRENCIES_QUERY } from "../lib/queries";
 import { v4 as uuidv4 } from "uuid";
 
 export default class HeaderContainer extends PureComponent {
-    constructor() {
-        super();
-        this.state = {
-            currencyButtonClick: false,
-            currentCurrencyIndex: 0,
-            cartOverlayOpen: false,
-            totals: 0,
-        };
-        this.grandTotal = this.grandTotal.bind( this )
-        this.currencyButtonHandler = this.currencyButtonHandler.bind( this );
-        this.calculateTotalHandler = this.calculateTotalHandler.bind( this );
-        this.updateCurrencyHandler = this.updateCurrencyHandler.bind( this );
-        this.cartOverlayHandler = this.cartOverlayHandler.bind( this );
-        this.cartOverlayBackgroundHandler = this.cartOverlayBackgroundHandler.bind( this );
-        this.itemTotalHandler = this.itemTotalHandler.bind( this );
-        this.cartOverlayActionHandler = this.cartOverlayActionHandler.bind( this );
-        this.itemTitleStyle = this.itemTitleStyle.bind( this );
-        this.overlayBgStyle = this.overlayBgStyle.bind( this );
-        this.cartCountStyle = this.cartCountStyle.bind( this );
+  constructor() {
+    super();
+    this.state = {
+      currencyButtonClick: false,
+      currentCurrencyIndex: 0,
+      cartOverlayOpen: false,
+      totals: 0,
+    };
+    this.grandTotal = this.grandTotal.bind(this);
+    this.currencyButtonHandler = this.currencyButtonHandler.bind(this);
+    this.calculateTotalHandler = this.calculateTotalHandler.bind(this);
+    this.updateCurrencyHandler = this.updateCurrencyHandler.bind(this);
+    this.cartOverlayHandler = this.cartOverlayHandler.bind(this);
+    this.cartOverlayBackgroundHandler =
+      this.cartOverlayBackgroundHandler.bind(this);
+    this.itemTotalHandler = this.itemTotalHandler.bind(this);
+    this.cartOverlayActionHandler = this.cartOverlayActionHandler.bind(this);
+    this.itemTitleStyle = this.itemTitleStyle.bind(this);
+    this.overlayBgStyle = this.overlayBgStyle.bind(this);
+    this.cartCountStyle = this.cartCountStyle.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { currencySymbol, cartItems, setTotalHandler } = this.props;
+    if (prevProps.currencySymbol[0] !== currencySymbol[0]) {
+      // Update every item price in the state...
+      const grandTotal = this.grandTotal(cartItems, currencySymbol);
+
+      setTotalHandler(grandTotal);
+    }
+  }
+
+  grandTotal(cartItems, currencySymbol) {
+    let grandTotal = 0;
+    if (cartItems && cartItems.length > 0) {
+      cartItems.forEach((item) => {
+        const newItemFixedTotal = item.itemFixedPrice[currencySymbol[0]].amount;
+        const itemTotal = (newItemFixedTotal * item.quantity * 100) / 100;
+
+        grandTotal += itemTotal;
+      });
     }
 
-    componentDidUpdate( prevProps ) {
-        const { currencySymbol, cartItems, setTotalHandler } = this.props;
-        if ( prevProps.currencySymbol[0] !== currencySymbol[0] ) {
-            // Update every item price in the state...
-            const grandTotal = this.grandTotal( cartItems, currencySymbol )
+    return grandTotal.toFixed(2);
+  }
 
-            setTotalHandler( grandTotal );
-        }
-    }
+  currencyButtonHandler() {
+    this.setState({ currencyButtonClick: !this.state.currencyButtonClick });
+  }
 
-    grandTotal( cartItems, currencySymbol ) {
-        let grandTotal = 0;
-            if (cartItems && cartItems.length > 0) {
-                cartItems.forEach( item => {
-                    const newItemFixedTotal =
-                        item.itemFixedPrice[currencySymbol[0]].amount;
-                    const itemTotal = ( newItemFixedTotal * item.quantity * 100 ) / 100;
+  // Calculating the total for each item...
+  itemTotalHandler(symbol, price, quantity) {
+    return `${symbol}${((price * 100 * quantity) / 100).toFixed(2)}`;
+  }
 
-                    grandTotal += itemTotal;
-                });
-            }
+  // Calculate the total...
+  calculateTotalHandler() {
+    const { cartItems } = this.props;
+    let result = 0;
+    cartItems.forEach((item) => {
+      result = (result * 100 + item.itemFixedPrice * 100) / 100;
+    });
 
-        return (grandTotal).toFixed(2)
-    }
+    return result;
+  }
 
-    currencyButtonHandler() {
-        this.setState({ currencyButtonClick: !this.state.currencyButtonClick });
-    }
+  updateCurrencyHandler(e) {
+    const { currencyHandler } = this.props;
+    this.setState({ currencyButtonClick: false });
+    currencyHandler(e);
+  }
 
-    // Calculating the total for each item...
-    itemTotalHandler(symbol, price, quantity) {
-        return `${symbol}${((price * 100 * quantity) / 100).toFixed(2)}`;
-    }
+  cartOverlayBackgroundHandler() {
+    this.setState({ cartOverlayOpen: false });
+  }
 
-    // Calculate the total...
-    calculateTotalHandler() {
-        const { cartItems } = this.props;
-        let result = 0;
-        cartItems.forEach((item) => {
-            result = (result * 100 + item.itemFixedPrice * 100) / 100;
-        });
+  cartOverlayHandler(e) {
+    e.stopPropagation();
+  }
 
-        return result;
-    }
+  cartOverlayActionHandler() {
+    this.setState({
+      cartOverlayOpen: !this.state.cartOverlayOpen,
+      currencyButtonClick: false,
+    });
+  }
 
-    updateCurrencyHandler(e) {
-        const { currencyHandler } = this.props;
-        this.setState({ currencyButtonClick: false });
-        currencyHandler(e);
-    }
+  cartCountStyle(cartCount) {
+    const CartDisplay = cartCount <= 0 ? "none" : "block";
 
-    cartOverlayBackgroundHandler() {
-        this.setState({ cartOverlayOpen: false });
-    }
+    return CartDisplay;
+  }
 
-    cartOverlayHandler(e) {
-        e.stopPropagation();
-    }
+  overlayBgStyle(cartOverlayOpen) {
+    const overlayDisplay = cartOverlayOpen ? "block" : "none";
 
-    cartOverlayActionHandler() {
-        this.setState({
-            cartOverlayOpen: !this.state.cartOverlayOpen,
-            currencyButtonClick: false,
-        });
-    }
+    return overlayDisplay;
+  }
 
-    cartCountStyle( cartCount ) {
-        const CartDisplay = cartCount <= 0 ? "none" : "block"
+  itemTitleStyle(cartCount) {
+    const itemTitle = cartCount === 1 ? "item" : "items";
 
-        return CartDisplay
-    }
+    return itemTitle;
+  }
 
-    overlayBgStyle( cartOverlayOpen ) {
-        const overlayDisplay = cartOverlayOpen ? "block" : "none"
+  currenciesQueryFn({ loading, data }) {
+    if (loading) return null;
 
-        return overlayDisplay
-    }
+    const printCurrency = data.currencies.map((currency, idx) => {
+      return (
+        <li
+          key={uuidv4()}
+          data-currindex={idx}
+          data-curr_currency={currency.symbol}
+          onClick={(e) => {
+            this.updateCurrencyHandler(e);
+          }}
+        >
+          {`${currency.symbol} ${currency.label.toUpperCase()}`}
+        </li>
+      );
+    });
 
-    itemTitleStyle( cartCount ) {
-        const itemTitle = cartCount === 1 ? "item" : "items"
+    return printCurrency;
+  }
 
-        return itemTitle
-    }
+  render() {
+    const {
+      cartItems,
+      currencySymbol,
+      quantityHandler,
+      navigateImage,
+      changeCategory,
+      cartCount,
+      totalPrice,
+      checkout,
+      category,
+    } = this.props;
 
-    currenciesQueryFn({ loading, data }) {
-        if (loading) return null;
+    const currencyDropdownStyle = {
+      display: this.state.currencyButtonClick ? "block" : "none",
+    };
 
-        const printCurrency = data.currencies.map(
-            (currency, idx) => {
-            return (
-                <li
-                key={uuidv4()}
-                data-currindex={idx}
-                data-curr_currency={currency.symbol}
-                onClick={(e) => {
-                    this.updateCurrencyHandler(e);
-                }}
-                >{`${
-                currency.symbol
-                } ${currency.label.toUpperCase()}`}</li>
-            );
-            }
-        );
+    // Handle attributes per item in cart...
+    const printCartItems = cartItems.map((item, idx) => {
+      const id = item.productId;
+      const attributeArray = item.attributes;
 
-        return printCurrency;
-    }
+      let result = null;
+      const query = (
+        <CartItemsQuery
+          key={idx}
+          id={id}
+          attributeArray={attributeArray}
+          currencySymbol={currencySymbol}
+          cartItems={cartItems}
+          quantityHandler={quantityHandler}
+          idx={idx}
+          navigateImage={navigateImage}
+          result={result}
+          itemTotalHandler={this.itemTotalHandler}
+          setTotalHandler={this.setTotalHandler}
+          item={item.attributes.attribute}
+        />
+      );
 
-    render() {
-        const {
-            cartItems,
-            currencySymbol,
-            quantityHandler,
-            navigateImage,
-            changeCategory,
-            cartCount,
-            totalPrice,
-            checkout,
-            category,
-        } = this.props;
+      return query;
+    });
 
-        const currencyDropdownStyle = {
-            display: this.state.currencyButtonClick ? "block" : "none",
-        };
-
-        // Handle attributes per item in cart...
-        const printCartItems = cartItems.map((item, idx) => {
-            const id = item.productId;
-            const attributeArray = item.attributes;
-
-            let result = null;
-            const query = ( <
-                CartItemsQuery key = { idx }
-                id = { id }
-                attributeArray = { attributeArray }
-                currencySymbol = { currencySymbol }
-                cartItems = { cartItems }
-                quantityHandler = { quantityHandler }
-                idx = { idx }
-                navigateImage = { navigateImage }
-                result = { result }
-                itemTotalHandler = { this.itemTotalHandler }
-                setTotalHandler = { this.setTotalHandler }
-                item = { item.attributes.attribute }
-                />
-            );
-
-            return query;
-        });
-
-        return ( <
-            Header CATEGORIES_QUERY = { CATEGORIES_QUERY }
-            changeCategory = { changeCategory }
-            category = { category }
-            currencySymbol = { currencySymbol }
-            currencyDropdownStyle = { currencyDropdownStyle }
-            CURRENCIES_QUERY = { CURRENCIES_QUERY }
-            cartCount = { cartCount }
-            printCartItems = { printCartItems }
-            totalPrice = { totalPrice }
-            checkout = { checkout }
-            cartOverlayOpen = { this.state.cartOverlayOpen }
-            cartOverlayActionHandler = { this.cartOverlayActionHandler }
-            cartOverlayBackgroundHandler = { this.cartOverlayBackgroundHandler }
-            cartOverlayHandler = { this.cartOverlayHandler }
-            updateCurrencyHandler = { this.updateCurrencyHandler }
-            currencyButtonHandler = { this.currencyButtonHandler }
-            cartCountStyle = { this.cartCountStyle }
-            overlayBgStyle = { this.overlayBgStyle }
-            itemTitleStyle = { this.itemTitleStyle }
-            />
-        );
-    }
+    return (
+      <Header
+        CATEGORIES_QUERY={CATEGORIES_QUERY}
+        changeCategory={changeCategory}
+        category={category}
+        currencySymbol={currencySymbol}
+        currencyDropdownStyle={currencyDropdownStyle}
+        CURRENCIES_QUERY={CURRENCIES_QUERY}
+        cartCount={cartCount}
+        printCartItems={printCartItems}
+        totalPrice={totalPrice}
+        checkout={checkout}
+        cartOverlayOpen={this.state.cartOverlayOpen}
+        cartOverlayActionHandler={this.cartOverlayActionHandler}
+        cartOverlayBackgroundHandler={this.cartOverlayBackgroundHandler}
+        cartOverlayHandler={this.cartOverlayHandler}
+        updateCurrencyHandler={this.updateCurrencyHandler}
+        currencyButtonHandler={this.currencyButtonHandler}
+        cartCountStyle={this.cartCountStyle}
+        overlayBgStyle={this.overlayBgStyle}
+        itemTitleStyle={this.itemTitleStyle}
+      />
+    );
+  }
 }
