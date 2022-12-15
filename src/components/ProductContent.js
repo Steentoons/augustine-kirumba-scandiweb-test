@@ -3,6 +3,26 @@ import { PureComponent } from 'react';
 import "../assets/css/productView.css";
 
 export class ProductContent extends PureComponent {
+constructor() {
+  super()
+
+  this.instockStyle = this.instockStyle.bind(this)
+  this.instockForButton = this.instockForButton.bind(this)
+}
+  // Makes the out of stock image to show appropriately...
+  instockStyle(inStock) {
+    const instock = inStock ? "none" : "block"
+
+    return instock
+  }
+
+  // Determines when the add to cart button shows from the stock state...
+  instockForButton(inStock) {
+    const instock = inStock ? "block" : "none"
+
+    return instock
+  }
+
   render() {
     const {
       printImageThumbnails,
@@ -29,7 +49,7 @@ export class ProductContent extends PureComponent {
           <div 
             className="instock-container"
             style={{
-              display: currentProduct.inStock ? "none" : "block",
+              display: this.instockStyle(currentProduct.inStock)
             }}
           >
             <div className="instock-wrapper">
@@ -44,9 +64,6 @@ export class ProductContent extends PureComponent {
           <div className="product-view-details-name">
             { currentProduct.name }
           </div>
-          {
-            // Atributes goes here...
-          }
           {attributes}
           <div className="product-view-details-price-wrapper">
             <div className="price-name">PRICE: </div>
@@ -62,7 +79,7 @@ export class ProductContent extends PureComponent {
                   checkCartDuplicates();
               }}
               style={{
-                display: currentProduct.inStock ? "block" : "none",
+                display: this.instockForButton(currentProduct.inStock)
               }}
             >
               ADD TO CART

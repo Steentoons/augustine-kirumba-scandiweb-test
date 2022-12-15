@@ -15,6 +15,7 @@ export default class CartContainer extends PureComponent {
     this.plusHandler = this.plusHandler.bind(this);
     this.itemTotalHandler = this.itemTotalHandler.bind(this);
     this.setTotalHandler = this.setTotalHandler.bind(this);
+    this.printCartItems = this.printCartItems.bind(this);
   }
 
   plusHandler() {
@@ -32,6 +33,32 @@ export default class CartContainer extends PureComponent {
   itemTotalHandler(symbol, price, quantity) {
     return `${ symbol}${((price * 100 * quantity) / 100).toFixed(2) }`;
   }
+
+  // Handle attributes per item in cart...
+  printCartItems( cartItems, currencySymbol, quantityHandler, navigateImage ) {
+    const printCartItems = cartItems.map(( item, idx ) => {
+      const id = item.productId;
+      const attributeArray = item.attributes;
+      return (
+        <CartItemsQuery
+          key={uuidv4()}
+          attributeArray={attributeArray}
+          currencySymbol={currencySymbol}
+          cartItems={cartItems}
+          quantityHandler={quantityHandler}
+          idx={idx}
+          navigateImage={navigateImage}
+          itemTotalHandler={this.itemTotalHandler}
+          setTotalHandler={this.setTotalHandler}
+          id={id}
+          item={item.attributes.attribute}
+        />
+      );
+    });
+
+    return printCartItems
+  }
+
   render() {
     const {
       currencySymbol,
@@ -48,31 +75,7 @@ export default class CartContainer extends PureComponent {
       cartItems,
       getTax,
     } = this.props;
-
-    // Handle attributes per item in cart...
-    const printCartItems = cartItems.map(( item, idx ) => {
-      const id = item.productId;
-      const attributeArray = item.attributes;
-      let result = null;
-      const query = (
-        <CartItemsQuery
-          key={uuidv4()}
-          attributeArray={attributeArray}
-          currencySymbol={currencySymbol}
-          cartItems={cartItems}
-          quantityHandler={quantityHandler}
-          idx={idx}
-          navigateImage={navigateImage}
-          result={result}
-          itemTotalHandler={this.itemTotalHandler}
-          setTotalHandler={this.setTotalHandler}
-          id={id}
-          item={item.attributes.attribute}
-        />
-      );
-
-      return query;
-    });
+    const printCartItems = this.printCartItems( cartItems, currencySymbol, quantityHandler, navigateImage )
 
     return (
       <Cart

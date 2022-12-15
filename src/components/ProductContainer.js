@@ -36,10 +36,8 @@ export default class ProductContainer extends PureComponent {
   // The PLP cart handler...
   plpCartHandler(e) {
     e.preventDefault();
-
     const { cartCountHandler, cartItemsHandler, product, currencySymbol } =
       this.props;
-
     const productId = product.id;
     const attributes = [];
     const quantity = 1;

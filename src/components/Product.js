@@ -4,9 +4,26 @@ import circleCart from "../assets/images/circle-cart.png";
 import "../assets/css/product.css";
 
 export class Product extends PureComponent {
+  constructor() {
+    super()
+
+    this.instock = this.instock.bind(this)
+    this.toCart = this.toCart.bind(this)
+  }
+  
+  instock(inStock) {
+    const stockStyle = inStock ? "none" : "block"
+
+    return stockStyle
+  }
+
+  toCart(toCart) {
+    const cartStyle = toCart ? "block" : "none"
+
+    return cartStyle
+  }
 
   render() {
-
     const {
       product,
       currencySymbol,
@@ -36,7 +53,7 @@ export class Product extends PureComponent {
           </div>
           <div
             className="instock-container"
-            style={{ display: product.inStock ? "none" : "block" }}
+            style={{ display: this.instock(product.inStock) }}
           >
             <div className="instock-wrapper">
               <div className="instock-div">OUT OF STOCK</div>
@@ -44,7 +61,7 @@ export class Product extends PureComponent {
           </div>
           <div
             className="plp-add-to-cart-container"
-            style={{ display: toCart ? "block" : "none" }}
+            style={{ display: this.toCart(toCart) }}
           >
             <div
               className="plp-add-to-cart"

@@ -2,6 +2,18 @@ import React from 'react'
 import { PureComponent } from 'react';
 
 export class NavCartImg extends PureComponent {
+  constructor() {
+    super()
+
+    this.galleryLength = this.galleryLength.bind(this)
+  }
+
+  galleryLength(galleryLength) {
+    const length = galleryLength <= 1 ? "none" : "flex"
+
+    return length
+  }
+  
   render() {
     const {
         quantityHandler,
@@ -52,7 +64,7 @@ export class NavCartImg extends PureComponent {
               className="image-navigator"
               style={{
                 display:
-                  product.gallery.length <= 1 ? "none" : "flex",
+                  this.galleryLength(product.gallery.length)
               }}
             >
               <img

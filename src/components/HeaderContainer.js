@@ -25,18 +25,20 @@ export default class HeaderContainer extends PureComponent {
     this.itemTitleStyle = this.itemTitleStyle.bind(this);
     this.overlayBgStyle = this.overlayBgStyle.bind(this);
     this.cartCountStyle = this.cartCountStyle.bind(this);
+    this.printCartItems = this.printCartItems.bind(this);
+    this.currencyDropStyle = this.currencyDropStyle.bind(this);
   }
 
   componentDidUpdate(prevProps) {
     const { currencySymbol, cartItems, setTotalHandler } = this.props;
     if (prevProps.currencySymbol[0] !== currencySymbol[0]) {
-      // Update every item price in the state...
       const grandTotal = this.grandTotal(cartItems, currencySymbol);
 
       setTotalHandler(grandTotal);
     }
   }
 
+  // Update every item price in the state...
   grandTotal(cartItems, currencySymbol) {
     let grandTotal = 0;
     if (cartItems && cartItems.length > 0) {
@@ -131,6 +133,40 @@ export default class HeaderContainer extends PureComponent {
     return printCurrency;
   }
 
+  currencyDropStyle(currencyButtonClick) {
+    const currencyDropdownStyle = {
+      display: currencyButtonClick ? "block" : "none",
+    };
+
+    return currencyDropdownStyle;
+  }
+
+  // Handle attributes per item in cart...
+  printCartItems(cartItems, currencySymbol, quantityHandler, navigateImage) {
+    const printCartItems = cartItems.map((item, idx) => {
+      const id = item.productId;
+      const attributeArray = item.attributes;
+
+      return (
+        <CartItemsQuery
+          key={idx}
+          id={id}
+          attributeArray={attributeArray}
+          currencySymbol={currencySymbol}
+          cartItems={cartItems}
+          quantityHandler={quantityHandler}
+          idx={idx}
+          navigateImage={navigateImage}
+          itemTotalHandler={this.itemTotalHandler}
+          setTotalHandler={this.setTotalHandler}
+          item={item.attributes.attribute}
+        />
+      );
+    });
+
+    return printCartItems;
+  }
+
   render() {
     const {
       cartItems,
@@ -143,36 +179,14 @@ export default class HeaderContainer extends PureComponent {
       checkout,
       category,
     } = this.props;
-
-    const currencyDropdownStyle = {
-      display: this.state.currencyButtonClick ? "block" : "none",
-    };
-
-    // Handle attributes per item in cart...
-    const printCartItems = cartItems.map((item, idx) => {
-      const id = item.productId;
-      const attributeArray = item.attributes;
-
-      let result = null;
-      const query = (
-        <CartItemsQuery
-          key={idx}
-          id={id}
-          attributeArray={attributeArray}
-          currencySymbol={currencySymbol}
-          cartItems={cartItems}
-          quantityHandler={quantityHandler}
-          idx={idx}
-          navigateImage={navigateImage}
-          result={result}
-          itemTotalHandler={this.itemTotalHandler}
-          setTotalHandler={this.setTotalHandler}
-          item={item.attributes.attribute}
-        />
-      );
-
-      return query;
-    });
+    const { currencyButtonClick } = this.state;
+    const currencyDropdownStyle = this.currencyDropStyle(currencyButtonClick);
+    const printCartItems = this.printCartItems(
+      cartItems,
+      currencySymbol,
+      quantityHandler,
+      navigateImage
+    );
 
     return (
       <Header

@@ -10,6 +10,78 @@ import "../assets/css/header.css";
 import { v4 as uuidv4 } from "uuid";
 
 export class Header extends PureComponent {
+  constructor() {
+    super();
+
+    this.printCurrency = this.printCurrency.bind(this);
+    this.currenciesQuery = this.currenciesQuery.bind(this);
+    this.printCategories = this.printCategories.bind(this);
+    this.categoriesQuery = this.categoriesQuery.bind(this);
+  }
+
+  categoriesQuery(CATEGORIES_QUERY, changeCategory, category) {
+    return (
+      <Query query={CATEGORIES_QUERY}>
+        {({ loading, data }) => {
+          if (loading) return null;
+          const { categories } = data;
+          const allcategories = this.printCategories(
+            categories,
+            changeCategory,
+            category
+          );
+
+          return allcategories;
+        }}
+      </Query>
+    );
+  }
+
+  printCategories(categories, changeCategory, category) {
+    const allcategories = categories.map((actualCategory, idx) => {
+      return (
+        <Categories
+          key={uuidv4()}
+          category={actualCategory.name.toUpperCase()}
+          changeCategory={changeCategory}
+          categoryState={category}
+        />
+      );
+    });
+
+    return allcategories;
+  }
+
+  currenciesQuery(CURRENCIES_QUERY, updateCurrencyHandler) {
+    return (
+      <Query query={CURRENCIES_QUERY}>
+        {({ loading, data }) => {
+          if (loading) return null;
+          const printCurrency = this.printCurrency(data, updateCurrencyHandler);
+
+          return printCurrency;
+        }}
+      </Query>
+    );
+  }
+
+  printCurrency(data, updateCurrencyHandler) {
+    const printCurrency = data.currencies.map((currency, idx) => {
+      return (
+        <li
+          key={uuidv4()}
+          data-currindex={idx}
+          data-curr_currency={currency.symbol}
+          onClick={(e) => {
+            updateCurrencyHandler(e);
+          }}
+        >{`${currency.symbol} ${currency.label.toUpperCase()}`}</li>
+      );
+    });
+
+    return printCurrency;
+  }
+
   render() {
     const {
       CATEGORIES_QUERY,
@@ -29,8 +101,8 @@ export class Header extends PureComponent {
       updateCurrencyHandler,
       currencyButtonHandler,
       cartCountStyle,
-      overlayBgStyle, 
-      itemTitleStyle
+      overlayBgStyle,
+      itemTitleStyle,
     } = this.props;
 
     return (
@@ -38,25 +110,7 @@ export class Header extends PureComponent {
         <header className="header-container">
           <div className="categories-container">
             <ul>
-              <Query query={CATEGORIES_QUERY}>
-                {({ loading, data }) => {
-                  if (loading) return null;
-                  const { categories } = data;
-                  const allcategories = categories.map(
-                    (actualCategory, idx) => {
-                      return (
-                        <Categories
-                          key={uuidv4()}
-                          category={actualCategory.name.toUpperCase()}
-                          changeCategory={changeCategory}
-                          categoryState={category}
-                        />
-                      );
-                    }
-                  );
-                  return allcategories;
-                }}
-              </Query>
+              {this.categoriesQuery(CATEGORIES_QUERY, changeCategory, category)}
             </ul>
           </div>
           <Link
@@ -75,8 +129,8 @@ export class Header extends PureComponent {
                 currencyButtonHandler();
               }}
             >
-              <div className="currency-symbol">{ currencySymbol[1] }</div>
-              <img src={ currency_arrow_down } alt="currency arrow down" />
+              <div className="currency-symbol">{currencySymbol[1]}</div>
+              <img src={currency_arrow_down} alt="currency arrow down" />
             </div>
             <div
               className="currency-dropdown-div"
@@ -84,30 +138,10 @@ export class Header extends PureComponent {
             >
               <div className="currency-absolute-dropdown">
                 <ul>
-                  <Query query={ CURRENCIES_QUERY }>
-                    {({ loading, data }) => {
-                      if (loading) return null;
-
-                      const printCurrency = data.currencies.map(
-                        (currency, idx) => {
-                          return (
-                            <li
-                              key={uuidv4()}
-                              data-currindex={idx}
-                              data-curr_currency={currency.symbol}
-                              onClick={(e) => {
-                                updateCurrencyHandler(e);
-                              }}
-                            >{`${
-                              currency.symbol
-                            } ${currency.label.toUpperCase()}`}</li>
-                          );
-                        }
-                      );
-
-                      return printCurrency;
-                    }}
-                  </Query>
+                  {this.currenciesQuery(
+                    CURRENCIES_QUERY,
+                    updateCurrencyHandler
+                  )}
                 </ul>
               </div>
             </div>
@@ -120,19 +154,19 @@ export class Header extends PureComponent {
               <img src={empty_cart} alt="empty cart" />
               <div
                 className="cart-notification-container"
-                style={{ display: cartCountStyle( cartCount ) }}
+                style={{ display: cartCountStyle(cartCount) }}
               >
-                <div className="cart-notification">{ cartCount }</div>
+                <div className="cart-notification">{cartCount}</div>
               </div>
             </div>
 
             <div
               className="cart-overlay-background-container"
-              style={{ display: overlayBgStyle( cartOverlayOpen ) }}
+              style={{ display: overlayBgStyle(cartOverlayOpen) }}
             >
               <div
                 className="cart-overlay-background"
-                data-overlay_background={ true }
+                data-overlay_background={true}
                 onClick={() => {
                   cartOverlayBackgroundHandler();
                 }}
@@ -140,26 +174,26 @@ export class Header extends PureComponent {
                 <div className="cart-overlay-wrapper">
                   <div
                     className="cart-overlay"
-                    onClick={ e => {
-                      cartOverlayHandler( e );
+                    onClick={(e) => {
+                      cartOverlayHandler(e);
                     }}
                   >
                     <div className="cart-top-items">
                       <div className="cart-overlay-title">
                         My Bag,
-                        <span>{`${ cartCount } ${
-                          itemTitleStyle( cartCount )
-                        }`}</span>
+                        <span>{`${cartCount} ${itemTitleStyle(
+                          cartCount
+                        )}`}</span>
                       </div>
                       <div className="cart-overlay-items-container">
-                        { printCartItems }
+                        {printCartItems}
                       </div>
                     </div>
                     <div className="cart-bottom-items-wrapper">
                       <div className="cart-bottom-items">
                         <div className="cart-overlay-total-container">
                           <div className="total-title">Total</div>
-                          <div className="total-content">{`${ currencySymbol[1] }${ totalPrice }`}</div>
+                          <div className="total-content">{`${currencySymbol[1]}${totalPrice}`}</div>
                         </div>
                         <div className="cart-overlay-buttons">
                           <Link

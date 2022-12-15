@@ -39,6 +39,7 @@ export default class Homepage extends PureComponent {
       cartCountHandler,
       match,
     } = this.props;
+    
     return (
       <>
         <HeaderContainer

@@ -121,6 +121,7 @@ export default class ProductContentContainer extends PureComponent {
       currentImageIdx,
     };
   }
+  
   cartStateHandler() {
     // Setting the main cart item state to be used all over the project...
     const { cartItemsHandler } = this.props;
