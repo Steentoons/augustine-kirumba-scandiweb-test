@@ -3,7 +3,7 @@ import { PureComponent } from "react";
 import navigatorLeft from "../../assets/images/left-arrow.png";
 import navigatorRight from "../../assets/images/right-arrow.png";
 import NavCartDetails from "../nav-cart-details/NavCartDetails";
-import NavCartImg from "../nav-cart-img/NavCartImg";
+import NavCartImgContainer from "../nav-cart-img/NavCartImgContainer";
 
 export class NavCartItems extends PureComponent {
   render() {
@@ -29,7 +29,7 @@ export class NavCartItems extends PureComponent {
             idx={idx}
             printAttributes={printAttributes}
           />
-          <NavCartImg
+          <NavCartImgContainer
             quantityHandler={quantityHandler}
             idx={idx}
             cartItems={cartItems}

@@ -1,7 +1,7 @@
 import React from "react";
 import { Query } from "react-apollo";
 import { cart_items_query } from "../../lib/queries";
-import Attributes from "../attributes/Attributes";
+import AttributesContainer from "../attributes/AttributesContainer";
 import NavCartItems from "../nav-cart-items/NavCartItems";
 import { v4 as uuidv4 } from "uuid";
 import { PureComponent } from "react";
@@ -169,7 +169,7 @@ export class CartItemsQuery extends PureComponent {
     attributesValueText
   ) {
     const attributeTemplate = (
-      <Attributes
+      <AttributesContainer
         key={uuidv4()}
         attrName={
           attribute.name.charAt(0).toUpperCase() + attribute.name.slice(1)

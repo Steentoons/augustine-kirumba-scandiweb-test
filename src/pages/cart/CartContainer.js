@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import Cart from "./Cart";
-import CartItemsQuery from "../../components/cart-items-query/CartItemsQuery";
+import CartItemsQueryContainer from "../../components/cart-items-query/CartItemsQueryContainer";
 import { v4 as uuidv4 } from "uuid";
 
 export default class CartContainer extends PureComponent {
@@ -40,7 +40,7 @@ export default class CartContainer extends PureComponent {
       const id = item.productId;
       const attributeArray = item.attributes;
       return (
-        <CartItemsQuery
+        <CartItemsQueryContainer
           key={uuidv4()}
           attributeArray={attributeArray}
           currencySymbol={currencySymbol}

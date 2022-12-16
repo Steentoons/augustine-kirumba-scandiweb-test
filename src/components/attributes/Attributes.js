@@ -20,6 +20,7 @@ export default class Attributes extends PureComponent {
       attributesValueSwatch,
       attributesValueText,
     } = this.props;
+    
     return (
       <div className="attribute-wrapper">
         <div className="attribute-title">{`${attrName}:`}</div>

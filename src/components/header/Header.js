@@ -3,7 +3,7 @@ import logo from "../../assets/images/logo.png";
 import currency_arrow_down from "../../assets/images/currency-arrow-down.png";
 import empty_cart from "../../assets/images/empty-cart.png";
 import { Query } from "react-apollo";
-import Categories from "../categories/Categories";
+import CategoriesContainer from "../categories/CategoriesContainer";
 import { Link } from "react-router-dom";
 import { PureComponent } from "react";
 import "../../assets/css/header.css";
@@ -40,7 +40,7 @@ export class Header extends PureComponent {
   printCategories(categories, changeCategory, category) {
     const allcategories = categories.map((actualCategory, idx) => {
       return (
-        <Categories
+        <CategoriesContainer
           key={uuidv4()}
           category={actualCategory.name.toUpperCase()}
           changeCategory={changeCategory}

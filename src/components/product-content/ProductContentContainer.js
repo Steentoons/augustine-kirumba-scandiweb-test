@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import ClickableAttribute from "../clickable-attribute/ClickableAttribute";
+import ClickableAttributeContainer from "../clickable-attribute/ClickableAttributeContainer";
 import _ from "lodash";
 import ProductContent from "./ProductContent";
 import { v4 as uuidv4 } from "uuid";
@@ -216,7 +216,7 @@ export default class ProductContentContainer extends PureComponent {
   // returns actual attributes without inner values...
   attributeTemplate(index, name, type, swatch, text) {
     const attributeTemplate = (
-      <ClickableAttribute
+      <ClickableAttributeContainer
         key={index}
         attrName={name}
         attrType={type}

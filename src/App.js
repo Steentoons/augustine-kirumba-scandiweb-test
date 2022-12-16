@@ -9,8 +9,8 @@ import {
 } from "react-router-dom";
 import _ from "lodash";
 import "./assets/css/main.css";
-import Homepage from "./pages/homepage/Homepage";
-import ProductView from "./pages/productView/ProductView";
+import HomepageContainer from "./pages/homepage/HomepageContainer";
+import ProductViewContainer from "./pages/productView/ProductViewContainer";
 import CartContainer from "./pages/cart/CartContainer";
 
 const client = new ApolloClient({
@@ -336,7 +336,7 @@ class App extends PureComponent {
                 exact
                 path="/category/:category"
                 render={ props => (
-                  <Homepage
+                  <HomepageContainer
                     {...props}
                     cartItems={ this.state.cartItems }
                     cartCount={ this.state.cartCount }
@@ -359,7 +359,7 @@ class App extends PureComponent {
                 exact
                 path="/product/:id"
                 render={ props => (
-                  <ProductView
+                  <ProductViewContainer
                     {...props }
                     cartItemsHandler={ this.cartItemsHandler }
                     cartItems={ this.state.cartItems }

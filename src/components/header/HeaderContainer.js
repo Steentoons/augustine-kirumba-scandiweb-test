@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import Header from "./Header";
-import CartItemsQuery from "../cart-items-query/CartItemsQuery";
+import CartItemsQueryContainer from "../cart-items-query/CartItemsQueryContainer";
 import { CATEGORIES_QUERY, CURRENCIES_QUERY } from "../../lib/queries";
 import { v4 as uuidv4 } from "uuid";
 
@@ -148,7 +148,7 @@ export default class HeaderContainer extends PureComponent {
       const attributeArray = item.attributes;
 
       return (
-        <CartItemsQuery
+        <CartItemsQueryContainer
           key={idx}
           id={id}
           attributeArray={attributeArray}
