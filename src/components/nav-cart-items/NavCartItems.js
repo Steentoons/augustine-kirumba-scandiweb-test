@@ -1,9 +1,9 @@
 import React from "react";
 import { PureComponent } from "react";
-import navigatorLeft from "../assets/images/left-arrow.png";
-import navigatorRight from "../assets/images/right-arrow.png";
-import NavCartDetails from "./NavCartDetails";
-import NavCartImg from "./NavCartImg";
+import navigatorLeft from "../../assets/images/left-arrow.png";
+import navigatorRight from "../../assets/images/right-arrow.png";
+import NavCartDetails from "../nav-cart-details/NavCartDetails";
+import NavCartImg from "../nav-cart-img/NavCartImg";
 
 export class NavCartItems extends PureComponent {
   render() {

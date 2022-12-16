@@ -1,6 +1,6 @@
 import React from 'react'
 import { PureComponent } from 'react';
-import "../assets/css/productView.css";
+import "../../assets/css/productView.css";
 
 export class ProductContent extends PureComponent {
 constructor() {

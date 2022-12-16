@@ -1,12 +1,12 @@
 import React from "react";
-import logo from "../assets/images/logo.png";
-import currency_arrow_down from "../assets/images/currency-arrow-down.png";
-import empty_cart from "../assets/images/empty-cart.png";
+import logo from "../../assets/images/logo.png";
+import currency_arrow_down from "../../assets/images/currency-arrow-down.png";
+import empty_cart from "../../assets/images/empty-cart.png";
 import { Query } from "react-apollo";
-import Categories from "./Categories";
+import Categories from "../categories/Categories";
 import { Link } from "react-router-dom";
 import { PureComponent } from "react";
-import "../assets/css/header.css";
+import "../../assets/css/header.css";
 import { v4 as uuidv4 } from "uuid";
 
 export class Header extends PureComponent {

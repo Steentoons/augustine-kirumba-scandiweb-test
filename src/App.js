@@ -9,9 +9,9 @@ import {
 } from "react-router-dom";
 import _ from "lodash";
 import "./assets/css/main.css";
-import Homepage from "./pages/Homepage";
-import ProductView from "./pages/ProductView";
-import CartContainer from "./pages/CartContainer";
+import Homepage from "./pages/homepage/Homepage";
+import ProductView from "./pages/productView/ProductView";
+import CartContainer from "./pages/cart/CartContainer";
 
 const client = new ApolloClient({
   uri: "http://localhost:4000/",

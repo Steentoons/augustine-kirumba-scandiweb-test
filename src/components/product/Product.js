@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Link } from "react-router-dom";
-import circleCart from "../assets/images/circle-cart.png";
-import "../assets/css/product.css";
+import circleCart from "../../assets/images/circle-cart.png";
+import "../../assets/css/product.css";
 
 export class Product extends PureComponent {
   constructor() {

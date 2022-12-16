@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
-import HeaderContainer from "../components/HeaderContainer";
-import "../assets/css/cart.css";
+import HeaderContainer from "../../components/header/HeaderContainer";
+import "../../assets/css/cart.css";
 
 export class Cart extends PureComponent {
   render() {

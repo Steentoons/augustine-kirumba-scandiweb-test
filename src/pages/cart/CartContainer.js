@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import Cart from "./Cart";
-import CartItemsQuery from "../components/CartItemsQuery";
+import CartItemsQuery from "../../components/cart-items-query/CartItemsQuery";
 import { v4 as uuidv4 } from "uuid";
 
 export default class CartContainer extends PureComponent {

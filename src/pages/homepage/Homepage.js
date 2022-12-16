@@ -1,7 +1,7 @@
 import React from "react";
 import { PureComponent } from "react";
-import BodySection from "../components/BodySection";
-import HeaderContainer from "../components/HeaderContainer";
+import BodySection from "../../components/body-section/BodySection";
+import HeaderContainer from "../../components/header/HeaderContainer";
 
 export default class Homepage extends PureComponent {
   constructor( props ) {

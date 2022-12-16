@@ -1,9 +1,9 @@
 import React from "react";
 import { PureComponent } from "react";
 import { Query } from "react-apollo";
-import "../assets/css/bodySection.css";
-import { product_query } from "../lib/queries";
-import ProductContainer from "./ProductContainer";
+import "../../assets/css/bodySection.css";
+import { product_query } from "../../lib/queries";
+import ProductContainer from "../product/ProductContainer";
 
 export class BodySection extends PureComponent {
   constructor() {

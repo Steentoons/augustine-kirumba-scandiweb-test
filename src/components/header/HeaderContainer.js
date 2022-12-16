@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import Header from "./Header";
-import CartItemsQuery from "./CartItemsQuery";
-import { CATEGORIES_QUERY, CURRENCIES_QUERY } from "../lib/queries";
+import CartItemsQuery from "../cart-items-query/CartItemsQuery";
+import { CATEGORIES_QUERY, CURRENCIES_QUERY } from "../../lib/queries";
 import { v4 as uuidv4 } from "uuid";
 
 export default class HeaderContainer extends PureComponent {

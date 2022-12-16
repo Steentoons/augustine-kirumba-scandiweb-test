@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import Product from "../components/Product";
+import Product from "./Product";
 
 export default class ProductContainer extends PureComponent {
   constructor(props) {

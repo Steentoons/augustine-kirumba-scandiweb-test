@@ -1,8 +1,8 @@
 import React from "react";
 import { Query } from "react-apollo";
-import { cart_items_query } from "../lib/queries";
-import Attributes from "./Attributes";
-import NavCartItems from "./NavCartItems";
+import { cart_items_query } from "../../lib/queries";
+import Attributes from "../attributes/Attributes";
+import NavCartItems from "../nav-cart-items/NavCartItems";
 import { v4 as uuidv4 } from "uuid";
 import { PureComponent } from "react";
 

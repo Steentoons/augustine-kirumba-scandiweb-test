@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import ClickableAttribute from "./ClickableAttribute";
+import ClickableAttribute from "../clickable-attribute/ClickableAttribute";
 import _ from "lodash";
 import ProductContent from "./ProductContent";
 import { v4 as uuidv4 } from "uuid";
