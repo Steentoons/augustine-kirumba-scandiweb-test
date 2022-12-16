@@ -3,6 +3,8 @@ import Header from "./Header";
 import CartItemsQueryContainer from "../cart-items-query/CartItemsQueryContainer";
 import { CATEGORIES_QUERY, CURRENCIES_QUERY } from "../../lib/queries";
 import { v4 as uuidv4 } from "uuid";
+import { Query } from "react-apollo";
+import CategoriesContainer from "../categories/CategoriesContainer";
 
 export default class HeaderContainer extends PureComponent {
   constructor() {
@@ -27,6 +29,10 @@ export default class HeaderContainer extends PureComponent {
     this.cartCountStyle = this.cartCountStyle.bind(this);
     this.printCartItems = this.printCartItems.bind(this);
     this.currencyDropStyle = this.currencyDropStyle.bind(this);
+    this.printCurrency = this.printCurrency.bind(this);
+    this.currenciesQuery = this.currenciesQuery.bind(this);
+    this.printCategories = this.printCategories.bind(this);
+    this.categoriesQuery = this.categoriesQuery.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -167,6 +173,69 @@ export default class HeaderContainer extends PureComponent {
     return printCartItems;
   }
 
+  categoriesQuery(CATEGORIES_QUERY, changeCategory, category) {
+    return (
+      <Query query={CATEGORIES_QUERY}>
+        {({ loading, data }) => {
+          if (loading) return null;
+          const { categories } = data;
+          const allcategories = this.printCategories(
+            categories,
+            changeCategory,
+            category
+          );
+
+          return allcategories;
+        }}
+      </Query>
+    );
+  }
+
+  printCategories(categories, changeCategory, category) {
+    const allcategories = categories.map((actualCategory, idx) => {
+      return (
+        <CategoriesContainer
+          key={uuidv4()}
+          category={actualCategory.name.toUpperCase()}
+          changeCategory={changeCategory}
+          categoryState={category}
+        />
+      );
+    });
+
+    return allcategories;
+  }
+
+  currenciesQuery(CURRENCIES_QUERY, updateCurrencyHandler) {
+    return (
+      <Query query={CURRENCIES_QUERY}>
+        {({ loading, data }) => {
+          if (loading) return null;
+          const printCurrency = this.printCurrency(data, updateCurrencyHandler);
+
+          return printCurrency;
+        }}
+      </Query>
+    );
+  }
+
+  printCurrency(data, updateCurrencyHandler) {
+    const printCurrency = data.currencies.map((currency, idx) => {
+      return (
+        <li
+          key={uuidv4()}
+          data-currindex={idx}
+          data-curr_currency={currency.symbol}
+          onClick={(e) => {
+            updateCurrencyHandler(e);
+          }}
+        >{`${currency.symbol} ${currency.label.toUpperCase()}`}</li>
+      );
+    });
+
+    return printCurrency;
+  }
+
   render() {
     const {
       cartItems,
@@ -209,6 +278,8 @@ export default class HeaderContainer extends PureComponent {
         cartCountStyle={this.cartCountStyle}
         overlayBgStyle={this.overlayBgStyle}
         itemTitleStyle={this.itemTitleStyle}
+        categoriesQuery={this.categoriesQuery}
+        currenciesQuery={this.currenciesQuery}
       />
     );
   }

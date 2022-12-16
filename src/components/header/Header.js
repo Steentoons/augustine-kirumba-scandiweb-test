@@ -2,85 +2,11 @@ import React from "react";
 import logo from "../../assets/images/logo.png";
 import currency_arrow_down from "../../assets/images/currency-arrow-down.png";
 import empty_cart from "../../assets/images/empty-cart.png";
-import { Query } from "react-apollo";
-import CategoriesContainer from "../categories/CategoriesContainer";
 import { Link } from "react-router-dom";
 import { PureComponent } from "react";
 import "../../assets/css/header.css";
-import { v4 as uuidv4 } from "uuid";
 
 export class Header extends PureComponent {
-  constructor() {
-    super();
-
-    this.printCurrency = this.printCurrency.bind(this);
-    this.currenciesQuery = this.currenciesQuery.bind(this);
-    this.printCategories = this.printCategories.bind(this);
-    this.categoriesQuery = this.categoriesQuery.bind(this);
-  }
-
-  categoriesQuery(CATEGORIES_QUERY, changeCategory, category) {
-    return (
-      <Query query={CATEGORIES_QUERY}>
-        {({ loading, data }) => {
-          if (loading) return null;
-          const { categories } = data;
-          const allcategories = this.printCategories(
-            categories,
-            changeCategory,
-            category
-          );
-
-          return allcategories;
-        }}
-      </Query>
-    );
-  }
-
-  printCategories(categories, changeCategory, category) {
-    const allcategories = categories.map((actualCategory, idx) => {
-      return (
-        <CategoriesContainer
-          key={uuidv4()}
-          category={actualCategory.name.toUpperCase()}
-          changeCategory={changeCategory}
-          categoryState={category}
-        />
-      );
-    });
-
-    return allcategories;
-  }
-
-  currenciesQuery(CURRENCIES_QUERY, updateCurrencyHandler) {
-    return (
-      <Query query={CURRENCIES_QUERY}>
-        {({ loading, data }) => {
-          if (loading) return null;
-          const printCurrency = this.printCurrency(data, updateCurrencyHandler);
-
-          return printCurrency;
-        }}
-      </Query>
-    );
-  }
-
-  printCurrency(data, updateCurrencyHandler) {
-    const printCurrency = data.currencies.map((currency, idx) => {
-      return (
-        <li
-          key={uuidv4()}
-          data-currindex={idx}
-          data-curr_currency={currency.symbol}
-          onClick={(e) => {
-            updateCurrencyHandler(e);
-          }}
-        >{`${currency.symbol} ${currency.label.toUpperCase()}`}</li>
-      );
-    });
-
-    return printCurrency;
-  }
 
   render() {
     const {
@@ -103,6 +29,8 @@ export class Header extends PureComponent {
       cartCountStyle,
       overlayBgStyle,
       itemTitleStyle,
+      categoriesQuery,
+      currenciesQuery
     } = this.props;
 
     return (
@@ -110,7 +38,7 @@ export class Header extends PureComponent {
         <header className="header-container">
           <div className="categories-container">
             <ul>
-              {this.categoriesQuery(CATEGORIES_QUERY, changeCategory, category)}
+              {categoriesQuery(CATEGORIES_QUERY, changeCategory, category)}
             </ul>
           </div>
           <Link
@@ -138,7 +66,7 @@ export class Header extends PureComponent {
             >
               <div className="currency-absolute-dropdown">
                 <ul>
-                  {this.currenciesQuery(
+                  {currenciesQuery(
                     CURRENCIES_QUERY,
                     updateCurrencyHandler
                   )}

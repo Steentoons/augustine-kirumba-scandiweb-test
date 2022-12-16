@@ -29,6 +29,8 @@ export default class ProductContentContainer extends PureComponent {
     this.attributeFn = this.attributeFn.bind(this);
     this.selectedAttributeFn = this.selectedAttributeFn.bind(this);
     this.attributeValueTemplate = this.attributeValueTemplate.bind(this);
+    this.instockStyle = this.instockStyle.bind(this);
+    this.instockForButton = this.instockForButton.bind(this);
   }
 
   componentDidMount() {
@@ -121,7 +123,7 @@ export default class ProductContentContainer extends PureComponent {
       currentImageIdx,
     };
   }
-  
+
   cartStateHandler() {
     // Setting the main cart item state to be used all over the project...
     const { cartItemsHandler } = this.props;
@@ -291,6 +293,20 @@ export default class ProductContentContainer extends PureComponent {
     return attributes;
   }
 
+  // Makes the out of stock image to show appropriately...
+  instockStyle(inStock) {
+    const instock = inStock ? "none" : "block";
+
+    return instock;
+  }
+
+  // Determines when the add to cart button shows from the stock state...
+  instockForButton(inStock) {
+    const instock = inStock ? "block" : "none";
+
+    return instock;
+  }
+
   render() {
     const { currentProduct, currencySymbol } = this.props;
     const printImageThumbnails = this.printImageThumbnails(currentProduct);
@@ -306,6 +322,8 @@ export default class ProductContentContainer extends PureComponent {
         parsedDescription={parsedDescription}
         checkCartDuplicates={this.checkCartDuplicates}
         thumbnailId={this.state.thumbnailId}
+        instockStyle={this.instockStyle}
+        instockForButton={this.instockForButton}
       />
     );
   }

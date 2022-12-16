@@ -13,6 +13,8 @@ export default class ProductContainer extends PureComponent {
     this.handleMouseOver = this.handleMouseOver.bind(this);
     this.plpCartHandler = this.plpCartHandler.bind(this);
     this.toCartMouseOut = this.toCartMouseOut.bind(this);
+    this.instock = this.instock.bind(this)
+    this.toCartFn = this.toCartFn.bind(this)
   }
 
   // Handling the hover add to cart on PLP...
@@ -54,6 +56,18 @@ export default class ProductContainer extends PureComponent {
     });
   }
 
+  instock(inStock) {
+    const stockStyle = inStock ? "none" : "block"
+
+    return stockStyle
+  }
+
+  toCartFn(toCart) {
+    const cartStyle = toCart ? "block" : "none"
+
+    return cartStyle
+  }
+
   render() {
     const { product, currencySymbol } = this.props;
 
@@ -65,6 +79,8 @@ export default class ProductContainer extends PureComponent {
         toCart={this.state.toCart}
         plpCartHandler={this.plpCartHandler}
         toCartMouseOut={this.toCartMouseOut}
+        toCartFn={this.toCartFn}
+        instock={this.instock}
       />
     );
   }

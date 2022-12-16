@@ -3,26 +3,6 @@ import { PureComponent } from 'react';
 import "../../assets/css/productView.css";
 
 export class ProductContent extends PureComponent {
-constructor() {
-  super()
-
-  this.instockStyle = this.instockStyle.bind(this)
-  this.instockForButton = this.instockForButton.bind(this)
-}
-  // Makes the out of stock image to show appropriately...
-  instockStyle(inStock) {
-    const instock = inStock ? "none" : "block"
-
-    return instock
-  }
-
-  // Determines when the add to cart button shows from the stock state...
-  instockForButton(inStock) {
-    const instock = inStock ? "block" : "none"
-
-    return instock
-  }
-
   render() {
     const {
       printImageThumbnails,
@@ -31,7 +11,9 @@ constructor() {
       currencySymbol,
       parsedDescription,
       checkCartDuplicates,
-      thumbnailId
+      thumbnailId,
+      instockStyle,
+      instockForButton
     } = this.props
 
     return (
@@ -49,7 +31,7 @@ constructor() {
           <div 
             className="instock-container"
             style={{
-              display: this.instockStyle(currentProduct.inStock)
+              display: instockStyle(currentProduct.inStock)
             }}
           >
             <div className="instock-wrapper">
@@ -79,7 +61,7 @@ constructor() {
                   checkCartDuplicates();
               }}
               style={{
-                display: this.instockForButton(currentProduct.inStock)
+                display: instockForButton(currentProduct.inStock)
               }}
             >
               ADD TO CART

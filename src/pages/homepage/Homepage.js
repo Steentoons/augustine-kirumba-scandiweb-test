@@ -1,25 +1,9 @@
 import React from "react";
 import { PureComponent } from "react";
-import BodySection from "../../components/body-section/BodySection";
+import BodySectionContainer from "../../components/body-section/BodySectionContainer";
 import HeaderContainer from "../../components/header/HeaderContainer";
 
 export default class Homepage extends PureComponent {
-  constructor( props ) {
-    super( props );
-    this.state = {
-      currencyIndex: 0,
-    };
-
-    this.updateCurrencyHandler = this.updateCurrencyHandler.bind( this );
-  }
-
-  // Handlers...
-
-  updateCurrencyHandler( e ) {
-    const idx = Number( e.currentTarget.dataset.currindex );
-    this.setState({ currencyIndex: idx });
-  }
-
   render() {
     const {
       cartItems,
@@ -36,14 +20,15 @@ export default class Homepage extends PureComponent {
       getTotalHandler,
       setTotalHandler,
       cartItemsHandler,
-      cartCountHandler,
+      updateCurrencyHandler,
+      currencyIndex,
       match,
     } = this.props;
     
     return (
       <>
         <HeaderContainer
-          updateCurrencyHandler={ this.updateCurrencyHandler }
+          updateCurrencyHandler={ updateCurrencyHandler }
           cartItems={ cartItems }
           cartCount={ cartCount }
           quantityHandler={ quantityHandler }
@@ -58,10 +43,9 @@ export default class Homepage extends PureComponent {
           getTotalHandler={ getTotalHandler }
           setTotalHandler={ setTotalHandler }
         />
-        <BodySection
-          currencyIdx={ this.state.currencyIndex }
+        <BodySectionContainer
+          currencyIdx={ currencyIndex }
           cartItemsHandler={ cartItemsHandler }
-          cartCountHandler={ cartCountHandler }
           currencySymbol={ currencySymbol }
           category={ category }
           match={ match }

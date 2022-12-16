@@ -2,18 +2,6 @@ import React from 'react'
 import { PureComponent } from 'react';
 
 export class NavCartImg extends PureComponent {
-  constructor() {
-    super()
-
-    this.galleryLength = this.galleryLength.bind(this)
-  }
-
-  galleryLength(galleryLength) {
-    const length = galleryLength <= 1 ? "none" : "flex"
-
-    return length
-  }
-  
   render() {
     const {
         quantityHandler,
@@ -23,6 +11,7 @@ export class NavCartImg extends PureComponent {
         navigatorLeft,
         navigateImage,
         navigatorRight,
+        galleryLength
     } = this.props
     return (
         <div className="cart-images-container">
@@ -64,7 +53,7 @@ export class NavCartImg extends PureComponent {
               className="image-navigator"
               style={{
                 display:
-                  this.galleryLength(product.gallery.length)
+                  galleryLength(product.gallery.length)
               }}
             >
               <img

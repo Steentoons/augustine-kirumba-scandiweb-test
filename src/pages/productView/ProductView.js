@@ -1,54 +1,8 @@
 import React, { PureComponent } from "react";
-import { Query } from "react-apollo";
 import HeaderContainer from "../../components/header/HeaderContainer";
-import ProductContentContainer from "../../components/product-content/ProductContentContainer";
 import { product_view_query } from "../../lib/queries";
 
 export default class ProductView extends PureComponent {
-  constructor(props) {
-    super(props);
-
-    const { match } = this.props;
-    this.state = {
-      currentId: match.params.id,
-    };
-    this.productViewQuery = this.productViewQuery.bind(this)
-  }
-
-  productViewQuery(
-    PRODUCT_VIEW_QUERY,
-    history,
-    cartItemsHandler,
-    cartItems,
-    cartCount,
-    cartCountHandler,
-    currencySymbol,
-    quantityHandler
-  ) {
-    return (
-      <Query query={PRODUCT_VIEW_QUERY}>
-        {({ loading, data }) => {
-          if (!loading) {
-            const currentProduct = data?.product;
-            return (
-              <ProductContentContainer
-                history={history}
-                currentProduct={currentProduct}
-                currentId={this.state.currentId}
-                cartItemsHandler={cartItemsHandler}
-                cartItems={cartItems}
-                cartCount={cartCount}
-                cartCountHandler={cartCountHandler}
-                currencySymbol={currencySymbol}
-                quantityHandler={quantityHandler}
-              />
-            );
-          } else return null;
-        }}
-      </Query>
-    );
-  }
-
   render() {
     const {
       cartItems,
@@ -66,8 +20,10 @@ export default class ProductView extends PureComponent {
       history,
       cartItemsHandler,
       cartCountHandler,
+      currentId,
+      productViewQuery
     } = this.props;
-    const PRODUCT_VIEW_QUERY = product_view_query(this.state.currentId);
+    const PRODUCT_VIEW_QUERY = product_view_query(currentId);
 
     return (
       <div>
@@ -85,7 +41,7 @@ export default class ProductView extends PureComponent {
           getTotalHandler={getTotalHandler}
           setTotalHandler={setTotalHandler}
         />
-        {this.productViewQuery(
+        {productViewQuery(
           PRODUCT_VIEW_QUERY,
           history,
           cartItemsHandler,
