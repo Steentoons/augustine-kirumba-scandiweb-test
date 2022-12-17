@@ -50,6 +50,7 @@ const product_view_query = (id) => {
     const PRODUCT_VIEW_QUERY = gql `
     {
       product(id: "${id}") {
+        id
         name
         inStock
         gallery
