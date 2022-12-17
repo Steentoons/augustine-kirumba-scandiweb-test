@@ -45,7 +45,7 @@ export default class ProductContainer extends PureComponent {
     const quantity = 1;
     const currentImageIdx = 0;
 
-    cartCountHandler();
+    cartCountHandler('plus');
     cartItemsHandler({
       attributes,
       productId,
