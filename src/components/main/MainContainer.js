@@ -154,7 +154,6 @@ export class MainContainer extends PureComponent {
 
   // Adding individual item quantity to the cart...
   cartCountHandler(duty) {
-    console.log("got ourselves a winner at last?");
     this.setState((prev) => this.cartCountPlusMinus(prev, duty));
   }
 

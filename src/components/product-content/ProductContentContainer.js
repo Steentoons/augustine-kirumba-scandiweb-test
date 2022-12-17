@@ -75,12 +75,12 @@ export default class ProductContentContainer extends PureComponent {
     let duplicate = false;
     cartItems.forEach((item, idx) => {
       if (_.isEqual(item.attributes, singleAttribute)) {
-        quantityHandler(idx);
+        quantityHandler(idx, 'plus');
         duplicate = true;
       }
-
-      if (!duplicate) this.cartStateHandler();
     });
+
+    if (!duplicate) this.cartStateHandler();
   }
 
   // Handling them attributes...
