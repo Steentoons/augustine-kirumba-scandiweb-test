@@ -10,10 +10,11 @@ export class ProductContent extends PureComponent {
       attributes,
       currencySymbol,
       parsedDescription,
-      checkCartDuplicates,
       thumbnailId,
       instockStyle,
-      instockForButton
+      instockForButton,
+      checkCartDuplicates,
+      singleAttribute
     } = this.props
 
     return (
@@ -58,7 +59,7 @@ export class ProductContent extends PureComponent {
             <button
               onClick={() => {
                 if ( currentProduct.inStock )
-                  checkCartDuplicates();
+                  checkCartDuplicates(currentProduct, currentProduct.id, singleAttribute);
               }}
               style={{
                 display: instockForButton(currentProduct.inStock)

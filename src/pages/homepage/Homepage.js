@@ -23,7 +23,9 @@ export default class Homepage extends PureComponent {
       updateCurrencyHandler,
       currencyIndex,
       match,
-      cartCountHandler
+      cartCountHandler,
+      checkCartDuplicates,
+      updateAttributes
     } = this.props;
     
     return (
@@ -51,6 +53,8 @@ export default class Homepage extends PureComponent {
           category={ category }
           match={ match }
           cartCountHandler={ cartCountHandler }
+          checkCartDuplicates={checkCartDuplicates}
+          updateAttributes={updateAttributes}
         />
       </>
     );

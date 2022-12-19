@@ -30,7 +30,9 @@ export class Main extends PureComponent {
         getTotalHandler,
         setTotalHandler,
         tax,
-        getTax
+        getTax,
+        checkCartDuplicates,
+        updateAttributes
     } = this.props
     return (
         <Router>
@@ -60,6 +62,8 @@ export class Main extends PureComponent {
                     category={ category }
                     getTotalHandler={ getTotalHandler }
                     setTotalHandler={ setTotalHandler }
+                    checkCartDuplicates={checkCartDuplicates}
+                    updateAttributes={updateAttributes}
                   />
                 )}
               ></Route>
@@ -82,6 +86,8 @@ export class Main extends PureComponent {
                     changeCategory={ changeCategory }
                     getTotalHandler={ getTotalHandler }
                     setTotalHandler={ setTotalHandler }
+                    checkCartDuplicates={checkCartDuplicates}
+                    updateAttributes={updateAttributes}
                   />
                 )}
               />

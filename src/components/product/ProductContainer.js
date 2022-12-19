@@ -8,13 +8,26 @@ export default class ProductContainer extends PureComponent {
     this.state = {
       id: this.props,
       toCart: false,
+      attributes: {},
     };
 
     this.handleMouseOver = this.handleMouseOver.bind(this);
     this.plpCartHandler = this.plpCartHandler.bind(this);
     this.toCartMouseOut = this.toCartMouseOut.bind(this);
-    this.instock = this.instock.bind(this)
-    this.toCartFn = this.toCartFn.bind(this)
+    this.instock = this.instock.bind(this);
+    this.toCartFn = this.toCartFn.bind(this);
+    this.cartIdsFn = this.cartIdsFn.bind(this);
+    this.freshAttributes = this.freshAttributes.bind(this);
+  }
+
+  componentDidMount() {
+    this.freshAttributes();
+  }
+
+  // Freshening the attributes...
+  freshAttributes() {
+    const { product, updateAttributes } = this.props;
+    updateAttributes(product.id, []);
   }
 
   // Handling the hover add to cart on PLP...
@@ -36,40 +49,33 @@ export default class ProductContainer extends PureComponent {
   }
 
   // The PLP cart handler...
-  plpCartHandler(e) {
+  plpCartHandler(e, currentProduct, productId, singleAttribute ) {
     e.preventDefault();
-    const { cartCountHandler, cartItemsHandler, product, currencySymbol } =
-      this.props;
-    const productId = product.id;
-    const attributes = [];
-    const quantity = 1;
-    const currentImageIdx = 0;
-
-    cartCountHandler('plus');
-    cartItemsHandler({
-      attributes,
-      productId,
-      quantity,
-      itemFixedPrice: Number(product.prices[currencySymbol[0]].amount),
-      itemTotalPrice: Number(product.prices[currencySymbol[0]].amount),
-      currentImageIdx,
-    });
+    const { checkCartDuplicates } = this.props
+    checkCartDuplicates(currentProduct, productId, singleAttribute)
   }
 
   instock(inStock) {
-    const stockStyle = inStock ? "none" : "block"
+    const stockStyle = inStock ? "none" : "block";
 
-    return stockStyle
+    return stockStyle;
   }
 
   toCartFn(toCart) {
-    const cartStyle = toCart ? "block" : "none"
+    const cartStyle = toCart ? "block" : "none";
 
-    return cartStyle
+    return cartStyle;
+  }
+
+  // handling the cart ids state...
+  cartIdsFn(id) {
+    const { cartIds } = this.state;
+    const newCartId = cartIds.push(id);
+    this.setState({ cartIds: [...newCartId] });
   }
 
   render() {
-    const { product, currencySymbol } = this.props;
+    const { product, currencySymbol, checkCartDuplicates, updateAttributes } = this.props;
 
     return (
       <Product
@@ -81,6 +87,9 @@ export default class ProductContainer extends PureComponent {
         toCartMouseOut={this.toCartMouseOut}
         toCartFn={this.toCartFn}
         instock={this.instock}
+        checkCartDuplicates={checkCartDuplicates}
+        updateAttributes={updateAttributes}
+        singleAttribute={this.state.attributes}
       />
     );
   }

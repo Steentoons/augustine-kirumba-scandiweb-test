@@ -10,10 +10,11 @@ export class Product extends PureComponent {
       currencySymbol,
       handleMouseOver,
       toCart,
-      plpCartHandler,
       toCartMouseOut,
       toCartFn,
-      instock
+      instock,
+      singleAttribute,
+      plpCartHandler
     } = this.props
 
     return (
@@ -49,7 +50,8 @@ export class Product extends PureComponent {
             <div
               className="plp-add-to-cart"
               onClick={(e) => {
-                plpCartHandler(e);
+                if ( product.inStock )
+                  plpCartHandler(e, product, product.id, singleAttribute);
               }}
             >
               <img src={circleCart} alt="circle cart" />

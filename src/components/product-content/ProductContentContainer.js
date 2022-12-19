@@ -1,6 +1,5 @@
 import React, { PureComponent } from "react";
 import ClickableAttributeContainer from "../clickable-attribute/ClickableAttributeContainer";
-import _ from "lodash";
 import ProductContent from "./ProductContent";
 import { v4 as uuidv4 } from "uuid";
 
@@ -14,13 +13,8 @@ export default class ProductContentContainer extends PureComponent {
     };
 
     this.thumbnailHandler = this.thumbnailHandler.bind(this);
-    this.cartStateHandler = this.cartStateHandler.bind(this);
     this.freshAttributes = this.freshAttributes.bind(this);
-    this.checkCartDuplicates = this.checkCartDuplicates.bind(this);
-    this.getCurrentData = this.getCurrentData.bind(this);
     this.getAttributeArray = this.getAttributeArray.bind(this);
-    this.updateAttributes = this.updateAttributes.bind(this);
-    this.checkingDuplicates = this.checkingDuplicates.bind(this);
     this.descToHTML = this.descToHTML.bind(this);
     this.attributeTypeFn = this.attributeTypeFn.bind(this);
     this.attributeTemplate = this.attributeTemplate.bind(this);
@@ -39,16 +33,10 @@ export default class ProductContentContainer extends PureComponent {
 
   // Freshening the attributes...
   freshAttributes() {
-    const { currentProduct, currentId } = this.props;
+    const { currentProduct, currentId, updateAttributes } = this.props;
     const attributes = currentProduct.attributes;
     const attrArr = this.getAttributeArray(attributes);
-    this.updateAttributes(currentId, attrArr);
-  }
-
-  updateAttributes(currentId, attrArr) {
-    this.setState({
-      attributes: { id: currentId, attribute: attrArr },
-    });
+    updateAttributes(currentId, attrArr);
   }
 
   getAttributeArray(attributes) {
@@ -63,26 +51,6 @@ export default class ProductContentContainer extends PureComponent {
     return attrArr;
   }
 
-  // Checking on cart duplicates...
-  checkCartDuplicates() {
-    const { cartItems, quantityHandler } = this.props;
-    const singleAttribute = this.state.attributes;
-    if (cartItems.length === 0) this.cartStateHandler();
-    else this.checkingDuplicates(cartItems, singleAttribute, quantityHandler);
-  }
-
-  checkingDuplicates(cartItems, singleAttribute, quantityHandler) {
-    let duplicate = false;
-    cartItems.forEach((item, idx) => {
-      if (_.isEqual(item.attributes, singleAttribute)) {
-        quantityHandler(idx, 'plus');
-        duplicate = true;
-      }
-    });
-
-    if (!duplicate) this.cartStateHandler();
-  }
-
   // Handling them attributes...
   attributesHandler(e) {
     const currentAttributeIdx = Number(e.currentTarget.dataset.attribute_idx);
@@ -91,45 +59,15 @@ export default class ProductContentContainer extends PureComponent {
     );
     const attributeKey = e.currentTarget.dataset.attribute_key;
     const newAttributes = this.state.attributes.attribute;
-    const { currentId } = this.props;
-
+    const { currentId, updateAttributes } = this.props;
     newAttributes[parentAttributeIdx][attributeKey] = currentAttributeIdx;
-    this.updateAttributes(currentId, newAttributes);
+    updateAttributes(currentId, newAttributes); 
   }
 
   thumbnailHandler(e) {
     const thumbnailId = Number(e.currentTarget.dataset.thumbnail_id);
 
     this.setState({ thumbnailId: thumbnailId });
-  }
-
-  getCurrentData() {
-    const { currentProduct, currentId } = this.props;
-    const productId = currentId;
-    const newAttributes = { ...this.state.attributes };
-    const attributes = newAttributes;
-
-    const quantity = 1;
-    const itemFixedPrice = currentProduct.prices;
-    const itemTotalPrice = itemFixedPrice;
-    const currentImageIdx = 0;
-
-    return {
-      attributes,
-      productId,
-      quantity,
-      itemFixedPrice,
-      itemTotalPrice,
-      currentImageIdx,
-    };
-  }
-
-  cartStateHandler() {
-    // Setting the main cart item state to be used all over the project...
-    const { cartItemsHandler } = this.props;
-    const data = this.getCurrentData();
-    const newData = data;
-    cartItemsHandler(newData);
   }
 
   // Parsing the description to valid HTML...
@@ -308,7 +246,7 @@ export default class ProductContentContainer extends PureComponent {
   }
 
   render() {
-    const { currentProduct, currencySymbol } = this.props;
+    const { currentProduct, currencySymbol, checkCartDuplicates } = this.props;
     const printImageThumbnails = this.printImageThumbnails(currentProduct);
     const parsedDescription = this.descToHTML(currentProduct);
     const attributes = this.attributeFn(currentProduct);
@@ -320,10 +258,11 @@ export default class ProductContentContainer extends PureComponent {
         attributes={attributes}
         currencySymbol={currencySymbol}
         parsedDescription={parsedDescription}
-        checkCartDuplicates={this.checkCartDuplicates}
         thumbnailId={this.state.thumbnailId}
         instockStyle={this.instockStyle}
         instockForButton={this.instockForButton}
+        checkCartDuplicates={checkCartDuplicates}
+        singleAttribute={this.state.attributes}
       />
     );
   }

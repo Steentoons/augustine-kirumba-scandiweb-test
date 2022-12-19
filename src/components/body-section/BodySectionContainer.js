@@ -35,7 +35,7 @@ export class BodySectionContainer extends PureComponent {
     
       // Returns the product component...
       printProducts(data, currencyIdx, cartItemsHandler, currencySymbol) {
-        const { cartCountHandler } = this.props
+        const { cartCountHandler, checkCartDuplicates, updateAttributes } = this.props
         const allProducts = data.category.products.map((product, idx) => {
           return (
             <ProductContainer
@@ -45,6 +45,8 @@ export class BodySectionContainer extends PureComponent {
               cartItemsHandler={cartItemsHandler}
               currencySymbol={currencySymbol}
               cartCountHandler={cartCountHandler}
+              checkCartDuplicates={checkCartDuplicates}
+              updateAttributes={updateAttributes}
             />
           );
         });

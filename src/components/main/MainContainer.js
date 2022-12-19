@@ -55,6 +55,11 @@ export class MainContainer extends PureComponent {
     this.newTotalFn = this.newTotalFn.bind(this);
     this.newTotal = this.newTotal.bind(this);
     this.getTax = this.getTax.bind(this);
+    this.getCurrentData = this.getCurrentData.bind(this);
+    this.cartStateHandler = this.cartStateHandler.bind(this);
+    this.checkingDuplicates = this.checkingDuplicates.bind(this);
+    this.checkCartDuplicates = this.checkCartDuplicates.bind(this);
+    this.updateAttributes = this.updateAttributes.bind(this);
   }
 
   componentDidUpdate(prevState) {
@@ -312,6 +317,56 @@ export class MainContainer extends PureComponent {
     return leftItem;
   }
 
+  // Checking on cart duplicates...
+  checkCartDuplicates(currentProduct, productId, singleAttribute) {
+    const { cartItems } = this.state;
+    if (cartItems.length === 0) this.cartStateHandler(currentProduct, productId, singleAttribute);
+    else this.checkingDuplicates(currentProduct, productId, singleAttribute);
+  }
+
+  checkingDuplicates(currentProduct, productId, singleAttribute) {
+    let duplicate = false;
+    const { cartItems } = this.state
+    cartItems.forEach((item, idx) => {
+      if (_.isEqual(item.attributes, singleAttribute)) {
+        this.quantityHandler(idx, 'plus');
+        duplicate = true;
+      }
+    });
+
+    if (!duplicate) this.cartStateHandler(currentProduct, productId, singleAttribute);
+  }
+
+  // Setting the main cart item state to be used all over the project...
+  cartStateHandler(currentProduct, productId, singleAttribute) {
+    const newData = this.getCurrentData(currentProduct, productId, {...singleAttribute});
+    this.cartItemsHandler(newData);
+  }
+
+  // getting the current data to be used to update items...
+  getCurrentData(currentProduct, productId, attributes) {
+    const quantity = 1;
+    const itemFixedPrice = currentProduct.prices;
+    const itemTotalPrice = itemFixedPrice;
+    const currentImageIdx = 0;
+
+    return {
+      attributes,
+      productId,
+      quantity,
+      itemFixedPrice,
+      itemTotalPrice,
+      currentImageIdx,
+    };
+  }
+
+  // Updating the attributes...
+  updateAttributes(currentId, attrArr) {
+    this.setState({
+      attributes: { id: currentId, attribute: attrArr },
+    });
+  }
+
   render() {
     return (
       <Main
@@ -332,6 +387,8 @@ export class MainContainer extends PureComponent {
         setTotalHandler={this.setTotalHandler}
         getTax={this.getTax}
         tax={ this.state.tax }
+        checkCartDuplicates={this.checkCartDuplicates}
+        updateAttributes={this.updateAttributes}
       />
     );
   }

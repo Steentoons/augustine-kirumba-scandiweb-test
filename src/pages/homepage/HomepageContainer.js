@@ -33,7 +33,9 @@ export class HomepageContainer extends PureComponent {
         totalPrice,
         navigateImage,
         quantityHandler,
-        match
+        match,
+        checkCartDuplicates,
+        updateAttributes
     } = this.props
 
     return (
@@ -55,6 +57,8 @@ export class HomepageContainer extends PureComponent {
         updateCurrencyHandler={this.updateCurrencyHandler}
         currencyIndex={this.state.currencyIndex}
         match={match}
+        checkCartDuplicates={checkCartDuplicates}
+        updateAttributes={updateAttributes}
       />
     )
   }

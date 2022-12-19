@@ -29,6 +29,7 @@ export class ProductViewContainer extends PureComponent {
         {({ loading, data }) => {
           if (!loading) {
             const currentProduct = data?.product;
+            const { updateAttributes, checkCartDuplicates } = this.props
             return (
               <ProductContentContainer
                 history={history}
@@ -40,6 +41,8 @@ export class ProductViewContainer extends PureComponent {
                 cartCountHandler={cartCountHandler}
                 currencySymbol={currencySymbol}
                 quantityHandler={quantityHandler}
+                checkCartDuplicates={checkCartDuplicates}
+                updateAttributes={updateAttributes}
               />
             );
           } else return null;
@@ -63,7 +66,7 @@ export class ProductViewContainer extends PureComponent {
         changeCategory,
         getTotalHandler,
         setTotalHandler,
-        match
+        match,
     } = this.props
 
     return (
