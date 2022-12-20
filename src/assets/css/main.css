@@ -36,9 +36,14 @@ body {
     background: #FFFFFF;
 }
 
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 .container {
-    width: 100%;
-    max-width: 1440px;
+    width: 100vw;
     position: relative;
 }
 

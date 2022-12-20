@@ -1,19 +1,20 @@
 import React, { PureComponent } from 'react'
 import { Link } from "react-router-dom";
-import circleCart from "../assets/images/circle-cart.png";
-import "../assets/css/product.css";
+import circleCart from "../../assets/images/circle-cart.png";
+import "../../assets/css/product.css";
 
 export class Product extends PureComponent {
-
   render() {
-
     const {
       product,
       currencySymbol,
       handleMouseOver,
       toCart,
-      plpCartHandler,
-      toCartMouseOut
+      toCartMouseOut,
+      toCartFn,
+      instock,
+      singleAttribute,
+      plpCartHandler
     } = this.props
 
     return (
@@ -36,7 +37,7 @@ export class Product extends PureComponent {
           </div>
           <div
             className="instock-container"
-            style={{ display: product.inStock ? "none" : "block" }}
+            style={{ display: instock(product.inStock) }}
           >
             <div className="instock-wrapper">
               <div className="instock-div">OUT OF STOCK</div>
@@ -44,12 +45,13 @@ export class Product extends PureComponent {
           </div>
           <div
             className="plp-add-to-cart-container"
-            style={{ display: toCart ? "block" : "none" }}
+            style={{ display: toCartFn(toCart) }}
           >
             <div
               className="plp-add-to-cart"
               onClick={(e) => {
-                plpCartHandler(e);
+                if ( product.inStock )
+                  plpCartHandler(e, product, product.id, singleAttribute);
               }}
             >
               <img src={circleCart} alt="circle cart" />

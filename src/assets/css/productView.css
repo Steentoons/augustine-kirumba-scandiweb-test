@@ -3,10 +3,13 @@
     padding: 80px 100px;
     display: flex;
     justify-content: space-between;
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .product-view-thumbnail-wrapper {
-    margin-right: 32px;
+    margin-right: 40px;
 }
 
 .product-view-thumbnail-wrapper .product-view-thumbnail {
@@ -53,7 +56,6 @@
 
 .product-view-image .product-view-image-div {
     width: 610px;
-    height: 511px;
     background-size: cover;
     background-repeat: no-repeat;
     display: flex;
@@ -61,7 +63,7 @@
 }
 
 .product-view-image-div img {
-    height: 100%;
+    width: 100%;
 }
 
 .product-view-details-wrapper {

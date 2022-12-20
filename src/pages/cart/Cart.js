@@ -1,17 +1,15 @@
-import React, { PureComponent } from 'react'
-import HeaderContainer from '../components/HeaderContainer';
-import "../assets/css/cart.css";
+import React, { PureComponent } from "react";
+import HeaderContainer from "../../components/header/HeaderContainer";
+import "../../assets/css/cart.css";
 
 export class Cart extends PureComponent {
   render() {
     const {
       cartItems,
       cartCount,
-      quantityMinusHandler,
-      quantityPlusHandler,
+      quantityHandler,
       totalPrice,
-      navigateImageRight,
-      navigateImageLeft,
+      navigateImage,
       currencySymbol,
       currencyHandler,
       checkout,
@@ -19,18 +17,17 @@ export class Cart extends PureComponent {
       calculateCurrencyHandler,
       getTotalHandler,
       setTotalHandler,
-      printCartItems
-    } = this.props
+      printCartItems,
+      getTax,
+    } = this.props;
     return (
       <div>
         <HeaderContainer
           cartItems={cartItems}
           cartCount={cartCount}
-          quantityMinusHandler={quantityMinusHandler}
-          quantityPlusHandler={quantityPlusHandler}
+          quantityHandler={quantityHandler}
           totalPrice={totalPrice}
-          navigateImageRight={navigateImageRight}
-          navigateImageLeft={navigateImageLeft}
+          navigateImage={navigateImage}
           currencySymbol={currencySymbol}
           currencyHandler={currencyHandler}
           checkout={checkout}
@@ -39,22 +36,21 @@ export class Cart extends PureComponent {
           getTotalHandler={getTotalHandler}
           setTotalHandler={setTotalHandler}
         />
-
         <div className="cart-container-wrapper">
-          <div className="cart-title">CART</div>
-          <div className="cart-container">{printCartItems}</div>
+          <div className="cart-title"> CART </div>
+          <div className="cart-container"> {printCartItems} </div>
           <div className="total-container">
-            <div className="total-border"></div>
+            <div className="total-border"> </div>
             <div className="total-details">
-              Tax 21%:
-              <span>{`${currencySymbol[1]}${((totalPrice * 100) * 20)/10000}`}</span>
+              Tax 21 %:
+              <span>{`${currencySymbol[1]}${getTax(totalPrice)}`}</span>
             </div>
             <div className="total-details">
-              Quantity: <span>{cartCount}</span>
+              Quantity: <span> {cartCount} </span>
             </div>
             <div className="total-details">
               Total:
-              <span>{`${currencySymbol[1]}${totalPrice}`}</span>
+              <span> {`${currencySymbol[1]}${totalPrice}`} </span>
             </div>
             <div className="total-button">
               <button
@@ -68,8 +64,8 @@ export class Cart extends PureComponent {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default Cart
+export default Cart;

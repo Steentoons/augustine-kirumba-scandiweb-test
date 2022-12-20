@@ -4,23 +4,23 @@ import { PureComponent } from 'react';
 export class NavCartImg extends PureComponent {
   render() {
     const {
-        quantityPlusHandler,
+        quantityHandler,
         idx,
         cartItems,
-        quantityMinusHandler,
         product,
         navigatorLeft,
-        navigateImageLeft,
+        navigateImage,
         navigatorRight,
-        navigateImageRight
+        galleryLength
     } = this.props
     return (
         <div className="cart-images-container">
         <div className="cart-images-actions">
           <div
             className="cart-plus"
-            onClick={() => {
-              quantityPlusHandler(idx);
+            data-quantity='plus'
+            onClick={(e) => {
+              quantityHandler(idx, e.currentTarget.dataset.quantity);
             }}
           >
             +
@@ -30,8 +30,9 @@ export class NavCartImg extends PureComponent {
           </div>
           <div
             className="cart-minus"
-            onClick={() => {
-              quantityMinusHandler(idx);
+            data-quantity='minus'
+            onClick={(e) => {
+              quantityHandler(idx, e.currentTarget.dataset.quantity);
             }}
           >
             -
@@ -52,21 +53,23 @@ export class NavCartImg extends PureComponent {
               className="image-navigator"
               style={{
                 display:
-                  product.gallery.length <= 1 ? "none" : "flex",
+                  galleryLength(product.gallery.length)
               }}
             >
               <img
                 src={navigatorLeft}
                 alt="navigator-left"
-                onClick={() => {
-                  navigateImageLeft(idx, product.gallery.length);
+                data-nav='left'
+                onClick={(e) => {
+                  navigateImage(idx, product.gallery.length, e.currentTarget.dataset.nav);
                 }}
               />
               <img
                 src={navigatorRight}
                 alt="navigator-right"
-                onClick={() => {
-                  navigateImageRight(idx, product.gallery.length);
+                data-nav='right'
+                onClick={(e) => {
+                  navigateImage(idx, product.gallery.length, e.currentTarget.dataset.nav);
                 }}
               />
             </div>
