@@ -7,7 +7,6 @@ import { PureComponent } from "react";
 import "../../assets/css/header.css";
 
 export class Header extends PureComponent {
-
   render() {
     const {
       CATEGORIES_QUERY,
@@ -30,7 +29,7 @@ export class Header extends PureComponent {
       overlayBgStyle,
       itemTitleStyle,
       categoriesQuery,
-      currenciesQuery
+      currenciesQuery,
     } = this.props;
 
     return (
@@ -41,15 +40,18 @@ export class Header extends PureComponent {
               {categoriesQuery(CATEGORIES_QUERY, changeCategory, category)}
             </ul>
           </div>
-          <Link
-            onClick={() => {
-              changeCategory("all");
-            }}
-            to="/category/all"
-            className="header-logo"
-          >
-            <img className="logo" src={logo} alt="logo" />
-          </Link>
+          <div className="header-logo">
+            <Link to="/category/all">
+              <img
+                className="logo"
+                onClick={() => {
+                  changeCategory("all");
+                }}
+                src={logo}
+                alt="logo"
+              />
+            </Link>
+          </div>
           <div className="top-right-buttons-container">
             <div
               className="currency-symbol-button"
@@ -66,10 +68,7 @@ export class Header extends PureComponent {
             >
               <div className="currency-absolute-dropdown">
                 <ul>
-                  {currenciesQuery(
-                    CURRENCIES_QUERY,
-                    updateCurrencyHandler
-                  )}
+                  {currenciesQuery(CURRENCIES_QUERY, updateCurrencyHandler)}
                 </ul>
               </div>
             </div>

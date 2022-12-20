@@ -25,6 +25,7 @@ export default class ProductContentContainer extends PureComponent {
     this.attributeValueTemplate = this.attributeValueTemplate.bind(this);
     this.instockStyle = this.instockStyle.bind(this);
     this.instockForButton = this.instockForButton.bind(this);
+    this.updateAttributes = this.updateAttributes.bind(this)
   }
 
   componentDidMount() {
@@ -33,10 +34,16 @@ export default class ProductContentContainer extends PureComponent {
 
   // Freshening the attributes...
   freshAttributes() {
-    const { currentProduct, currentId, updateAttributes } = this.props;
+    const { currentProduct, currentId } = this.props;
     const attributes = currentProduct.attributes;
     const attrArr = this.getAttributeArray(attributes);
-    updateAttributes(currentId, attrArr);
+    this.updateAttributes(currentId, attrArr);
+  }
+
+  updateAttributes( currentId, attrArr ) {
+    this.setState({
+      attributes: { id: currentId, attribute: attrArr }
+    })
   }
 
   getAttributeArray(attributes) {
@@ -59,9 +66,9 @@ export default class ProductContentContainer extends PureComponent {
     );
     const attributeKey = e.currentTarget.dataset.attribute_key;
     const newAttributes = this.state.attributes.attribute;
-    const { currentId, updateAttributes } = this.props;
+    const { currentId } = this.props;
     newAttributes[parentAttributeIdx][attributeKey] = currentAttributeIdx;
-    updateAttributes(currentId, newAttributes); 
+    this.updateAttributes(currentId, newAttributes); 
   }
 
   thumbnailHandler(e) {
