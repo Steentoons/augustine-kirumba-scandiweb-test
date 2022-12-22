@@ -263,11 +263,20 @@ export class MainContainer extends PureComponent {
   // Deleting items from the cart...
   deleteItem(idx) {
     const items = [...this.state.cartItems];
-    for (let i = 0; i < items.length; i++) {
-      if (i === idx) items.splice(i, 1);
-    }
+    // for (let i = 0; i < items.length; i++) {
+    //   if (i === idx) items.splice(i, 1);
+    // }
 
-    this.setState({ cartItems: items });
+
+
+    this.setState({ cartItems: this.filterDeleteItems(items, idx) });
+    // this.setState({ cartItems: items });
+  }
+
+  filterDeleteItems(items, idx) {
+    return items.filter((item) => {
+      return item === idx
+    })
   }
 
   // Navigate displayed image to the right and left...
