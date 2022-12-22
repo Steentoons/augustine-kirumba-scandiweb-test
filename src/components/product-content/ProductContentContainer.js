@@ -47,15 +47,13 @@ export default class ProductContentContainer extends PureComponent {
   }
 
   getAttributeArray(attributes) {
-    const attrArr = attributes.map((attribute) => {
+    return attributes.map((attribute) => {
       const attrName = attribute.name.toLowerCase();
 
       return {
         [attrName]: 0,
       };
     });
-
-    return attrArr;
   }
 
   // Handling them attributes...
@@ -81,32 +79,26 @@ export default class ProductContentContainer extends PureComponent {
   descToHTML(currentProduct) {
     const description = currentProduct.description;
     const parser = new DOMParser();
-    const parsedDescription = parser.parseFromString(description, "text/html")
+    return parser.parseFromString(description, "text/html")
       .body.firstChild.textContent;
-
-    return parsedDescription;
   }
 
   // Handles the type of the attribute to return styles and values of the attribute...
   attributeTypeFn(attribute, attributeIndex, type) {
-    const attributesValue = attribute.items.map((value, idx) => {
+    return attribute.items.map((value, idx) => {
       const selectedAttribute = this.selectedAttributeFn(
         idx,
         attributeIndex,
         type
       );
-      const attributeValueTemplate = this.attributeValueTemplate(
+      return this.attributeValueTemplate(
         idx,
         attribute,
         selectedAttribute,
         value,
         type
       );
-
-      return attributeValueTemplate;
     });
-
-    return attributesValue;
   }
 
   // Returns the right template for the attributes...
@@ -150,19 +142,17 @@ export default class ProductContentContainer extends PureComponent {
 
   // Returns the right values to style the selected attributes...
   selectedAttributeFn(idx, attributeIndex, type) {
-    const selectedAttribute = type
+    return type
       ? {
           background: idx === attributeIndex ? "#1D1F22" : "white",
           color: idx === attributeIndex ? "white" : "#1D1F22",
         }
       : { border: idx === attributeIndex ? "1px solid #5ECE7B" : "none" };
-
-    return selectedAttribute;
   }
 
   // returns actual attributes without inner values...
   attributeTemplate(index, name, type, swatch, text) {
-    const attributeTemplate = (
+    return (
       <ClickableAttributeContainer
         key={index}
         attrName={name}
@@ -172,21 +162,18 @@ export default class ProductContentContainer extends PureComponent {
         attributesValueText={text}
       />
     );
-
-    return attributeTemplate;
   }
 
   getCurrentAttribute(index, attributeName) {
-    const attributeIndex = null;
     const currAttribute = this.state.attributes.attribute;
     if (currAttribute) return currAttribute[index][attributeName];
 
-    return attributeIndex;
+    return null;
   }
 
   // Printing the thumbnails...
   printImageThumbnails(currentProduct) {
-    const printImageThumbnails = currentProduct.gallery.map(
+    return currentProduct.gallery.map(
       (thumbnail, idx) => {
         return (
           <div
@@ -203,13 +190,11 @@ export default class ProductContentContainer extends PureComponent {
         );
       }
     );
-
-    return printImageThumbnails;
   }
 
   // Handling Attributes...
   attributeFn(currentProduct) {
-    const attributes = currentProduct.attributes.map((attribute, index) => {
+    return currentProduct.attributes.map((attribute, index) => {
       const attributeIndex = this.getCurrentAttribute(
         index,
         attribute.name.toLowerCase()
@@ -224,32 +209,24 @@ export default class ProductContentContainer extends PureComponent {
         attributeIndex,
         false
       );
-      const attributeTemplate = this.attributeTemplate(
+      return this.attributeTemplate(
         index,
         attribute.name.toUpperCase(),
         attribute.type,
         attributesValueSwatch,
         attributesValueText
       );
-
-      return attributeTemplate;
     });
-
-    return attributes;
   }
 
   // Makes the out of stock image to show appropriately...
   instockStyle(inStock) {
-    const instock = inStock ? "none" : "block";
-
-    return instock;
+    return inStock ? "none" : "block";
   }
 
   // Determines when the add to cart button shows from the stock state...
   instockForButton(inStock) {
-    const instock = inStock ? "block" : "none";
-
-    return instock;
+    return inStock ? "block" : "none";
   }
 
   render() {

@@ -9,9 +9,7 @@ export class AttributesContainer extends PureComponent {
   }
 
   getAttrType( attrType ,attributesValueSwatch, attributesValueText ) {
-    const currAttrType = attrType === "swatch" ? attributesValueSwatch : attributesValueText
-
-    return currAttrType
+    return attrType === "swatch" ? attributesValueSwatch : attributesValueText
   }
   render() {
     const {

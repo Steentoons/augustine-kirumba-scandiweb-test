@@ -141,20 +141,16 @@ export class MainContainer extends PureComponent {
 
   // Getting tax...
   getTax(newTotal) {
-    const tax = ((newTotal * 100 * (21 / 100)) / 100).toFixed(2);
-
-    return tax;
+    return ((newTotal * 100 * (21 / 100)) / 100).toFixed(2);
   }
 
   newTotal(product) {
     const { currencySymbol } = this.state;
-    const newTotal = (
+    return (
       (this.state.totalPrice * 100 +
         product.itemFixedPrice[currencySymbol[0]].amount * 100) /
       100
     ).toFixed(2);
-
-    return newTotal;
   }
 
   // Adding individual item quantity to the cart...
@@ -171,16 +167,12 @@ export class MainContainer extends PureComponent {
   getTotalHandler(fixedAmount, quantity, grandTotal, idx) {
     const newCartItems = this.updateCartItems(idx, fixedAmount);
     this.setState({ cartItems: newCartItems });
-    this.getGrandTotal(fixedAmount, quantity, grandTotal);
-
-    return grandTotal;
+    return this.getGrandTotal(fixedAmount, quantity, grandTotal);
   }
 
   getGrandTotal(fixedAmount, quantity, grandTotal) {
     const itemPrice = (fixedAmount * quantity * 100) / 100;
-    grandTotal = (grandTotal * 100 + itemPrice * 100) / 100;
-
-    return grandTotal;
+    return grandTotal = (grandTotal * 100 + itemPrice * 100) / 100;
   }
 
   updateCartItems(idx, fixedAmount) {
@@ -234,9 +226,7 @@ export class MainContainer extends PureComponent {
 
   getTotalFromQuantity(quantity, fixedPrice, total) {
     this.cartCountHandler(quantity);
-    total = this.newTotalFn(quantity, fixedPrice);
-
-    return total;
+    return this.newTotalFn(quantity, fixedPrice);
   }
 
   newTotalFn(quantity, fixedPrice) {
@@ -267,10 +257,7 @@ export class MainContainer extends PureComponent {
 
   getFixedPrice(idx) {
     const { currencySymbol } = this.state;
-    const fixedPrice =
-      this.state.cartItems[idx].itemFixedPrice[currencySymbol[0]].amount * 100;
-
-    return fixedPrice;
+    return this.state.cartItems[idx].itemFixedPrice[currencySymbol[0]].amount * 100;
   }
 
   // Deleting items from the cart...

@@ -27,7 +27,7 @@ export class CartItemsQueryContainer extends PureComponent {
     itemTotalHandler,
     item
   ) {
-    const cartItemsQuery = (
+    return (
       <Query query={CART_ITEMS_QUERY}>
         {({ loading, data }) => {
           if (!loading) {
@@ -50,12 +50,10 @@ export class CartItemsQueryContainer extends PureComponent {
         }}
       </Query>
     );
-
-    return cartItemsQuery;
   }
 
   printAttributes(product, item) {
-    const printAttributes = product.attributes.map((attribute, index) => {
+    return product.attributes.map((attribute, index) => {
       const attributesValueText = this.attributeType(
         attribute,
         item,
@@ -68,17 +66,13 @@ export class CartItemsQueryContainer extends PureComponent {
         index,
         false
       );
-      const attributeTemplate = this.attributeTemplate(
+      return this.attributeTemplate(
         attribute,
         index,
         attributesValueSwatch,
         attributesValueText
       );
-
-      return attributeTemplate;
     });
-
-    return printAttributes;
   }
 
   // Returns the selected attribute...
@@ -138,7 +132,7 @@ export class CartItemsQueryContainer extends PureComponent {
 
   // When type is swatch...
   attributeType(attribute, item, index, type) {
-    const attributesValueSwatch = attribute.items.map((value, idx) => {
+    return attribute.items.map((value, idx) => {
       const selectedAttribute = this.selectedAttribute(
         idx,
         item,
@@ -146,18 +140,14 @@ export class CartItemsQueryContainer extends PureComponent {
         attribute,
         type
       );
-      const attributeValueTemplate = this.attributeValue(
+      return this.attributeValue(
         idx,
         attribute.name.toLowerCase(),
         selectedAttribute,
         value.value,
         type
       );
-
-      return attributeValueTemplate;
     });
-
-    return attributesValueSwatch;
   }
 
   // Returns main attribute template...
@@ -167,7 +157,7 @@ export class CartItemsQueryContainer extends PureComponent {
     attributesValueSwatch,
     attributesValueText
   ) {
-    const attributeTemplate = (
+    return (
       <AttributesContainer
         key={uuidv4()}
         attrName={
@@ -179,8 +169,6 @@ export class CartItemsQueryContainer extends PureComponent {
         attributesValueText={attributesValueText}
       />
     );
-
-    return attributeTemplate;
   }
 
   render() {

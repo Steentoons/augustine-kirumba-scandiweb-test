@@ -9,9 +9,7 @@ export class NavCartImgContainer extends PureComponent {
   }
 
   galleryLength(galleryLength) {
-    const length = galleryLength <= 1 ? "none" : "flex"
-
-    return length
+    return galleryLength <= 1 ? "none" : "flex"
   }
 
   render() {

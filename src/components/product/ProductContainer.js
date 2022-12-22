@@ -56,15 +56,11 @@ export default class ProductContainer extends PureComponent {
   }
 
   instock(inStock) {
-    const stockStyle = inStock ? "none" : "block";
-
-    return stockStyle;
+    return inStock ? "none" : "block";
   }
 
   toCartFn(toCart) {
-    const cartStyle = toCart ? "block" : "none";
-
-    return cartStyle;
+    return toCart ? "block" : "none";
   }
 
   // handling the cart ids state...

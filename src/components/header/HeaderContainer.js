@@ -101,27 +101,21 @@ export default class HeaderContainer extends PureComponent {
   }
 
   cartCountStyle(cartCount) {
-    const CartDisplay = cartCount <= 0 ? "none" : "block";
-
-    return CartDisplay;
+    return cartCount <= 0 ? "none" : "block";
   }
 
   overlayBgStyle(cartOverlayOpen) {
-    const overlayDisplay = cartOverlayOpen ? "block" : "none";
-
-    return overlayDisplay;
+    return cartOverlayOpen ? "block" : "none";
   }
 
   itemTitleStyle(cartCount) {
-    const itemTitle = cartCount === 1 ? "item" : "items";
-
-    return itemTitle;
+    return cartCount === 1 ? "item" : "items";
   }
 
   currenciesQueryFn({ loading, data }) {
     if (loading) return null;
 
-    const printCurrency = data.currencies.map((currency, idx) => {
+    return data.currencies.map((currency, idx) => {
       return (
         <li
           key={uuidv4()}
@@ -135,21 +129,17 @@ export default class HeaderContainer extends PureComponent {
         </li>
       );
     });
-
-    return printCurrency;
   }
 
   currencyDropStyle(currencyButtonClick) {
-    const currencyDropdownStyle = {
+    return {
       display: currencyButtonClick ? "block" : "none",
     };
-
-    return currencyDropdownStyle;
   }
 
   // Handle attributes per item in cart...
   printCartItems(cartItems, currencySymbol, quantityHandler, navigateImage) {
-    const printCartItems = cartItems.map((item, idx) => {
+    return cartItems.map((item, idx) => {
       const id = item.productId;
       const attributeArray = item.attributes;
 
@@ -169,8 +159,6 @@ export default class HeaderContainer extends PureComponent {
         />
       );
     });
-
-    return printCartItems;
   }
 
   categoriesQuery(CATEGORIES_QUERY, changeCategory, category) {
@@ -179,20 +167,18 @@ export default class HeaderContainer extends PureComponent {
         {({ loading, data }) => {
           if (loading) return null;
           const { categories } = data;
-          const allcategories = this.printCategories(
+          return this.printCategories(
             categories,
             changeCategory,
             category
           );
-
-          return allcategories;
         }}
       </Query>
     );
   }
 
   printCategories(categories, changeCategory, category) {
-    const allcategories = categories.map((actualCategory, idx) => {
+    return categories.map((actualCategory) => {
       return (
         <CategoriesContainer
           key={uuidv4()}
@@ -202,8 +188,6 @@ export default class HeaderContainer extends PureComponent {
         />
       );
     });
-
-    return allcategories;
   }
 
   currenciesQuery(CURRENCIES_QUERY, updateCurrencyHandler) {
@@ -211,16 +195,14 @@ export default class HeaderContainer extends PureComponent {
       <Query query={CURRENCIES_QUERY}>
         {({ loading, data }) => {
           if (loading) return null;
-          const printCurrency = this.printCurrency(data, updateCurrencyHandler);
-
-          return printCurrency;
+          return this.printCurrency(data, updateCurrencyHandler);
         }}
       </Query>
     );
   }
 
   printCurrency(data, updateCurrencyHandler) {
-    const printCurrency = data.currencies.map((currency, idx) => {
+    return data.currencies.map((currency, idx) => {
       return (
         <li
           key={uuidv4()}
@@ -232,8 +214,6 @@ export default class HeaderContainer extends PureComponent {
         >{`${currency.symbol} ${currency.label.toUpperCase()}`}</li>
       );
     });
-
-    return printCurrency;
   }
 
   render() {
