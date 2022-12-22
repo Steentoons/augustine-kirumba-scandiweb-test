@@ -159,8 +159,14 @@ export class MainContainer extends PureComponent {
   }
 
   cartCountPlusMinus(prev, duty) {
-    if (duty === "plus") return { cartCount: prev.cartCount + 1 };
-    else if (duty === "minus") return { cartCount: prev.cartCount - 1 };
+    switch (duty) {
+      case "plus":
+        return { cartCount: prev.cartCount + 1 };
+      case "minus":
+        return { cartCount: prev.cartCount - 1 };
+      default:
+        break;
+    }
   }
 
   // Calculating the grand total after currency change...
@@ -172,7 +178,7 @@ export class MainContainer extends PureComponent {
 
   getGrandTotal(fixedAmount, quantity, grandTotal) {
     const itemPrice = (fixedAmount * quantity * 100) / 100;
-    return grandTotal = (grandTotal * 100 + itemPrice * 100) / 100;
+    return (grandTotal = (grandTotal * 100 + itemPrice * 100) / 100);
   }
 
   updateCartItems(idx, fixedAmount) {
@@ -210,17 +216,21 @@ export class MainContainer extends PureComponent {
 
   updateQuantityPlusMinus(quantity, cartItem, idx, fixedPrice) {
     const newTotal = 0;
-    if (quantity === "plus") {
-      cartItem.quantity = this.state.cartItems[idx].quantity + 1;
-
-      return this.getTotalFromQuantity(quantity, fixedPrice, newTotal);
-    } else if (quantity === "minus") {
-      if (this.state.cartItems[idx].quantity > 0) {
-        cartItem.quantity = this.state.cartItems[idx].quantity - 1;
-        if (cartItem.quantity === 0) this.deleteItem(idx);
-
+    switch (quantity) {
+      case "plus":
+        cartItem.quantity = this.state.cartItems[idx].quantity + 1;
         return this.getTotalFromQuantity(quantity, fixedPrice, newTotal);
-      }
+      case "minus":
+        if (this.state.cartItems[idx].quantity > 0) {
+          cartItem.quantity = this.state.cartItems[idx].quantity - 1;
+          if (cartItem.quantity === 0) this.deleteItem(idx);
+
+          return this.getTotalFromQuantity(quantity, fixedPrice, newTotal);
+        }
+        break;
+
+      default:
+        break;
     }
   }
 
@@ -231,10 +241,14 @@ export class MainContainer extends PureComponent {
 
   newTotalFn(quantity, fixedPrice) {
     const totalPrice = this.state.totalPrice * 100;
-    if (quantity === "minus")
-      return ((totalPrice - fixedPrice) / 100).toFixed(2);
-    else if (quantity === "plus")
-      return ((totalPrice + fixedPrice) / 100).toFixed(2);
+    switch (quantity) {
+      case "plus":
+        return ((totalPrice + fixedPrice) / 100).toFixed(2);
+      case "minus":
+        return ((totalPrice - fixedPrice) / 100).toFixed(2);
+      default:
+        break
+    }
   }
 
   // Updating the cart items with the quantity...
@@ -257,7 +271,9 @@ export class MainContainer extends PureComponent {
 
   getFixedPrice(idx) {
     const { currencySymbol } = this.state;
-    return this.state.cartItems[idx].itemFixedPrice[currencySymbol[0]].amount * 100;
+    return (
+      this.state.cartItems[idx].itemFixedPrice[currencySymbol[0]].amount * 100
+    );
   }
 
   // Deleting items from the cart...
@@ -267,9 +283,9 @@ export class MainContainer extends PureComponent {
   }
 
   filterDeleteItems(items, idx) {
-    return items.filter(( item, filterIdx) => {
-      return filterIdx !== idx
-    })
+    return items.filter((item, filterIdx) => {
+      return filterIdx !== idx;
+    });
   }
 
   // Navigate displayed image to the right and left...
@@ -283,11 +299,14 @@ export class MainContainer extends PureComponent {
     const currentIdx = this.state.cartItems[idx].currentImageIdx;
     const items = [...this.state.cartItems];
     const item = { ...items[idx] };
-
-    if (nav === "left")
-      return this.navigateImageLeft(currentIdx, length, item, items, idx);
-    else if (nav === "right")
-      return this.navigateImageRight(currentIdx, length, item, items, idx);
+    switch (nav) {
+      case "left":
+        return this.navigateImageLeft(currentIdx, length, item, items, idx);
+      case "right":
+        return this.navigateImageRight(currentIdx, length, item, items, idx);
+      default:
+        break
+    }
   }
 
   navigateImageRight(currentIdx, length, item, rightItem, idx) {
@@ -309,26 +328,30 @@ export class MainContainer extends PureComponent {
   // Checking on cart duplicates...
   checkCartDuplicates(currentProduct, productId, singleAttribute) {
     const { cartItems } = this.state;
-    if (cartItems.length === 0) this.cartStateHandler(currentProduct, productId, singleAttribute);
+    if (cartItems.length === 0)
+      this.cartStateHandler(currentProduct, productId, singleAttribute);
     else this.checkingDuplicates(currentProduct, productId, singleAttribute);
   }
 
   checkingDuplicates(currentProduct, productId, singleAttribute) {
     let duplicate = false;
-    const { cartItems } = this.state
+    const { cartItems } = this.state;
     cartItems.forEach((item, idx) => {
       if (_.isEqual(item.attributes, singleAttribute)) {
-        this.quantityHandler(idx, 'plus');
+        this.quantityHandler(idx, "plus");
         duplicate = true;
       }
     });
 
-    if (!duplicate) this.cartStateHandler(currentProduct, productId, singleAttribute);
+    if (!duplicate)
+      this.cartStateHandler(currentProduct, productId, singleAttribute);
   }
 
   // Setting the main cart item state to be used all over the project...
   cartStateHandler(currentProduct, productId, singleAttribute) {
-    const newData = this.getCurrentData(currentProduct, productId, {...singleAttribute});
+    const newData = this.getCurrentData(currentProduct, productId, {
+      ...singleAttribute,
+    });
     this.cartItemsHandler(newData);
   }
 
@@ -375,7 +398,7 @@ export class MainContainer extends PureComponent {
         getTotalHandler={this.getTotalHandler}
         setTotalHandler={this.setTotalHandler}
         getTax={this.getTax}
-        tax={ this.state.tax }
+        tax={this.state.tax}
         checkCartDuplicates={this.checkCartDuplicates}
         updateAttributes={this.updateAttributes}
       />
