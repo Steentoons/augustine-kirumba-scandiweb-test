@@ -177,7 +177,7 @@ export default class ProductContentContainer extends PureComponent {
   }
 
   getCurrentAttribute(index, attributeName) {
-    let attributeIndex = null;
+    const attributeIndex = null;
     const currAttribute = this.state.attributes.attribute;
     if (currAttribute) return currAttribute[index][attributeName];
 
@@ -210,7 +210,7 @@ export default class ProductContentContainer extends PureComponent {
   // Handling Attributes...
   attributeFn(currentProduct) {
     const attributes = currentProduct.attributes.map((attribute, index) => {
-      let attributeIndex = this.getCurrentAttribute(
+      const attributeIndex = this.getCurrentAttribute(
         index,
         attribute.name.toLowerCase()
       );

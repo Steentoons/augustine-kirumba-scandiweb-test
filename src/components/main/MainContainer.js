@@ -217,7 +217,7 @@ export class MainContainer extends PureComponent {
   }
 
   updateQuantityPlusMinus(quantity, cartItem, idx, fixedPrice) {
-    let newTotal = 0;
+    const newTotal = 0;
     if (quantity === "plus") {
       cartItem.quantity = this.state.cartItems[idx].quantity + 1;
 
