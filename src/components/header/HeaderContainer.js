@@ -46,17 +46,11 @@ export default class HeaderContainer extends PureComponent {
 
   // Update every item price in the state...
   grandTotal(cartItems, currencySymbol) {
-    let grandTotal = 0;
-    if (cartItems && cartItems.length > 0) {
-      cartItems.forEach((item) => {
-        const newItemFixedTotal = item.itemFixedPrice[currencySymbol[0]].amount;
-        const itemTotal = (newItemFixedTotal * item.quantity * 100) / 100;
-
-        grandTotal += itemTotal;
-      });
-    }
-
-    return grandTotal.toFixed(2);
+    return cartItems.map(item => {
+      return item.itemFixedPrice[currencySymbol[0]].amount * (item.quantity * 100) / 100
+    }).reduce((total, fixedPrice) => {
+      return total + fixedPrice
+    }, 0).toFixed(2)
   }
 
   currencyButtonHandler() {
