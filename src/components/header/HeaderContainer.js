@@ -5,14 +5,15 @@ import { CATEGORIES_QUERY, CURRENCIES_QUERY } from "../../lib/queries";
 import { v4 as uuidv4 } from "uuid";
 import { Query } from "react-apollo";
 import CategoriesContainer from "../categories/CategoriesContainer";
+import { BLOCK, FALSE, ITEM, ITEMS, NONE } from "../../lib/constants";
 
 export default class HeaderContainer extends PureComponent {
   constructor() {
     super();
     this.state = {
-      currencyButtonClick: false,
+      currencyButtonClick: FALSE,
       currentCurrencyIndex: 0,
-      cartOverlayOpen: false,
+      cartOverlayOpen: FALSE,
       totals: 0,
     };
   }
@@ -91,11 +92,11 @@ export default class HeaderContainer extends PureComponent {
   };
 
   currencyButtonClose = () => {
-    this.setState({ currencyButtonClick: false });
+    this.setState({ currencyButtonClick: FALSE });
   }
 
   cartOverlayBackgroundHandler = () => {
-    this.setState({ cartOverlayOpen: false });
+    this.setState({ cartOverlayOpen: FALSE });
   };
 
   cartOverlayHandler = (e) => {
@@ -105,20 +106,20 @@ export default class HeaderContainer extends PureComponent {
   cartOverlayActionHandler = () => {
     this.setState({
       cartOverlayOpen: !this.state.cartOverlayOpen,
-      currencyButtonClick: false,
+      currencyButtonClick: FALSE,
     });
   };
 
   cartCountStyle = (cartCount) => {
-    return cartCount <= 0 ? "none" : "block";
+    return cartCount <= 0 ? NONE : BLOCK;
   };
 
   overlayBgStyle = (cartOverlayOpen) => {
-    return cartOverlayOpen ? "block" : "none";
+    return cartOverlayOpen ? BLOCK : NONE;
   };
 
   itemTitleStyle = (cartCount) => {
-    return cartCount === 1 ? "item" : "items";
+    return cartCount === 1 ? ITEM : ITEMS;
   };
 
   currenciesQueryFn = ({ loading, data }) => {
@@ -145,7 +146,7 @@ export default class HeaderContainer extends PureComponent {
 
   currencyDropStyle = (currencyButtonClick) => {
     return {
-      display: currencyButtonClick ? "block" : "none",
+      display: currencyButtonClick ? BLOCK : NONE,
     };
   };
 

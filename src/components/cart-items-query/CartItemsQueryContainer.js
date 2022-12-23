@@ -4,7 +4,7 @@ import AttributesContainer from "../attributes/AttributesContainer";
 import NavCartItems from "../nav-cart-items/NavCartItems";
 import { v4 as uuidv4 } from "uuid";
 import { Query } from "react-apollo";
-import { BLUE, WHITE } from "../../lib/constants";
+import { BLUE, DARK_BLUE, FALSE, GREEN_BORDER, NONE, TRUE, WHITE } from "../../lib/constants";
 
 export class CartItemsQueryContainer extends PureComponent {
   cartItemsQuery = (
@@ -48,13 +48,13 @@ export class CartItemsQueryContainer extends PureComponent {
         attribute,
         item,
         index,
-        true
+        TRUE
       );
       const attributesValueSwatch = this.attributeType(
         attribute,
         item,
         index,
-        false
+        FALSE
       );
       return this.attributeTemplate(
         attribute,
@@ -71,18 +71,18 @@ export class CartItemsQueryContainer extends PureComponent {
       ? {
           background:
             idx === item[index][attribute.name.toLowerCase()]
-              ? "#1D1F22"
-              : "white",
+              ? DARK_BLUE
+              : WHITE,
           color:
             idx === item[index][attribute.name.toLowerCase()]
-              ? "white"
-              : "#1D1F22",
+              ? WHITE
+              : DARK_BLUE,
         }
       : {
           border:
             idx === item[index][attribute.name.toLowerCase()]
-              ? "1px solid #5ECE7B"
-              : "none",
+              ? GREEN_BORDER
+              : NONE,
         };
 
     return selectedAttribute;

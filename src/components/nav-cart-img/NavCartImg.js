@@ -1,5 +1,6 @@
 import React from 'react'
 import { PureComponent } from 'react';
+import { LEFT, MINUS, PLUS, RIGHT } from '../../lib/constants';
 
 export class NavCartImg extends PureComponent {
   render() {
@@ -18,7 +19,7 @@ export class NavCartImg extends PureComponent {
         <div className="cart-images-actions">
           <div
             className="cart-plus"
-            data-quantity='plus'
+            data-quantity={PLUS}
             onClick={(e) => {
               quantityHandler(idx, e.currentTarget.dataset.quantity);
             }}
@@ -30,7 +31,7 @@ export class NavCartImg extends PureComponent {
           </div>
           <div
             className="cart-minus"
-            data-quantity='minus'
+            data-quantity={MINUS}
             onClick={(e) => {
               quantityHandler(idx, e.currentTarget.dataset.quantity);
             }}
@@ -59,7 +60,7 @@ export class NavCartImg extends PureComponent {
               <img
                 src={navigatorLeft}
                 alt="navigator-left"
-                data-nav='left'
+                data-nav={LEFT}
                 onClick={(e) => {
                   navigateImage(idx, product.gallery.length, e.currentTarget.dataset.nav);
                 }}
@@ -67,7 +68,7 @@ export class NavCartImg extends PureComponent {
               <img
                 src={navigatorRight}
                 alt="navigator-right"
-                data-nav='right'
+                data-nav={RIGHT}
                 onClick={(e) => {
                   navigateImage(idx, product.gallery.length, e.currentTarget.dataset.nav);
                 }}

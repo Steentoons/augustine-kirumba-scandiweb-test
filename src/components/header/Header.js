@@ -5,6 +5,7 @@ import empty_cart from "../../assets/images/empty-cart.png";
 import { Link } from "react-router-dom";
 import { PureComponent } from "react";
 import "../../assets/css/header.css";
+import { TRUE } from "../../lib/constants";
 
 export class Header extends PureComponent {
   render() {
@@ -93,7 +94,7 @@ export class Header extends PureComponent {
             >
               <div
                 className="cart-overlay-background"
-                data-overlay_background={true}
+                data-overlay_background={TRUE}
                 onClick={() => {
                   cartOverlayBackgroundHandler();
                 }}

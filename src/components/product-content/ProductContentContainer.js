@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import ClickableAttributeContainer from "../clickable-attribute/ClickableAttributeContainer";
 import ProductContent from "./ProductContent";
 import { v4 as uuidv4 } from "uuid";
-import { BLUE, WHITE } from "../../lib/constants";
+import { BLOCK, BLUE, DARK_BLUE, FALSE, GREEN_BORDER, NONE, TRUE, WHITE } from "../../lib/constants";
 
 export default class ProductContentContainer extends PureComponent {
   constructor() {
@@ -129,10 +129,10 @@ export default class ProductContentContainer extends PureComponent {
   selectedAttributeFn = (idx, attributeIndex, type) => {
     return type
       ? {
-          background: idx === attributeIndex ? "#1D1F22" : "white",
-          color: idx === attributeIndex ? "white" : "#1D1F22",
+          background: idx === attributeIndex ? DARK_BLUE : WHITE,
+          color: idx === attributeIndex ? WHITE : DARK_BLUE,
         }
-      : { border: idx === attributeIndex ? "1px solid #5ECE7B" : "none" };
+      : { border: idx === attributeIndex ? GREEN_BORDER : NONE };
   }
 
   // returns actual attributes without inner values...
@@ -187,12 +187,12 @@ export default class ProductContentContainer extends PureComponent {
       const attributesValueText = this.attributeTypeFn(
         attribute,
         attributeIndex,
-        true
+        TRUE
       );
       const attributesValueSwatch = this.attributeTypeFn(
         attribute,
         attributeIndex,
-        false
+        FALSE
       );
       return this.attributeTemplate(
         index,
@@ -206,12 +206,12 @@ export default class ProductContentContainer extends PureComponent {
 
   // Makes the out of stock image to show appropriately...
   instockStyle = inStock => {
-    return inStock ? "none" : "block";
+    return inStock ? NONE : BLOCK;
   }
 
   // Determines when the add to cart button shows from the stock state...
   instockForButton = inStock => {
-    return inStock ? "block" : "none";
+    return inStock ? BLOCK : NONE;
   }
 
   render() {

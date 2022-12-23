@@ -1,4 +1,5 @@
 import React, { PureComponent } from "react";
+import { BLOCK, FALSE, NONE, TRUE } from "../../lib/constants";
 import Product from "./Product";
 
 export default class ProductContainer extends PureComponent {
@@ -7,7 +8,7 @@ export default class ProductContainer extends PureComponent {
 
     this.state = {
       id: this.props,
-      toCart: false,
+      toCart: FALSE,
       attributes: {},
     };
 
@@ -33,10 +34,10 @@ export default class ProductContainer extends PureComponent {
   // Handling the hover add to cart on PLP...
   handleMouseOver = () => {
     const { product } = this.props;
-    if (product.attributes.length < 1 && product.inStock === true) {
-      this.setToCart(true);
+    if (product.attributes.length < 1 && product.inStock === TRUE) {
+      this.setToCart(TRUE);
     } else {
-      this.setToCart(false);
+      this.setToCart(FALSE);
     }
   }
 
@@ -45,7 +46,7 @@ export default class ProductContainer extends PureComponent {
   };
 
   toCartMouseOut = () => {
-    this.setState({ toCart: false });
+    this.setState({ toCart: FALSE });
   }
 
   // The PLP cart handler...
@@ -56,11 +57,11 @@ export default class ProductContainer extends PureComponent {
   }
 
   instock = inStock => {
-    return inStock ? "none" : "block";
+    return inStock ? NONE : BLOCK;
   }
 
   toCartFn = toCart => {
-    return toCart ? "block" : "none";
+    return toCart ? BLOCK : NONE;
   }
 
   // handling the cart ids state...

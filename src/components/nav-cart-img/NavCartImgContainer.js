@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react'
+import { FLEX, NONE } from '../../lib/constants'
 import NavCartImg from './NavCartImg'
 
 export class NavCartImgContainer extends PureComponent {
   galleryLength = (galleryLength) => {
-    return galleryLength <= 1 ? "none" : "flex"
+    return galleryLength <= 1 ? NONE : FLEX
   }
 
   render() {
