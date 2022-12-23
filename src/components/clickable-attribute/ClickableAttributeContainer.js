@@ -2,12 +2,7 @@ import React, { PureComponent } from "react";
 import ClickableAttribute from "./ClickableAttribute";
 
 export class ClickableAttributeContainer extends PureComponent {
-  constructor() {
-    super();
-
-    this.attributeContent = this.attributeContent.bind(this);
-  }
-  attributeContent(attrType, swatch, text) {
+  attributeContent = (attrType, swatch, text) => {
     return attrType === "swatch" ? swatch : text;
   }
 

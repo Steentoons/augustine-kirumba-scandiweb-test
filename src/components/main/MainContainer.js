@@ -24,45 +24,9 @@ export class MainContainer extends PureComponent {
         : [0, "$"],
       category: "all",
     };
-
-    // Binding Handlers...
-    this.persistState = this.persistState.bind(this);
-    this.persistCartItems = this.persistCartItems.bind(this);
-    this.cartItemsHandler = this.cartItemsHandler.bind(this);
-    this.cartCountHandler = this.cartCountHandler.bind(this);
-    this.cartCountPlusMinus = this.cartCountPlusMinus.bind(this);
-    this.updateCartItems = this.updateCartItems.bind(this);
-    this.quantityHandler = this.quantityHandler.bind(this);
-    this.updateCartItemsFromQuantity =
-      this.updateCartItemsFromQuantity.bind(this);
-    this.getTotalFromQuantity = this.getTotalFromQuantity.bind(this);
-    this.updateQuantityPlusMinus = this.updateQuantityPlusMinus.bind(this);
-    this.getFixedPrice = this.getFixedPrice.bind(this);
-    this.updateCartItemsWithQuantity =
-      this.updateCartItemsWithQuantity.bind(this);
-    this.navigateImage = this.navigateImage.bind(this);
-    this.navigateImageHelper = this.navigateImageHelper.bind(this);
-    this.navigateImageRight = this.navigateImageRight.bind(this);
-    this.navigateImageLeft = this.navigateImageLeft.bind(this);
-    this.currencyHandler = this.currencyHandler.bind(this);
-    this.updateCurrency = this.updateCurrency.bind(this);
-    this.deleteItem = this.deleteItem.bind(this);
-    this.checkout = this.checkout.bind(this);
-    this.changeCategory = this.changeCategory.bind(this);
-    this.getTotalHandler = this.getTotalHandler.bind(this);
-    this.getGrandTotal = this.getGrandTotal.bind(this);
-    this.setTotalHandler = this.setTotalHandler.bind(this);
-    this.newTotalFn = this.newTotalFn.bind(this);
-    this.newTotal = this.newTotal.bind(this);
-    this.getTax = this.getTax.bind(this);
-    this.getCurrentData = this.getCurrentData.bind(this);
-    this.cartStateHandler = this.cartStateHandler.bind(this);
-    this.checkingDuplicates = this.checkingDuplicates.bind(this);
-    this.checkCartDuplicates = this.checkCartDuplicates.bind(this);
-    this.updateAttributes = this.updateAttributes.bind(this);
   }
 
-  componentDidUpdate(prevState) {
+  componentDidUpdate = prevState => {
     this.persistState(
       prevState.cartCount,
       prevState.totalPrice,
@@ -72,7 +36,7 @@ export class MainContainer extends PureComponent {
     this.persistCartItems(prevState.cartItems);
   }
 
-  persistState(prevCartCount, prevTotalPrice, prevTax, prevCurrencySymbol) {
+  persistState = (prevCartCount, prevTotalPrice, prevTax, prevCurrencySymbol) => {
     const { cartCount, totalPrice, tax, currencySymbol } = this.state;
     if (
       cartCount !== prevCartCount ||
@@ -92,7 +56,7 @@ export class MainContainer extends PureComponent {
     }
   }
 
-  persistCartItems(prevCartItems) {
+  persistCartItems = prevCartItems => {
     const { cartItems } = this.state;
     if (!_.isEqual(cartItems, prevCartItems)) {
       sessionStorage.setItem(
@@ -103,17 +67,17 @@ export class MainContainer extends PureComponent {
   }
 
   // Changing category...
-  changeCategory(currentCategory) {
+  changeCategory = currentCategory => {
     this.setState({ category: currentCategory });
   }
 
   // Changing currency...
-  currencyHandler(e) {
+  currencyHandler = e => {
     const newCurrency = this.updateCurrency(e);
     this.setState({ currencySymbol: newCurrency });
   }
 
-  updateCurrency(e) {
+  updateCurrency = e => {
     const idx = Number(e.currentTarget.dataset.currindex);
     const currentCurrency = e.currentTarget.dataset.curr_currency;
     const newCurrency = [...this.state.currencySymbol];
@@ -124,7 +88,7 @@ export class MainContainer extends PureComponent {
   }
 
   // Adding items to the cart...
-  cartItemsHandler(product) {
+  cartItemsHandler = product => {
     this.updateCartItemsFromJSON(product);
     const newTotal = this.newTotal(product);
     const tax = this.getTax(newTotal);
@@ -132,7 +96,7 @@ export class MainContainer extends PureComponent {
     this.cartCountHandler("plus");
   }
 
-  updateCartItemsFromJSON(product) {
+  updateCartItemsFromJSON = product => {
     const currentCartItems = this.state.cartItems;
     const newItems = [].concat(currentCartItems, product);
 
@@ -154,11 +118,11 @@ export class MainContainer extends PureComponent {
   }
 
   // Adding individual item quantity to the cart...
-  cartCountHandler(duty) {
+  cartCountHandler = duty => {
     this.setState((prev) => this.cartCountPlusMinus(prev, duty));
   }
 
-  cartCountPlusMinus(prev, duty) {
+  cartCountPlusMinus = (prev, duty) => {
     switch (duty) {
       case "plus":
         return { cartCount: prev.cartCount + 1 };
@@ -170,18 +134,18 @@ export class MainContainer extends PureComponent {
   }
 
   // Calculating the grand total after currency change...
-  getTotalHandler(fixedAmount, quantity, grandTotal, idx) {
+  getTotalHandler = (fixedAmount, quantity, grandTotal, idx) => {
     const newCartItems = this.updateCartItems(idx, fixedAmount);
     this.setState({ cartItems: newCartItems });
     return this.getGrandTotal(fixedAmount, quantity, grandTotal);
   }
 
-  getGrandTotal(fixedAmount, quantity, grandTotal) {
+  getGrandTotal = (fixedAmount, quantity, grandTotal) => {
     const itemPrice = (fixedAmount * quantity * 100) / 100;
     return (grandTotal = (grandTotal * 100 + itemPrice * 100) / 100);
   }
 
-  updateCartItems(idx, fixedAmount) {
+  updateCartItems = (idx, fixedAmount) => {
     const { currencySymbol } = this.state;
     const newCartItems = [...this.state.cartItems];
     const item = { ...newCartItems[idx] };
@@ -192,17 +156,17 @@ export class MainContainer extends PureComponent {
   }
 
   // Setting the total to state after currency change...
-  setTotalHandler(grandTotal) {
+  setTotalHandler = grandTotal => {
     this.setState({ totalPrice: grandTotal });
   }
 
   // Ordering and clearing cart...
-  checkout() {
+  checkout = () => {
     this.setState({ cartItems: [], cartCount: 0, totalPrice: 0, tax: 0 });
   }
 
   // Adding and reducing quantity to the cart...
-  quantityHandler(idx, quantity) {
+  quantityHandler = (idx, quantity) => {
     const { cartItem, fixedPrice } = this.updateCartItemsWithQuantity(idx);
     const newTotal = this.updateQuantityPlusMinus(
       quantity,
@@ -214,7 +178,7 @@ export class MainContainer extends PureComponent {
     this.setState({ totalPrice: newTotal, tax: tax });
   }
 
-  updateQuantityPlusMinus(quantity, cartItem, idx, fixedPrice) {
+  updateQuantityPlusMinus = (quantity, cartItem, idx, fixedPrice) => {
     const newTotal = 0;
     switch (quantity) {
       case "plus":
@@ -234,12 +198,12 @@ export class MainContainer extends PureComponent {
     }
   }
 
-  getTotalFromQuantity(quantity, fixedPrice, total) {
+  getTotalFromQuantity = (quantity, fixedPrice, total) => {
     this.cartCountHandler(quantity);
     return this.newTotalFn(quantity, fixedPrice);
   }
 
-  newTotalFn(quantity, fixedPrice) {
+  newTotalFn = (quantity, fixedPrice) => {
     const totalPrice = this.state.totalPrice * 100;
     switch (quantity) {
       case "plus":
@@ -252,14 +216,14 @@ export class MainContainer extends PureComponent {
   }
 
   // Updating the cart items with the quantity...
-  updateCartItemsWithQuantity(idx) {
+  updateCartItemsWithQuantity = idx => {
     const fixedPrice = this.getFixedPrice(idx);
     const cartItem = this.updateCartItemsFromQuantity(idx, fixedPrice);
 
     return { cartItem, fixedPrice };
   }
 
-  updateCartItemsFromQuantity(idx, fixedPrice) {
+  updateCartItemsFromQuantity = (idx, fixedPrice) => {
     const newCartItems = [...this.state.cartItems];
     const cartItem = { ...newCartItems[idx] };
     cartItem.itemTotalPrice = (fixedPrice * 100 * cartItem.quantity) / 100;
@@ -269,7 +233,7 @@ export class MainContainer extends PureComponent {
     return cartItem;
   }
 
-  getFixedPrice(idx) {
+  getFixedPrice = idx => {
     const { currencySymbol } = this.state;
     return (
       this.state.cartItems[idx].itemFixedPrice[currencySymbol[0]].amount * 100
@@ -277,25 +241,25 @@ export class MainContainer extends PureComponent {
   }
 
   // Deleting items from the cart...
-  deleteItem(idx) {
+  deleteItem = idx => {
     const items = [...this.state.cartItems];
     this.setState({ cartItems: this.filterDeleteItems(items, idx) });
   }
 
-  filterDeleteItems(items, idx) {
+  filterDeleteItems = (items, idx) => {
     return items.filter((item, filterIdx) => {
       return filterIdx !== idx;
     });
   }
 
   // Navigate displayed image to the right and left...
-  navigateImage(idx, length, nav) {
+  navigateImage = (idx, length, nav) => {
     const newCartItems = this.navigateImageHelper(idx, nav, length);
 
     this.setState({ cartItems: newCartItems });
   }
 
-  navigateImageHelper(idx, nav, length) {
+  navigateImageHelper = (idx, nav, length) => {
     const currentIdx = this.state.cartItems[idx].currentImageIdx;
     const items = [...this.state.cartItems];
     const item = { ...items[idx] };
@@ -309,7 +273,7 @@ export class MainContainer extends PureComponent {
     }
   }
 
-  navigateImageRight(currentIdx, length, item, rightItem, idx) {
+  navigateImageRight = (currentIdx, length, item, rightItem, idx) => {
     if (currentIdx !== length - 1) item.currentImageIdx = currentIdx + 1;
     else if (currentIdx === length - 1) item.currentImageIdx = 0;
     rightItem[idx] = item;
@@ -317,7 +281,7 @@ export class MainContainer extends PureComponent {
     return rightItem;
   }
 
-  navigateImageLeft(currentIdx, length, item, leftItem, idx) {
+  navigateImageLeft = (currentIdx, length, item, leftItem, idx) => {
     if (currentIdx > 0) item.currentImageIdx = currentIdx - 1;
     else if (currentIdx === 0) item.currentImageIdx = length - 1;
     leftItem[idx] = item;
@@ -326,19 +290,19 @@ export class MainContainer extends PureComponent {
   }
 
   // Checking on cart duplicates...
-  checkCartDuplicates(currentProduct, productId, singleAttribute) {
+  checkCartDuplicates = (currentProduct, productId, singleAttribute) => {
     const { cartItems } = this.state;
     if (cartItems.length === 0)
       this.cartStateHandler(currentProduct, productId, singleAttribute);
     else this.checkingDuplicates(currentProduct, productId, singleAttribute);
   }
 
-  checkingDuplicates(currentProduct, productId, singleAttribute) {
+  checkingDuplicates = (currentProduct, productId, singleAttribute) => {
     const duplicateIdx = this.duplicateIdx(singleAttribute)
     this.duplicateActionFn(duplicateIdx, currentProduct, productId, singleAttribute)
   }
 
-  duplicateActionFn(duplicateIdx, currentProduct, productId, singleAttribute ) {
+  duplicateActionFn = (duplicateIdx, currentProduct, productId, singleAttribute ) => {
     if (duplicateIdx === -1)
       this.cartStateHandler(currentProduct, productId, singleAttribute);
     else {
@@ -346,7 +310,7 @@ export class MainContainer extends PureComponent {
     }
   }
 
-  duplicateIdx(singleAttribute) {
+  duplicateIdx = (singleAttribute) => {
     const { cartItems } = this.state;
     return cartItems.findIndex(item => {
       return _.isEqual(item.attributes, singleAttribute)
@@ -354,7 +318,7 @@ export class MainContainer extends PureComponent {
   }
 
   // Setting the main cart item state to be used all over the project...
-  cartStateHandler(currentProduct, productId, singleAttribute) {
+  cartStateHandler = (currentProduct, productId, singleAttribute) => {
     const newData = this.getCurrentData(currentProduct, productId, {
       ...singleAttribute,
     });
@@ -362,7 +326,7 @@ export class MainContainer extends PureComponent {
   }
 
   // getting the current data to be used to update items...
-  getCurrentData(currentProduct, productId, attributes) {
+  getCurrentData = (currentProduct, productId, attributes) => {
     const quantity = 1;
     const itemFixedPrice = currentProduct.prices;
     const itemTotalPrice = itemFixedPrice;
@@ -379,7 +343,7 @@ export class MainContainer extends PureComponent {
   }
 
   // Updating the attributes...
-  updateAttributes(currentId, attrArr) {
+  updateAttributes = (currentId, attrArr) => {
     this.setState({
       attributes: { id: currentId, attribute: attrArr },
     });

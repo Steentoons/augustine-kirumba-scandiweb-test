@@ -6,15 +6,13 @@ import ProductContentContainer from "../../components/product-content/ProductCon
 export class ProductViewContainer extends PureComponent {
   constructor(props) {
     super(props);
-
     const { match } = this.props;
     this.state = {
       currentId: match.params.id,
     };
-    this.productViewQuery = this.productViewQuery.bind(this)
   }
 
-  productViewQuery(
+  productViewQuery = (
     PRODUCT_VIEW_QUERY,
     history,
     cartItemsHandler,
@@ -23,7 +21,7 @@ export class ProductViewContainer extends PureComponent {
     cartCountHandler,
     currencySymbol,
     quantityHandler
-  ) {
+  ) => {
     return (
       <Query query={PRODUCT_VIEW_QUERY}>
         {({ loading, data }) => {

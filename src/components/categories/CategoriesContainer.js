@@ -2,17 +2,11 @@ import React, { PureComponent } from "react";
 import Categories from "./Categories";
 
 export class CategoriesContainer extends PureComponent {
-  constructor() {
-    super();
-
-    this.categoryToLowercase = this.categoryToLowercase.bind(this);
-    this.categoryStyle = this.categoryStyle.bind(this);
-  }
-  categoryToLowercase(category) {
+  categoryToLowercase = (category) => {
     return category.toLowerCase();
   }
 
-  categoryStyle(categoryState, category) {
+  categoryStyle = (categoryState, category) => {
     const categoryStyle = {
       color:
         this.categoryToLowercase(category) === categoryState

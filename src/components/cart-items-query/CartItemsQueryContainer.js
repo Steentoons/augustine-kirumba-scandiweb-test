@@ -6,18 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Query } from "react-apollo";
 
 export class CartItemsQueryContainer extends PureComponent {
-  constructor() {
-    super();
-
-    this.cartItemsQuery = this.cartItemsQuery.bind(this);
-    this.attributeTemplate = this.attributeTemplate.bind(this);
-    this.attributeType = this.attributeType.bind(this);
-    this.printAttributes = this.printAttributes.bind(this);
-    this.attributeValue = this.attributeValue.bind(this);
-    this.selectedAttribute = this.selectedAttribute.bind(this);
-  }
-
-  cartItemsQuery(
+  cartItemsQuery = (
     CART_ITEMS_QUERY,
     currencySymbol,
     cartItems,
@@ -26,7 +15,7 @@ export class CartItemsQueryContainer extends PureComponent {
     navigateImage,
     itemTotalHandler,
     item
-  ) {
+  ) => {
     return (
       <Query query={CART_ITEMS_QUERY}>
         {({ loading, data }) => {
@@ -52,7 +41,7 @@ export class CartItemsQueryContainer extends PureComponent {
     );
   }
 
-  printAttributes(product, item) {
+  printAttributes = (product, item) => {
     return product.attributes.map((attribute, index) => {
       const attributesValueText = this.attributeType(
         attribute,
@@ -76,7 +65,7 @@ export class CartItemsQueryContainer extends PureComponent {
   }
 
   // Returns the selected attribute...
-  selectedAttribute(idx, item, index, attribute, type) {
+  selectedAttribute = (idx, item, index, attribute, type) => {
     const selectedAttribute = type
       ? {
           background:
@@ -98,7 +87,7 @@ export class CartItemsQueryContainer extends PureComponent {
     return selectedAttribute;
   }
 
-  attributeValue(idx, attribute, selectedAttribute, value, type) {
+  attributeValue = (idx, attribute, selectedAttribute, value, type) => {
     const attributeValue = type ? (
       <div
         key={uuidv4()}
@@ -131,7 +120,7 @@ export class CartItemsQueryContainer extends PureComponent {
   }
 
   // When type is swatch...
-  attributeType(attribute, item, index, type) {
+  attributeType = (attribute, item, index, type) => {
     return attribute.items.map((value, idx) => {
       const selectedAttribute = this.selectedAttribute(
         idx,
@@ -151,12 +140,12 @@ export class CartItemsQueryContainer extends PureComponent {
   }
 
   // Returns main attribute template...
-  attributeTemplate(
+  attributeTemplate = (
     attribute,
     index,
     attributesValueSwatch,
     attributesValueText
-  ) {
+  ) => {
     return (
       <AttributesContainer
         key={uuidv4()}

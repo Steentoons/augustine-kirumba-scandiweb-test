@@ -4,16 +4,8 @@ import ProductContainer from "../product/ProductContainer";
 import { Query } from "react-apollo";
 
 export class BodySectionContainer extends PureComponent {
-  constructor() {
-    super();
-
-    this.productQuery = this.productQuery.bind(this);
-    this.printProducts = this.printProducts.bind(this);
-    this.capitalizeFirstLetter = this.capitalizeFirstLetter.bind(this);
-  }
-
   // The product query...
-  productQuery(PRODUCT_QUERY, currencyIdx, cartItemsHandler, currencySymbol) {
+  productQuery = (PRODUCT_QUERY, currencyIdx, cartItemsHandler, currencySymbol) => {
     return (
       <Query query={PRODUCT_QUERY}>
         {({ loading, data }) => {
@@ -30,7 +22,7 @@ export class BodySectionContainer extends PureComponent {
   }
 
   // Returns the product component...
-  printProducts(data, currencyIdx, cartItemsHandler, currencySymbol) {
+  printProducts = (data, currencyIdx, cartItemsHandler, currencySymbol) => {
     const { cartCountHandler, checkCartDuplicates, updateAttributes } =
       this.props;
     return data.category.products.map((product, idx) => {
@@ -50,7 +42,7 @@ export class BodySectionContainer extends PureComponent {
   }
 
   // Capitalizes the first letter of the category title...
-  capitalizeFirstLetter(category) {
+  capitalizeFirstLetter = (category) => {
     return category.charAt(0).toUpperCase() + category.slice(1);
   }
 

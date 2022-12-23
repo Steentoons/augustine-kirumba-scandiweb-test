@@ -4,49 +4,33 @@ import ProductContent from "./ProductContent";
 import { v4 as uuidv4 } from "uuid";
 
 export default class ProductContentContainer extends PureComponent {
-  constructor(props) {
-    super(props);
-
+  constructor() {
+    super();
     this.state = {
       thumbnailId: 0,
       attributes: {},
     };
-
-    this.thumbnailHandler = this.thumbnailHandler.bind(this);
-    this.freshAttributes = this.freshAttributes.bind(this);
-    this.getAttributeArray = this.getAttributeArray.bind(this);
-    this.descToHTML = this.descToHTML.bind(this);
-    this.attributeTypeFn = this.attributeTypeFn.bind(this);
-    this.attributeTemplate = this.attributeTemplate.bind(this);
-    this.getCurrentAttribute = this.getCurrentAttribute.bind(this);
-    this.printImageThumbnails = this.printImageThumbnails.bind(this);
-    this.attributeFn = this.attributeFn.bind(this);
-    this.selectedAttributeFn = this.selectedAttributeFn.bind(this);
-    this.attributeValueTemplate = this.attributeValueTemplate.bind(this);
-    this.instockStyle = this.instockStyle.bind(this);
-    this.instockForButton = this.instockForButton.bind(this);
-    this.updateAttributes = this.updateAttributes.bind(this)
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     this.freshAttributes();
   }
 
   // Freshening the attributes...
-  freshAttributes() {
+  freshAttributes = () => {
     const { currentProduct, currentId } = this.props;
     const attributes = currentProduct.attributes;
     const attrArr = this.getAttributeArray(attributes);
     this.updateAttributes(currentId, attrArr);
   }
 
-  updateAttributes( currentId, attrArr ) {
+  updateAttributes = ( currentId, attrArr ) => {
     this.setState({
       attributes: { id: currentId, attribute: attrArr }
     })
   }
 
-  getAttributeArray(attributes) {
+  getAttributeArray = attributes => {
     return attributes.map((attribute) => {
       const attrName = attribute.name.toLowerCase();
 
@@ -57,7 +41,7 @@ export default class ProductContentContainer extends PureComponent {
   }
 
   // Handling them attributes...
-  attributesHandler(e) {
+  attributesHandler = e => {
     const currentAttributeIdx = Number(e.currentTarget.dataset.attribute_idx);
     const parentAttributeIdx = Number(
       e.currentTarget.parentElement.dataset.attribute_idx
@@ -69,14 +53,14 @@ export default class ProductContentContainer extends PureComponent {
     this.updateAttributes(currentId, newAttributes); 
   }
 
-  thumbnailHandler(e) {
+  thumbnailHandler = e => {
     const thumbnailId = Number(e.currentTarget.dataset.thumbnail_id);
 
     this.setState({ thumbnailId: thumbnailId });
   }
 
   // Parsing the description to valid HTML...
-  descToHTML(currentProduct) {
+  descToHTML = currentProduct => {
     const description = currentProduct.description;
     const parser = new DOMParser();
     return parser.parseFromString(description, "text/html")
@@ -84,7 +68,7 @@ export default class ProductContentContainer extends PureComponent {
   }
 
   // Handles the type of the attribute to return styles and values of the attribute...
-  attributeTypeFn(attribute, attributeIndex, type) {
+  attributeTypeFn = (attribute, attributeIndex, type) => {
     return attribute.items.map((value, idx) => {
       const selectedAttribute = this.selectedAttributeFn(
         idx,
@@ -102,7 +86,7 @@ export default class ProductContentContainer extends PureComponent {
   }
 
   // Returns the right template for the attributes...
-  attributeValueTemplate(idx, attribute, selectedAttribute, value, type) {
+  attributeValueTemplate = (idx, attribute, selectedAttribute, value, type) => {
     const attributeValueTemplate = type ? (
       <div
         key={idx}
@@ -141,7 +125,7 @@ export default class ProductContentContainer extends PureComponent {
   }
 
   // Returns the right values to style the selected attributes...
-  selectedAttributeFn(idx, attributeIndex, type) {
+  selectedAttributeFn = (idx, attributeIndex, type) => {
     return type
       ? {
           background: idx === attributeIndex ? "#1D1F22" : "white",
@@ -151,7 +135,7 @@ export default class ProductContentContainer extends PureComponent {
   }
 
   // returns actual attributes without inner values...
-  attributeTemplate(index, name, type, swatch, text) {
+  attributeTemplate = (index, name, type, swatch, text) => {
     return (
       <ClickableAttributeContainer
         key={index}
@@ -164,7 +148,7 @@ export default class ProductContentContainer extends PureComponent {
     );
   }
 
-  getCurrentAttribute(index, attributeName) {
+  getCurrentAttribute = (index, attributeName) => {
     const currAttribute = this.state.attributes.attribute;
     if (currAttribute) return currAttribute[index][attributeName];
 
@@ -172,7 +156,7 @@ export default class ProductContentContainer extends PureComponent {
   }
 
   // Printing the thumbnails...
-  printImageThumbnails(currentProduct) {
+  printImageThumbnails = currentProduct => {
     return currentProduct.gallery.map(
       (thumbnail, idx) => {
         return (
@@ -193,7 +177,7 @@ export default class ProductContentContainer extends PureComponent {
   }
 
   // Handling Attributes...
-  attributeFn(currentProduct) {
+  attributeFn = currentProduct => {
     return currentProduct.attributes.map((attribute, index) => {
       const attributeIndex = this.getCurrentAttribute(
         index,
@@ -220,12 +204,12 @@ export default class ProductContentContainer extends PureComponent {
   }
 
   // Makes the out of stock image to show appropriately...
-  instockStyle(inStock) {
+  instockStyle = inStock => {
     return inStock ? "none" : "block";
   }
 
   // Determines when the add to cart button shows from the stock state...
-  instockForButton(inStock) {
+  instockForButton = inStock => {
     return inStock ? "block" : "none";
   }
 

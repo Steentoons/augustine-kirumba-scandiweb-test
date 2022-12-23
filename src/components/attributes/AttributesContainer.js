@@ -2,13 +2,7 @@ import React, { PureComponent } from 'react'
 import Attributes from './Attributes'
 
 export class AttributesContainer extends PureComponent {
-  constructor() {
-    super()
-
-    this.getAttrType = this.getAttrType.bind(this)
-  }
-
-  getAttrType( attrType ,attributesValueSwatch, attributesValueText ) {
+  getAttrType = ( attrType ,attributesValueSwatch, attributesValueText ) => {
     return attrType === "swatch" ? attributesValueSwatch : attributesValueText
   }
   render() {

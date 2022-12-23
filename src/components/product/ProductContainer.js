@@ -20,18 +20,18 @@ export default class ProductContainer extends PureComponent {
     this.freshAttributes = this.freshAttributes.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     this.freshAttributes();
   }
 
   // Freshening the attributes...
-  freshAttributes() {
+  freshAttributes = () => {
     const { product, updateAttributes } = this.props;
     updateAttributes(product.id, []);
   }
 
   // Handling the hover add to cart on PLP...
-  handleMouseOver() {
+  handleMouseOver = () => {
     const { product } = this.props;
     const setToCart = (state) => {
       this.setState({ toCart: state });
@@ -44,27 +44,27 @@ export default class ProductContainer extends PureComponent {
     }
   }
 
-  toCartMouseOut() {
+  toCartMouseOut = () => {
     this.setState({ toCart: false });
   }
 
   // The PLP cart handler...
-  plpCartHandler(e, currentProduct, productId, singleAttribute ) {
+  plpCartHandler = (e, currentProduct, productId, singleAttribute ) => {
     e.preventDefault();
     const { checkCartDuplicates } = this.props
     checkCartDuplicates(currentProduct, productId, singleAttribute)
   }
 
-  instock(inStock) {
+  instock = inStock => {
     return inStock ? "none" : "block";
   }
 
-  toCartFn(toCart) {
+  toCartFn = toCart => {
     return toCart ? "block" : "none";
   }
 
   // handling the cart ids state...
-  cartIdsFn(id) {
+  cartIdsFn = id => {
     const { cartIds } = this.state;
     const newCartId = cartIds.push(id);
     this.setState({ cartIds: [...newCartId] });

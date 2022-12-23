@@ -2,13 +2,7 @@ import React, { PureComponent } from 'react'
 import NavCartImg from './NavCartImg'
 
 export class NavCartImgContainer extends PureComponent {
-  constructor() {
-    super()
-
-    this.galleryLength = this.galleryLength.bind(this)
-  }
-
-  galleryLength(galleryLength) {
+  galleryLength = (galleryLength) => {
     return galleryLength <= 1 ? "none" : "flex"
   }
 
