@@ -334,17 +334,23 @@ export class MainContainer extends PureComponent {
   }
 
   checkingDuplicates(currentProduct, productId, singleAttribute) {
-    let duplicate = false;
-    const { cartItems } = this.state;
-    cartItems.forEach((item, idx) => {
-      if (_.isEqual(item.attributes, singleAttribute)) {
-        this.quantityHandler(idx, "plus");
-        duplicate = true;
-      }
-    });
+    const duplicateIdx = this.duplicateIdx(singleAttribute)
+    this.duplicateActionFn(duplicateIdx, currentProduct, productId, singleAttribute)
+  }
 
-    if (!duplicate)
+  duplicateActionFn(duplicateIdx, currentProduct, productId, singleAttribute ) {
+    if (duplicateIdx === -1)
       this.cartStateHandler(currentProduct, productId, singleAttribute);
+    else {
+      this.quantityHandler(duplicateIdx, "plus");
+    }
+  }
+
+  duplicateIdx(singleAttribute) {
+    const { cartItems } = this.state;
+    return cartItems.findIndex(item => {
+      return _.isEqual(item.attributes, singleAttribute)
+    })
   }
 
   // Setting the main cart item state to be used all over the project...

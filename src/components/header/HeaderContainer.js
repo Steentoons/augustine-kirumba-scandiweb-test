@@ -65,12 +65,13 @@ export default class HeaderContainer extends PureComponent {
   // Calculate the total...
   calculateTotalHandler() {
     const { cartItems } = this.props;
-    let result = 0;
-    cartItems.forEach((item) => {
-      result = (result * 100 + item.itemFixedPrice * 100) / 100;
-    });
-
-    return result;
+    const total = cartItems.map(item => {
+      return item.itemFixedPrice
+    }).reduce((total, fixedPrice) => {
+      return ((total * 100) + (fixedPrice * 100))/100
+    })
+    
+    return total
   }
 
   updateCurrencyHandler(e) {
