@@ -1,3 +1,6 @@
+import navigatorLeft from '../assets/images/left-arrow.png'
+import navigatorRight from '../assets/images/right-arrow.png'
+
 // quantity constants...
 const PLUS = "plus";
 const MINUS = "minus";
@@ -27,6 +30,18 @@ const ITEMS = "items";
 const TRUE = true
 const FALSE = false
 
+// Image direction object...
+const IMG_DIRECTION = {
+    left: {
+        src: navigatorLeft,
+        alt: "gallery-navigator-left",
+    },
+    right: {
+        src: navigatorRight,
+        alt: "gallery-navigator-right",
+    },
+};
+
 export {
     PLUS,
     MINUS,
@@ -44,5 +59,6 @@ export {
     BLOCK,
     FLEX,
     TRUE,
-    FALSE
+    FALSE,
+    IMG_DIRECTION
 };

@@ -9,9 +9,7 @@ export class NavCartImg extends PureComponent {
         idx,
         cartItems,
         product,
-        navigatorLeft,
-        navigateImage,
-        navigatorRight,
+        navigateImageFn,
         galleryLength
     } = this.props
     return (
@@ -57,22 +55,8 @@ export class NavCartImg extends PureComponent {
                   galleryLength(product.gallery.length)
               }}
             >
-              <img
-                src={navigatorLeft}
-                alt="navigator-left"
-                data-nav={LEFT}
-                onClick={(e) => {
-                  navigateImage(idx, product.gallery.length, e.currentTarget.dataset.nav);
-                }}
-              />
-              <img
-                src={navigatorRight}
-                alt="navigator-right"
-                data-nav={RIGHT}
-                onClick={(e) => {
-                  navigateImage(idx, product.gallery.length, e.currentTarget.dataset.nav);
-                }}
-              />
+              {navigateImageFn(LEFT, idx, product.gallery.length)}
+              {navigateImageFn(RIGHT, idx, product.gallery.length)}
             </div>
           </div>
         </div>
