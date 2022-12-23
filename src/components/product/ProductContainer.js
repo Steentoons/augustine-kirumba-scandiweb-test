@@ -33,16 +33,16 @@ export default class ProductContainer extends PureComponent {
   // Handling the hover add to cart on PLP...
   handleMouseOver = () => {
     const { product } = this.props;
-    const setToCart = (state) => {
-      this.setState({ toCart: state });
-    };
-
     if (product.attributes.length < 1 && product.inStock === true) {
-      setToCart(true);
+      this.setToCart(true);
     } else {
-      setToCart(false);
+      this.setToCart(false);
     }
   }
+
+  setToCart = (state) => {
+    this.setState({ toCart: state });
+  };
 
   toCartMouseOut = () => {
     this.setState({ toCart: false });

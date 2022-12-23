@@ -24,74 +24,109 @@ export default class HeaderContainer extends PureComponent {
 
       setTotalHandler(grandTotal);
     }
-  }
+  };
 
   // Update every item price in the state...
   grandTotal = (cartItems, currencySymbol) => {
-    return cartItems.map(item => {
-      return item.itemFixedPrice[currencySymbol[0]].amount * (item.quantity * 100) / 100
-    }).reduce((total, fixedPrice) => {
-      return total + fixedPrice
-    }, 0).toFixed(2)
+    const itemFixedPriceArr = this.itemFixedPriceMap(cartItems, currencySymbol)
+      return this.itemFixedPriceReducer(itemFixedPriceArr)
+      .toFixed(2);
+  };
+
+  itemFixedPriceReducer = itemFixedPriceArr => {
+    return itemFixedPriceArr.reduce((total, fixedPrice) => {
+      return total + fixedPrice;
+    }, 0)
+  }
+
+  itemFixedPriceMap = (cartItems, currencySymbol) => {
+    return cartItems.map((item) => {
+      return (
+        (item.itemFixedPrice[currencySymbol[0]].amount *
+          (item.quantity * 100)) /
+        100
+      );
+    })
   }
 
   currencyButtonHandler = () => {
     this.setState({ currencyButtonClick: !this.state.currencyButtonClick });
-  }
+  };
 
   // Calculating the total for each item...
   itemTotalHandler = (symbol, price, quantity) => {
     return `${symbol}${((price * 100 * quantity) / 100).toFixed(2)}`;
-  }
+  };
 
   // Calculate the total...
   calculateTotalHandler = () => {
     const { cartItems } = this.props;
-    const total = cartItems.map(item => {
-      return item.itemFixedPrice
-    }).reduce((total, fixedPrice) => {
-      return ((total * 100) + (fixedPrice * 100))/100
-    })
-    
-    return total
+    const total = this.calculateTotalHandlerMap(cartItems)
+    return this.calculateTotalHandlerReducer(total)
+
+    // return total;
+
+    // const itemFixedPriceArr = this.itemFixedPriceFn(cartItems, currencySymbol)
+    //   return this.itemFixedPriceReducer(itemFixedPriceArr)
+    //   .toFixed(2);
+  };
+
+  calculateTotalHandlerReducer(total) {
+    return total.reduce((total, fixedPrice) => {
+      return (total * 100 + fixedPrice * 100) / 100;
+    });
   }
 
-  updateCurrencyHandler = e => {
+  calculateTotalHandlerMap = (cartItems) => {
+    return cartItems
+      .map((item) => {
+        return item.itemFixedPrice;
+      })
+  } 
+
+  updateCurrencyHandler = (e) => {
     const { currencyHandler } = this.props;
-    this.setState({ currencyButtonClick: false });
     currencyHandler(e);
+    this.currencyButtonClose()
+  };
+
+  currencyButtonClose = () => {
+    this.setState({ currencyButtonClick: false });
   }
 
   cartOverlayBackgroundHandler = () => {
     this.setState({ cartOverlayOpen: false });
-  }
+  };
 
-  cartOverlayHandler = e => {
+  cartOverlayHandler = (e) => {
     e.stopPropagation();
-  }
+  };
 
   cartOverlayActionHandler = () => {
     this.setState({
       cartOverlayOpen: !this.state.cartOverlayOpen,
       currencyButtonClick: false,
     });
-  }
+  };
 
-  cartCountStyle = cartCount => {
+  cartCountStyle = (cartCount) => {
     return cartCount <= 0 ? "none" : "block";
-  }
+  };
 
-  overlayBgStyle = cartOverlayOpen => {
+  overlayBgStyle = (cartOverlayOpen) => {
     return cartOverlayOpen ? "block" : "none";
-  }
+  };
 
-  itemTitleStyle = cartCount => {
+  itemTitleStyle = (cartCount) => {
     return cartCount === 1 ? "item" : "items";
-  }
+  };
 
   currenciesQueryFn = ({ loading, data }) => {
     if (loading) return null;
+    this.currenciesFn = (data)
+  };
 
+  currenciesFn = (data) => {
     return data.currencies.map((currency, idx) => {
       return (
         <li
@@ -108,14 +143,19 @@ export default class HeaderContainer extends PureComponent {
     });
   }
 
-  currencyDropStyle = currencyButtonClick => {
+  currencyDropStyle = (currencyButtonClick) => {
     return {
       display: currencyButtonClick ? "block" : "none",
     };
-  }
+  };
 
   // Handle attributes per item in cart...
-  printCartItems = (cartItems, currencySymbol, quantityHandler, navigateImage) => {
+  printCartItems = (
+    cartItems,
+    currencySymbol,
+    quantityHandler,
+    navigateImage
+  ) => {
     return cartItems.map((item, idx) => {
       const id = item.productId;
       const attributeArray = item.attributes;
@@ -136,22 +176,22 @@ export default class HeaderContainer extends PureComponent {
         />
       );
     });
-  }
+  };
 
   categoriesQuery = (CATEGORIES_QUERY, changeCategory, category) => {
     return (
       <Query query={CATEGORIES_QUERY}>
         {({ loading, data }) => {
           if (loading) return null;
-          const { categories } = data;
-          return this.printCategories(
-            categories,
-            changeCategory,
-            category
-          );
+          return this.categoriesQueryFn(data, changeCategory, category)
         }}
-      </Query>
+      </Query>  
     );
+  };
+
+  categoriesQueryFn = (data, changeCategory, category ) => {
+    const { categories } = data;
+    return this.printCategories(categories, changeCategory, category);
   }
 
   printCategories = (categories, changeCategory, category) => {
@@ -165,7 +205,7 @@ export default class HeaderContainer extends PureComponent {
         />
       );
     });
-  }
+  };
 
   currenciesQuery = (CURRENCIES_QUERY, updateCurrencyHandler) => {
     return (
@@ -176,7 +216,7 @@ export default class HeaderContainer extends PureComponent {
         }}
       </Query>
     );
-  }
+  };
 
   printCurrency = (data, updateCurrencyHandler) => {
     return data.currencies.map((currency, idx) => {
@@ -191,7 +231,7 @@ export default class HeaderContainer extends PureComponent {
         >{`${currency.symbol} ${currency.label.toUpperCase()}`}</li>
       );
     });
-  }
+  };
 
   render() {
     const {

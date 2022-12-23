@@ -75,6 +75,10 @@ export class MainContainer extends PureComponent {
   // Changing currency...
   currencyHandler = e => {
     const newCurrency = this.updateCurrency(e);
+    this.updateCurrencySymbol(newCurrency)
+  }
+
+  updateCurrencySymbol = newCurrency => {
     this.setState({ currencySymbol: newCurrency });
   }
 
@@ -93,15 +97,23 @@ export class MainContainer extends PureComponent {
     this.updateCartItemsFromJSON(product);
     const newTotal = this.newTotal(product);
     const tax = this.getTax(newTotal);
+    this.updateTotalTax(newTotal, tax)
+    this.cartCountHandler(PLUS);
+  }
+
+  // Updating total and tax states...
+  updateTotalTax = (newTotal, tax) => {
     this.setState({ totalPrice: newTotal, tax: tax });
-    this.cartCountHandler("plus");
   }
 
   updateCartItemsFromJSON = product => {
-    const currentCartItems = this.state.cartItems;
-    const newItems = [].concat(currentCartItems, product);
+    const newItems = this.updateCartItemsFromJSONConcat(product)
+    this.updateCartItemsState(JSON.parse(JSON.stringify(newItems)))
+  }
 
-    this.setState({ cartItems: JSON.parse(JSON.stringify(newItems)) });
+  updateCartItemsFromJSONConcat = product => {
+    const currentCartItems = this.state.cartItems;
+    return [].concat(currentCartItems, product);
   }
 
   // Getting tax...
@@ -137,13 +149,25 @@ export class MainContainer extends PureComponent {
   // Calculating the grand total after currency change...
   getTotalHandler = (fixedAmount, quantity, grandTotal, idx) => {
     const newCartItems = this.updateCartItems(idx, fixedAmount);
-    this.setState({ cartItems: newCartItems });
+    this.updateCartItemsState(newCartItems)
     return this.getGrandTotal(fixedAmount, quantity, grandTotal);
   }
 
+  updateCartItemsState = newCartItems => {
+    this.setState({ cartItems: newCartItems })
+  }
+
   getGrandTotal = (fixedAmount, quantity, grandTotal) => {
-    const itemPrice = (fixedAmount * quantity * 100) / 100;
-    return (grandTotal = (grandTotal * 100 + itemPrice * 100) / 100);
+    const itemPrice = this.itemPriceFn(fixedAmount, quantity)
+    return this.grandTotalFn(grandTotal, itemPrice);
+  }
+
+  grandTotalFn = (grandTotal, itemPrice) => {
+    return (grandTotal = (grandTotal * 100 + itemPrice * 100) / 100)
+  }
+
+  itemPriceFn = (fixedAmount, quantity) => {
+    return (fixedAmount * quantity * 100) / 100;
   }
 
   updateCartItems = (idx, fixedAmount) => {
@@ -176,27 +200,46 @@ export class MainContainer extends PureComponent {
       fixedPrice
     );
     const tax = this.getTax(newTotal);
-    this.setState({ totalPrice: newTotal, tax: tax });
+    this.updateTotalTax(newTotal, tax)
   }
 
   updateQuantityPlusMinus = (quantity, cartItem, idx, fixedPrice) => {
     const newTotal = 0;
     switch (quantity) {
       case PLUS:
-        cartItem.quantity = this.state.cartItems[idx].quantity + 1;
+        cartItem.quantity = this.quantityPlusMinusFn( idx, PLUS )
         return this.getTotalFromQuantity(quantity, fixedPrice, newTotal);
       case MINUS:
-        if (this.state.cartItems[idx].quantity > 0) {
-          cartItem.quantity = this.state.cartItems[idx].quantity - 1;
-          if (cartItem.quantity === 0) this.deleteItem(idx);
-
-          return this.getTotalFromQuantity(quantity, fixedPrice, newTotal);
-        }
-        break;
-
+        return this.updateQuantityMinus(idx, cartItem, quantity, fixedPrice, newTotal)
       default:
         break;
     }
+  }
+
+  quantityPlusMinusFn = ( idx, duty ) => {
+    const {cartItems} = this.state
+    const quantityState = cartItems[idx].quantity
+    switch (duty) {
+      case PLUS:
+        return quantityState + 1;
+      case MINUS:
+        return quantityState - 1;
+      default:
+        break
+    }
+  }
+
+  updateQuantityMinus = (idx, cartItem, quantity, fixedPrice, newTotal) => {
+    if (this.state.cartItems[idx].quantity > 0) {
+      cartItem.quantity = this.quantityPlusMinusFn(idx, MINUS);
+      this.checkDelete(cartItem, idx)
+
+      return this.getTotalFromQuantity(quantity, fixedPrice, newTotal);
+    }
+  }
+
+  checkDelete = (cartItem, idx) => {
+    if (cartItem.quantity === 0) this.deleteItem(idx);
   }
 
   getTotalFromQuantity = (quantity, fixedPrice, total) => {
@@ -225,13 +268,19 @@ export class MainContainer extends PureComponent {
   }
 
   updateCartItemsFromQuantity = (idx, fixedPrice) => {
-    const newCartItems = [...this.state.cartItems];
-    const cartItem = { ...newCartItems[idx] };
-    cartItem.itemTotalPrice = (fixedPrice * 100 * cartItem.quantity) / 100;
-    newCartItems[idx] = cartItem;
-    this.setState({ cartItems: newCartItems });
+    const cartItem = this.cartItemsFromQuantityFn(idx)
+    this.itemPriceFn(fixedPrice, cartItem.quantity) 
 
     return cartItem;
+  }
+
+  cartItemsFromQuantityFn = (idx) => {
+    const newCartItems = [...this.state.cartItems];
+    const cartItem = { ...newCartItems[idx] };
+    newCartItems[idx] = cartItem;
+    this.updateCartItemsState(newCartItems)
+
+    return cartItem
   }
 
   getFixedPrice = idx => {
@@ -244,7 +293,7 @@ export class MainContainer extends PureComponent {
   // Deleting items from the cart...
   deleteItem = idx => {
     const items = [...this.state.cartItems];
-    this.setState({ cartItems: this.filterDeleteItems(items, idx) });
+    this.updateCartItemsState(this.filterDeleteItems(items, idx))
   }
 
   filterDeleteItems = (items, idx) => {
@@ -256,8 +305,7 @@ export class MainContainer extends PureComponent {
   // Navigate displayed image to the right and left...
   navigateImage = (idx, length, nav) => {
     const newCartItems = this.navigateImageHelper(idx, nav, length);
-
-    this.setState({ cartItems: newCartItems });
+    this.updateCartItemsState(newCartItems)
   }
 
   navigateImageHelper = (idx, nav, length) => {
@@ -307,7 +355,7 @@ export class MainContainer extends PureComponent {
     if (duplicateIdx === -1)
       this.cartStateHandler(currentProduct, productId, singleAttribute);
     else {
-      this.quantityHandler(duplicateIdx, "plus");
+      this.quantityHandler(duplicateIdx, PLUS);
     }
   }
 
