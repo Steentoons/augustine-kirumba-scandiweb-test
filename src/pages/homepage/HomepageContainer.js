@@ -2,17 +2,15 @@ import React, { PureComponent } from 'react'
 import Homepage from './Homepage'
 
 export class HomepageContainer extends PureComponent {
-  constructor( props ) {
-    super( props );
+  constructor() {
+    super();
     this.state = {
       currencyIndex: 0,
     };
-
-    this.updateCurrencyHandler = this.updateCurrencyHandler.bind( this );
   }
 
   // Updating the currency...
-  updateCurrencyHandler( e ) {
+  updateCurrencyHandler = e => {
     const idx = Number( e.currentTarget.dataset.currindex );
     this.setState({ currencyIndex: idx });
   }

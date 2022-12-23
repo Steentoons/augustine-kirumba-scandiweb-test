@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import ApolloClient from "apollo-boost";
 import _ from "lodash";
 import Main from "./Main";
+import { LEFT, MINUS, PLUS, RIGHT } from "../../lib/constants";
 
 const client = new ApolloClient({
   uri: "http://localhost:4000/",
@@ -24,45 +25,9 @@ export class MainContainer extends PureComponent {
         : [0, "$"],
       category: "all",
     };
-
-    // Binding Handlers...
-    this.persistState = this.persistState.bind(this);
-    this.persistCartItems = this.persistCartItems.bind(this);
-    this.cartItemsHandler = this.cartItemsHandler.bind(this);
-    this.cartCountHandler = this.cartCountHandler.bind(this);
-    this.cartCountPlusMinus = this.cartCountPlusMinus.bind(this);
-    this.updateCartItems = this.updateCartItems.bind(this);
-    this.quantityHandler = this.quantityHandler.bind(this);
-    this.updateCartItemsFromQuantity =
-      this.updateCartItemsFromQuantity.bind(this);
-    this.getTotalFromQuantity = this.getTotalFromQuantity.bind(this);
-    this.updateQuantityPlusMinus = this.updateQuantityPlusMinus.bind(this);
-    this.getFixedPrice = this.getFixedPrice.bind(this);
-    this.updateCartItemsWithQuantity =
-      this.updateCartItemsWithQuantity.bind(this);
-    this.navigateImage = this.navigateImage.bind(this);
-    this.navigateImageHelper = this.navigateImageHelper.bind(this);
-    this.navigateImageRight = this.navigateImageRight.bind(this);
-    this.navigateImageLeft = this.navigateImageLeft.bind(this);
-    this.currencyHandler = this.currencyHandler.bind(this);
-    this.updateCurrency = this.updateCurrency.bind(this);
-    this.deleteItem = this.deleteItem.bind(this);
-    this.checkout = this.checkout.bind(this);
-    this.changeCategory = this.changeCategory.bind(this);
-    this.getTotalHandler = this.getTotalHandler.bind(this);
-    this.getGrandTotal = this.getGrandTotal.bind(this);
-    this.setTotalHandler = this.setTotalHandler.bind(this);
-    this.newTotalFn = this.newTotalFn.bind(this);
-    this.newTotal = this.newTotal.bind(this);
-    this.getTax = this.getTax.bind(this);
-    this.getCurrentData = this.getCurrentData.bind(this);
-    this.cartStateHandler = this.cartStateHandler.bind(this);
-    this.checkingDuplicates = this.checkingDuplicates.bind(this);
-    this.checkCartDuplicates = this.checkCartDuplicates.bind(this);
-    this.updateAttributes = this.updateAttributes.bind(this);
   }
 
-  componentDidUpdate(prevState) {
+  componentDidUpdate = prevState => {
     this.persistState(
       prevState.cartCount,
       prevState.totalPrice,
@@ -72,7 +37,7 @@ export class MainContainer extends PureComponent {
     this.persistCartItems(prevState.cartItems);
   }
 
-  persistState(prevCartCount, prevTotalPrice, prevTax, prevCurrencySymbol) {
+  persistState = (prevCartCount, prevTotalPrice, prevTax, prevCurrencySymbol) => {
     const { cartCount, totalPrice, tax, currencySymbol } = this.state;
     if (
       cartCount !== prevCartCount ||
@@ -92,7 +57,7 @@ export class MainContainer extends PureComponent {
     }
   }
 
-  persistCartItems(prevCartItems) {
+  persistCartItems = prevCartItems => {
     const { cartItems } = this.state;
     if (!_.isEqual(cartItems, prevCartItems)) {
       sessionStorage.setItem(
@@ -103,17 +68,21 @@ export class MainContainer extends PureComponent {
   }
 
   // Changing category...
-  changeCategory(currentCategory) {
+  changeCategory = currentCategory => {
     this.setState({ category: currentCategory });
   }
 
   // Changing currency...
-  currencyHandler(e) {
+  currencyHandler = e => {
     const newCurrency = this.updateCurrency(e);
+    this.updateCurrencySymbol(newCurrency)
+  }
+
+  updateCurrencySymbol = newCurrency => {
     this.setState({ currencySymbol: newCurrency });
   }
 
-  updateCurrency(e) {
+  updateCurrency = e => {
     const idx = Number(e.currentTarget.dataset.currindex);
     const currentCurrency = e.currentTarget.dataset.curr_currency;
     const newCurrency = [...this.state.currencySymbol];
@@ -124,66 +93,84 @@ export class MainContainer extends PureComponent {
   }
 
   // Adding items to the cart...
-  cartItemsHandler(product) {
+  cartItemsHandler = product => {
     this.updateCartItemsFromJSON(product);
     const newTotal = this.newTotal(product);
     const tax = this.getTax(newTotal);
-    this.setState({ totalPrice: newTotal, tax: tax });
-    this.cartCountHandler("plus");
+    this.updateTotalTax(newTotal, tax)
+    this.cartCountHandler(PLUS);
   }
 
-  updateCartItemsFromJSON(product) {
-    const currentCartItems = this.state.cartItems;
-    const newItems = [].concat(currentCartItems, product);
+  // Updating total and tax states...
+  updateTotalTax = (newTotal, tax) => {
+    this.setState({ totalPrice: newTotal, tax: tax });
+  }
 
-    this.setState({ cartItems: JSON.parse(JSON.stringify(newItems)) });
+  updateCartItemsFromJSON = product => {
+    const newItems = this.updateCartItemsFromJSONConcat(product)
+    this.updateCartItemsState(JSON.parse(JSON.stringify(newItems)))
+  }
+
+  updateCartItemsFromJSONConcat = product => {
+    const currentCartItems = this.state.cartItems;
+    return [].concat(currentCartItems, product);
   }
 
   // Getting tax...
   getTax(newTotal) {
-    const tax = ((newTotal * 100 * (21 / 100)) / 100).toFixed(2);
-
-    return tax;
+    return ((newTotal * 100 * (21 / 100)) / 100).toFixed(2);
   }
 
   newTotal(product) {
     const { currencySymbol } = this.state;
-    const newTotal = (
+    return (
       (this.state.totalPrice * 100 +
         product.itemFixedPrice[currencySymbol[0]].amount * 100) /
       100
     ).toFixed(2);
-
-    return newTotal;
   }
 
   // Adding individual item quantity to the cart...
-  cartCountHandler(duty) {
+  cartCountHandler = duty => {
     this.setState((prev) => this.cartCountPlusMinus(prev, duty));
   }
 
-  cartCountPlusMinus(prev, duty) {
-    if (duty === "plus") return { cartCount: prev.cartCount + 1 };
-    else if (duty === "minus") return { cartCount: prev.cartCount - 1 };
+  cartCountPlusMinus = (prev, duty) => {
+    switch (duty) {
+      case PLUS:
+        return { cartCount: prev.cartCount + 1 };
+      case MINUS:
+        return { cartCount: prev.cartCount - 1 };
+      default:
+        break;
+    }
   }
 
   // Calculating the grand total after currency change...
-  getTotalHandler(fixedAmount, quantity, grandTotal, idx) {
+  getTotalHandler = (fixedAmount, quantity, grandTotal, idx) => {
     const newCartItems = this.updateCartItems(idx, fixedAmount);
-    this.setState({ cartItems: newCartItems });
-    this.getGrandTotal(fixedAmount, quantity, grandTotal);
-
-    return grandTotal;
+    this.updateCartItemsState(newCartItems)
+    return this.getGrandTotal(fixedAmount, quantity, grandTotal);
   }
 
-  getGrandTotal(fixedAmount, quantity, grandTotal) {
-    const itemPrice = (fixedAmount * quantity * 100) / 100;
-    grandTotal = (grandTotal * 100 + itemPrice * 100) / 100;
-
-    return grandTotal;
+  updateCartItemsState = newCartItems => {
+    this.setState({ cartItems: newCartItems })
   }
 
-  updateCartItems(idx, fixedAmount) {
+  getGrandTotal = (fixedAmount, quantity, grandTotal) => {
+    const itemPrice = this.itemPriceFn(fixedAmount, quantity)
+    return this.grandTotalFn(grandTotal, itemPrice);
+  }
+
+  grandTotalFn = (grandTotal, itemPrice) => {
+    return (grandTotal = (grandTotal * 100 + itemPrice * 100) / 100)
+  }
+
+  itemPriceFn = (fixedAmount, quantity) => {
+    return (fixedAmount * quantity * 100) / 100;
+  }
+
+  updateCartItems = (idx, fixedAmount) => {
     const { currencySymbol } = this.state;
     const newCartItems = [...this.state.cartItems];
     const item = { ...newCartItems[idx] };
@@ -194,17 +181,17 @@ export class MainContainer extends PureComponent {
   }
 
   // Setting the total to state after currency change...
-  setTotalHandler(grandTotal) {
+  setTotalHandler = grandTotal => {
     this.setState({ totalPrice: grandTotal });
   }
 
   // Ordering and clearing cart...
-  checkout() {
+  checkout = () => {
     this.setState({ cartItems: [], cartCount: 0, totalPrice: 0, tax: 0 });
   }
 
   // Adding and reducing quantity to the cart...
-  quantityHandler(idx, quantity) {
+  quantityHandler = (idx, quantity) => {
     const { cartItem, fixedPrice } = this.updateCartItemsWithQuantity(idx);
     const newTotal = this.updateQuantityPlusMinus(
       quantity,
@@ -213,95 +200,129 @@ export class MainContainer extends PureComponent {
       fixedPrice
     );
     const tax = this.getTax(newTotal);
-    this.setState({ totalPrice: newTotal, tax: tax });
+    this.updateTotalTax(newTotal, tax)
   }
 
-  updateQuantityPlusMinus(quantity, cartItem, idx, fixedPrice) {
-    let newTotal = 0;
-    if (quantity === "plus") {
-      cartItem.quantity = this.state.cartItems[idx].quantity + 1;
-
-      return this.getTotalFromQuantity(quantity, fixedPrice, newTotal);
-    } else if (quantity === "minus") {
-      if (this.state.cartItems[idx].quantity > 0) {
-        cartItem.quantity = this.state.cartItems[idx].quantity - 1;
-        if (cartItem.quantity === 0) this.deleteItem(idx);
-
+  updateQuantityPlusMinus = (quantity, cartItem, idx, fixedPrice) => {
+    const newTotal = 0;
+    switch (quantity) {
+      case PLUS:
+        cartItem.quantity = this.quantityPlusMinusFn( idx, PLUS )
         return this.getTotalFromQuantity(quantity, fixedPrice, newTotal);
-      }
+      case MINUS:
+        return this.updateQuantityMinus(idx, cartItem, quantity, fixedPrice, newTotal)
+      default:
+        break;
     }
   }
 
-  getTotalFromQuantity(quantity, fixedPrice, total) {
-    this.cartCountHandler(quantity);
-    total = this.newTotalFn(quantity, fixedPrice);
-
-    return total;
+  quantityPlusMinusFn = ( idx, duty ) => {
+    const {cartItems} = this.state
+    const quantityState = cartItems[idx].quantity
+    switch (duty) {
+      case PLUS:
+        return quantityState + 1;
+      case MINUS:
+        return quantityState - 1;
+      default:
+        break
+    }
   }
 
-  newTotalFn(quantity, fixedPrice) {
+  updateQuantityMinus = (idx, cartItem, quantity, fixedPrice, newTotal) => {
+    if (this.state.cartItems[idx].quantity > 0) {
+      cartItem.quantity = this.quantityPlusMinusFn(idx, MINUS);
+      this.checkDelete(cartItem, idx)
+
+      return this.getTotalFromQuantity(quantity, fixedPrice, newTotal);
+    }
+  }
+
+  checkDelete = (cartItem, idx) => {
+    if (cartItem.quantity === 0) this.deleteItem(idx);
+  }
+
+  getTotalFromQuantity = (quantity, fixedPrice, total) => {
+    this.cartCountHandler(quantity);
+    return this.newTotalFn(quantity, fixedPrice);
+  }
+
+  newTotalFn = (quantity, fixedPrice) => {
     const totalPrice = this.state.totalPrice * 100;
-    if (quantity === "minus")
-      return ((totalPrice - fixedPrice) / 100).toFixed(2);
-    else if (quantity === "plus")
-      return ((totalPrice + fixedPrice) / 100).toFixed(2);
+    switch (quantity) {
+      case PLUS:
+        return ((totalPrice + fixedPrice) / 100).toFixed(2);
+      case MINUS:
+        return ((totalPrice - fixedPrice) / 100).toFixed(2);
+      default:
+        break
+    }
   }
 
   // Updating the cart items with the quantity...
-  updateCartItemsWithQuantity(idx) {
+  updateCartItemsWithQuantity = idx => {
     const fixedPrice = this.getFixedPrice(idx);
     const cartItem = this.updateCartItemsFromQuantity(idx, fixedPrice);
 
     return { cartItem, fixedPrice };
   }
 
-  updateCartItemsFromQuantity(idx, fixedPrice) {
-    const newCartItems = [...this.state.cartItems];
-    const cartItem = { ...newCartItems[idx] };
-    cartItem.itemTotalPrice = (fixedPrice * 100 * cartItem.quantity) / 100;
-    newCartItems[idx] = cartItem;
-    this.setState({ cartItems: newCartItems });
+  updateCartItemsFromQuantity = (idx, fixedPrice) => {
+    const cartItem = this.cartItemsFromQuantityFn(idx)
+    this.itemPriceFn(fixedPrice, cartItem.quantity) 
 
     return cartItem;
   }
 
-  getFixedPrice(idx) {
-    const { currencySymbol } = this.state;
-    const fixedPrice =
-      this.state.cartItems[idx].itemFixedPrice[currencySymbol[0]].amount * 100;
+  cartItemsFromQuantityFn = (idx) => {
+    const newCartItems = [...this.state.cartItems];
+    const cartItem = { ...newCartItems[idx] };
+    newCartItems[idx] = cartItem;
+    this.updateCartItemsState(newCartItems)
 
-    return fixedPrice;
+    return cartItem
+  }
+
+  getFixedPrice = idx => {
+    const { currencySymbol } = this.state;
+    return (
+      this.state.cartItems[idx].itemFixedPrice[currencySymbol[0]].amount * 100
+    );
   }
 
   // Deleting items from the cart...
-  deleteItem(idx) {
+  deleteItem = idx => {
     const items = [...this.state.cartItems];
-    for (let i = 0; i < items.length; i++) {
-      if (i === idx) items.splice(i, 1);
-    }
+    this.updateCartItemsState(this.filterDeleteItems(items, idx))
+  }
 
-    this.setState({ cartItems: items });
+  filterDeleteItems = (items, idx) => {
+    return items.filter((item, filterIdx) => {
+      return filterIdx !== idx;
+    });
   }
 
   // Navigate displayed image to the right and left...
-  navigateImage(idx, length, nav) {
+  navigateImage = (idx, length, nav) => {
     const newCartItems = this.navigateImageHelper(idx, nav, length);
-
-    this.setState({ cartItems: newCartItems });
+    this.updateCartItemsState(newCartItems)
   }
 
-  navigateImageHelper(idx, nav, length) {
+  navigateImageHelper = (idx, nav, length) => {
     const currentIdx = this.state.cartItems[idx].currentImageIdx;
     const items = [...this.state.cartItems];
     const item = { ...items[idx] };
-
-    if (nav === "left")
-      return this.navigateImageLeft(currentIdx, length, item, items, idx);
-    else if (nav === "right")
-      return this.navigateImageRight(currentIdx, length, item, items, idx);
+    switch (nav) {
+      case LEFT:
+        return this.navigateImageLeft(currentIdx, length, item, items, idx);
+      case RIGHT:
+        return this.navigateImageRight(currentIdx, length, item, items, idx);
+      default:
+        break
+    }
   }
 
-  navigateImageRight(currentIdx, length, item, rightItem, idx) {
+  navigateImageRight = (currentIdx, length, item, rightItem, idx) => {
     if (currentIdx !== length - 1) item.currentImageIdx = currentIdx + 1;
     else if (currentIdx === length - 1) item.currentImageIdx = 0;
     rightItem[idx] = item;
@@ -309,7 +330,7 @@ export class MainContainer extends PureComponent {
     return rightItem;
   }
 
-  navigateImageLeft(currentIdx, length, item, leftItem, idx) {
+  navigateImageLeft = (currentIdx, length, item, leftItem, idx) => {
     if (currentIdx > 0) item.currentImageIdx = currentIdx - 1;
     else if (currentIdx === 0) item.currentImageIdx = length - 1;
     leftItem[idx] = item;
@@ -318,33 +339,43 @@ export class MainContainer extends PureComponent {
   }
 
   // Checking on cart duplicates...
-  checkCartDuplicates(currentProduct, productId, singleAttribute) {
+  checkCartDuplicates = (currentProduct, productId, singleAttribute) => {
     const { cartItems } = this.state;
-    if (cartItems.length === 0) this.cartStateHandler(currentProduct, productId, singleAttribute);
+    if (cartItems.length === 0)
+      this.cartStateHandler(currentProduct, productId, singleAttribute);
     else this.checkingDuplicates(currentProduct, productId, singleAttribute);
   }
 
-  checkingDuplicates(currentProduct, productId, singleAttribute) {
-    let duplicate = false;
-    const { cartItems } = this.state
-    cartItems.forEach((item, idx) => {
-      if (_.isEqual(item.attributes, singleAttribute)) {
-        this.quantityHandler(idx, 'plus');
-        duplicate = true;
-      }
-    });
+  checkingDuplicates = (currentProduct, productId, singleAttribute) => {
+    const duplicateIdx = this.duplicateIdx(singleAttribute)
+    this.duplicateActionFn(duplicateIdx, currentProduct, productId, singleAttribute)
+  }
 
-    if (!duplicate) this.cartStateHandler(currentProduct, productId, singleAttribute);
+  duplicateActionFn = (duplicateIdx, currentProduct, productId, singleAttribute ) => {
+    if (duplicateIdx === -1)
+      this.cartStateHandler(currentProduct, productId, singleAttribute);
+    else {
+      this.quantityHandler(duplicateIdx, PLUS);
+    }
+  }
+
+  duplicateIdx = (singleAttribute) => {
+    const { cartItems } = this.state;
+    return cartItems.findIndex(item => {
+      return _.isEqual(item.attributes, singleAttribute)
+    })
   }
 
   // Setting the main cart item state to be used all over the project...
-  cartStateHandler(currentProduct, productId, singleAttribute) {
-    const newData = this.getCurrentData(currentProduct, productId, {...singleAttribute});
+  cartStateHandler = (currentProduct, productId, singleAttribute) => {
+    const newData = this.getCurrentData(currentProduct, productId, {
+      ...singleAttribute,
+    });
     this.cartItemsHandler(newData);
   }
 
   // getting the current data to be used to update items...
-  getCurrentData(currentProduct, productId, attributes) {
+  getCurrentData = (currentProduct, productId, attributes) => {
     const quantity = 1;
     const itemFixedPrice = currentProduct.prices;
     const itemTotalPrice = itemFixedPrice;
@@ -361,7 +392,7 @@ export class MainContainer extends PureComponent {
   }
 
   // Updating the attributes...
-  updateAttributes(currentId, attrArr) {
+  updateAttributes = (currentId, attrArr) => {
     this.setState({
       attributes: { id: currentId, attribute: attrArr },
     });
@@ -386,7 +417,7 @@ export class MainContainer extends PureComponent {
         getTotalHandler={this.getTotalHandler}
         setTotalHandler={this.setTotalHandler}
         getTax={this.getTax}
-        tax={ this.state.tax }
+        tax={this.state.tax}
         checkCartDuplicates={this.checkCartDuplicates}
         updateAttributes={this.updateAttributes}
       />

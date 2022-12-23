@@ -1,4 +1,5 @@
 import React, { PureComponent } from "react";
+import { BLOCK, FALSE, NONE, TRUE } from "../../lib/constants";
 import Product from "./Product";
 
 export default class ProductContainer extends PureComponent {
@@ -7,7 +8,7 @@ export default class ProductContainer extends PureComponent {
 
     this.state = {
       id: this.props,
-      toCart: false,
+      toCart: FALSE,
       attributes: {},
     };
 
@@ -20,55 +21,51 @@ export default class ProductContainer extends PureComponent {
     this.freshAttributes = this.freshAttributes.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     this.freshAttributes();
   }
 
   // Freshening the attributes...
-  freshAttributes() {
+  freshAttributes = () => {
     const { product, updateAttributes } = this.props;
     updateAttributes(product.id, []);
   }
 
   // Handling the hover add to cart on PLP...
-  handleMouseOver() {
+  handleMouseOver = () => {
     const { product } = this.props;
-    const setToCart = (state) => {
-      this.setState({ toCart: state });
-    };
-
-    if (product.attributes.length < 1 && product.inStock === true) {
-      setToCart(true);
+    if (product.attributes.length < 1 && product.inStock === TRUE) {
+      this.setToCart(TRUE);
     } else {
-      setToCart(false);
+      this.setToCart(FALSE);
     }
   }
 
-  toCartMouseOut() {
-    this.setState({ toCart: false });
+  setToCart = (state) => {
+    this.setState({ toCart: state });
+  };
+
+  toCartMouseOut = () => {
+    this.setState({ toCart: FALSE });
   }
 
   // The PLP cart handler...
-  plpCartHandler(e, currentProduct, productId, singleAttribute ) {
+  plpCartHandler = (e, currentProduct, productId, singleAttribute ) => {
     e.preventDefault();
     const { checkCartDuplicates } = this.props
     checkCartDuplicates(currentProduct, productId, singleAttribute)
   }
 
-  instock(inStock) {
-    const stockStyle = inStock ? "none" : "block";
-
-    return stockStyle;
+  instock = inStock => {
+    return inStock ? NONE : BLOCK;
   }
 
-  toCartFn(toCart) {
-    const cartStyle = toCart ? "block" : "none";
-
-    return cartStyle;
+  toCartFn = toCart => {
+    return toCart ? BLOCK : NONE;
   }
 
   // handling the cart ids state...
-  cartIdsFn(id) {
+  cartIdsFn = id => {
     const { cartIds } = this.state;
     const newCartId = cartIds.push(id);
     this.setState({ cartIds: [...newCartId] });

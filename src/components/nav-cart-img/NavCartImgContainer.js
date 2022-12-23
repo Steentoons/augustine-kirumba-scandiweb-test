@@ -1,29 +1,36 @@
-import React, { PureComponent } from 'react'
-import NavCartImg from './NavCartImg'
+import React, { PureComponent } from "react";
+import { FLEX, IMG_DIRECTION, NONE } from "../../lib/constants";
+import NavCartImg from "./NavCartImg";
 
 export class NavCartImgContainer extends PureComponent {
-  constructor() {
-    super()
+  galleryLength = (galleryLength) => {
+    return galleryLength <= 1 ? NONE : FLEX;
+  };
 
-    this.galleryLength = this.galleryLength.bind(this)
-  }
-
-  galleryLength(galleryLength) {
-    const length = galleryLength <= 1 ? "none" : "flex"
-
-    return length
-  }
+  navigateImageFn = (direction, idx, product) => {
+    const { navigateImage } = this.props;
+    return (
+      <img
+        src={IMG_DIRECTION[direction].src}
+        alt={IMG_DIRECTION[direction].alt}
+        data-nav={direction}
+        onClick={(e) => {
+          navigateImage(idx, product, e.currentTarget.dataset.nav);
+        }}
+      />
+    );
+  };
 
   render() {
     const {
-        quantityHandler,
-        idx,
-        cartItems,
-        product,
-        navigatorLeft,
-        navigateImage,
-        navigatorRight,
-    } = this.props
+      quantityHandler,
+      idx,
+      cartItems,
+      product,
+      navigatorLeft,
+      navigateImage,
+      navigatorRight,
+    } = this.props;
 
     return (
       <NavCartImg
@@ -35,9 +42,10 @@ export class NavCartImgContainer extends PureComponent {
         navigateImage={navigateImage}
         navigatorRight={navigatorRight}
         galleryLength={this.galleryLength}
+        navigateImageFn={this.navigateImageFn}
       />
-    )
+    );
   }
 }
 
-export default NavCartImgContainer
+export default NavCartImgContainer;

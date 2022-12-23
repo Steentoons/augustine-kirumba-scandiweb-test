@@ -1,5 +1,6 @@
 import React from 'react'
 import { PureComponent } from 'react';
+import { LEFT, MINUS, PLUS, RIGHT } from '../../lib/constants';
 
 export class NavCartImg extends PureComponent {
   render() {
@@ -8,9 +9,7 @@ export class NavCartImg extends PureComponent {
         idx,
         cartItems,
         product,
-        navigatorLeft,
-        navigateImage,
-        navigatorRight,
+        navigateImageFn,
         galleryLength
     } = this.props
     return (
@@ -18,7 +17,7 @@ export class NavCartImg extends PureComponent {
         <div className="cart-images-actions">
           <div
             className="cart-plus"
-            data-quantity='plus'
+            data-quantity={PLUS}
             onClick={(e) => {
               quantityHandler(idx, e.currentTarget.dataset.quantity);
             }}
@@ -30,7 +29,7 @@ export class NavCartImg extends PureComponent {
           </div>
           <div
             className="cart-minus"
-            data-quantity='minus'
+            data-quantity={MINUS}
             onClick={(e) => {
               quantityHandler(idx, e.currentTarget.dataset.quantity);
             }}
@@ -56,22 +55,8 @@ export class NavCartImg extends PureComponent {
                   galleryLength(product.gallery.length)
               }}
             >
-              <img
-                src={navigatorLeft}
-                alt="navigator-left"
-                data-nav='left'
-                onClick={(e) => {
-                  navigateImage(idx, product.gallery.length, e.currentTarget.dataset.nav);
-                }}
-              />
-              <img
-                src={navigatorRight}
-                alt="navigator-right"
-                data-nav='right'
-                onClick={(e) => {
-                  navigateImage(idx, product.gallery.length, e.currentTarget.dataset.nav);
-                }}
-              />
+              {navigateImageFn(LEFT, idx, product.gallery.length)}
+              {navigateImageFn(RIGHT, idx, product.gallery.length)}
             </div>
           </div>
         </div>

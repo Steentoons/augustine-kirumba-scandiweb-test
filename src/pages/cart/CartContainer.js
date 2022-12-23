@@ -6,37 +6,31 @@ import { v4 as uuidv4 } from "uuid";
 export default class CartContainer extends PureComponent {
   constructor() {
     super();
-
     this.state = {
       quantity: 0,
       totals: [],
     };
-
-    this.plusHandler = this.plusHandler.bind(this);
-    this.itemTotalHandler = this.itemTotalHandler.bind(this);
-    this.setTotalHandler = this.setTotalHandler.bind(this);
-    this.printCartItems = this.printCartItems.bind(this);
   }
 
-  plusHandler() {
+  plusHandler = () => {
     this.setState((prev) => {
       return { quantity: prev.quantity + 1 };
     });
   }
 
-  setTotalHandler(data) {
+  setTotalHandler = data => {
     this.setState({
-      totals: [ ...this.state.totals, data.product.prices ],
+      totals: [...this.state.totals, data.product.prices],
     });
   }
 
-  itemTotalHandler(symbol, price, quantity) {
-    return `${ symbol}${((price * 100 * quantity) / 100).toFixed(2) }`;
+  itemTotalHandler = (symbol, price, quantity) => {
+    return `${symbol}${((price * 100 * quantity) / 100).toFixed(2)}`;
   }
 
   // Handle attributes per item in cart...
-  printCartItems( cartItems, currencySymbol, quantityHandler, navigateImage ) {
-    const printCartItems = cartItems.map(( item, idx ) => {
+  printCartItems = (cartItems, currencySymbol, quantityHandler, navigateImage) => {
+    return cartItems.map((item, idx) => {
       const id = item.productId;
       const attributeArray = item.attributes;
       return (
@@ -51,12 +45,10 @@ export default class CartContainer extends PureComponent {
           itemTotalHandler={this.itemTotalHandler}
           setTotalHandler={this.setTotalHandler}
           id={id}
-          item={item.attributes.attribute}
+          item={attributeArray.attribute}
         />
       );
     });
-
-    return printCartItems
   }
 
   render() {
@@ -75,7 +67,12 @@ export default class CartContainer extends PureComponent {
       cartItems,
       getTax,
     } = this.props;
-    const printCartItems = this.printCartItems( cartItems, currencySymbol, quantityHandler, navigateImage )
+    const printCartItems = this.printCartItems(
+      cartItems,
+      currencySymbol,
+      quantityHandler,
+      navigateImage
+    );
 
     return (
       <Cart

@@ -1,27 +1,22 @@
 import React, { PureComponent } from "react";
+import { DARK_BLUE, GREEN, GREEN_BORDER, NONE } from "../../lib/constants";
 import Categories from "./Categories";
 
 export class CategoriesContainer extends PureComponent {
-  constructor() {
-    super();
-
-    this.categoryToLowercase = this.categoryToLowercase.bind(this);
-    this.categoryStyle = this.categoryStyle.bind(this);
-  }
-  categoryToLowercase(category) {
+  categoryToLowercase = (category) => {
     return category.toLowerCase();
   }
 
-  categoryStyle(categoryState, category) {
+  categoryStyle = (categoryState, category) => {
     const categoryStyle = {
       color:
         this.categoryToLowercase(category) === categoryState
-          ? "#5ECE7B"
-          : "#1D1F22",
+          ? GREEN
+          : DARK_BLUE,
       borderBottom:
         this.categoryToLowercase(category) === categoryState
-          ? "solid #5ECE7B 2px"
-          : "none",
+          ? GREEN_BORDER
+          : NONE,
     };
 
     return categoryStyle;

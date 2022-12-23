@@ -1,17 +1,10 @@
 import React, { PureComponent } from 'react'
 import Attributes from './Attributes'
+import { SWATCH } from '../../lib/constants'
 
 export class AttributesContainer extends PureComponent {
-  constructor() {
-    super()
-
-    this.getAttrType = this.getAttrType.bind(this)
-  }
-
-  getAttrType( attrType ,attributesValueSwatch, attributesValueText ) {
-    const currAttrType = attrType === "swatch" ? attributesValueSwatch : attributesValueText
-
-    return currAttrType
+  getAttrType = ( attrType ,attributesValueSwatch, attributesValueText ) => {
+    return attrType === SWATCH ? attributesValueSwatch : attributesValueText
   }
   render() {
     const {

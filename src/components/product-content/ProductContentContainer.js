@@ -2,64 +2,47 @@ import React, { PureComponent } from "react";
 import ClickableAttributeContainer from "../clickable-attribute/ClickableAttributeContainer";
 import ProductContent from "./ProductContent";
 import { v4 as uuidv4 } from "uuid";
+import { BLOCK, BLUE, DARK_BLUE, FALSE, GREEN_BORDER, NONE, TRUE, WHITE } from "../../lib/constants";
 
 export default class ProductContentContainer extends PureComponent {
-  constructor(props) {
-    super(props);
-
+  constructor() {
+    super();
     this.state = {
       thumbnailId: 0,
       attributes: {},
     };
-
-    this.thumbnailHandler = this.thumbnailHandler.bind(this);
-    this.freshAttributes = this.freshAttributes.bind(this);
-    this.getAttributeArray = this.getAttributeArray.bind(this);
-    this.descToHTML = this.descToHTML.bind(this);
-    this.attributeTypeFn = this.attributeTypeFn.bind(this);
-    this.attributeTemplate = this.attributeTemplate.bind(this);
-    this.getCurrentAttribute = this.getCurrentAttribute.bind(this);
-    this.printImageThumbnails = this.printImageThumbnails.bind(this);
-    this.attributeFn = this.attributeFn.bind(this);
-    this.selectedAttributeFn = this.selectedAttributeFn.bind(this);
-    this.attributeValueTemplate = this.attributeValueTemplate.bind(this);
-    this.instockStyle = this.instockStyle.bind(this);
-    this.instockForButton = this.instockForButton.bind(this);
-    this.updateAttributes = this.updateAttributes.bind(this)
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     this.freshAttributes();
   }
 
   // Freshening the attributes...
-  freshAttributes() {
+  freshAttributes = () => {
     const { currentProduct, currentId } = this.props;
     const attributes = currentProduct.attributes;
     const attrArr = this.getAttributeArray(attributes);
     this.updateAttributes(currentId, attrArr);
   }
 
-  updateAttributes( currentId, attrArr ) {
+  updateAttributes = ( currentId, attrArr ) => {
     this.setState({
       attributes: { id: currentId, attribute: attrArr }
     })
   }
 
-  getAttributeArray(attributes) {
-    const attrArr = attributes.map((attribute) => {
+  getAttributeArray = attributes => {
+    return attributes.map((attribute) => {
       const attrName = attribute.name.toLowerCase();
 
       return {
         [attrName]: 0,
       };
     });
-
-    return attrArr;
   }
 
   // Handling them attributes...
-  attributesHandler(e) {
+  attributesHandler = e => {
     const currentAttributeIdx = Number(e.currentTarget.dataset.attribute_idx);
     const parentAttributeIdx = Number(
       e.currentTarget.parentElement.dataset.attribute_idx
@@ -71,46 +54,40 @@ export default class ProductContentContainer extends PureComponent {
     this.updateAttributes(currentId, newAttributes); 
   }
 
-  thumbnailHandler(e) {
+  thumbnailHandler = e => {
     const thumbnailId = Number(e.currentTarget.dataset.thumbnail_id);
 
     this.setState({ thumbnailId: thumbnailId });
   }
 
   // Parsing the description to valid HTML...
-  descToHTML(currentProduct) {
+  descToHTML = currentProduct => {
     const description = currentProduct.description;
     const parser = new DOMParser();
-    const parsedDescription = parser.parseFromString(description, "text/html")
+    return parser.parseFromString(description, "text/html")
       .body.firstChild.textContent;
-
-    return parsedDescription;
   }
 
   // Handles the type of the attribute to return styles and values of the attribute...
-  attributeTypeFn(attribute, attributeIndex, type) {
-    const attributesValue = attribute.items.map((value, idx) => {
+  attributeTypeFn = (attribute, attributeIndex, type) => {
+    return attribute.items.map((value, idx) => {
       const selectedAttribute = this.selectedAttributeFn(
         idx,
         attributeIndex,
         type
       );
-      const attributeValueTemplate = this.attributeValueTemplate(
+      return this.attributeValueTemplate(
         idx,
         attribute,
         selectedAttribute,
         value,
         type
       );
-
-      return attributeValueTemplate;
     });
-
-    return attributesValue;
   }
 
   // Returns the right template for the attributes...
-  attributeValueTemplate(idx, attribute, selectedAttribute, value, type) {
+  attributeValueTemplate = (idx, attribute, selectedAttribute, value, type) => {
     const attributeValueTemplate = type ? (
       <div
         key={idx}
@@ -139,7 +116,7 @@ export default class ProductContentContainer extends PureComponent {
           key={idx}
           className="attribute-value-swatch"
           style={{
-            background: value.value === "#FFFFFF" ? "#D3D2D5" : value.value,
+            background: value.value === WHITE ? BLUE : value.value,
           }}
         ></div>
       </div>
@@ -149,20 +126,18 @@ export default class ProductContentContainer extends PureComponent {
   }
 
   // Returns the right values to style the selected attributes...
-  selectedAttributeFn(idx, attributeIndex, type) {
-    const selectedAttribute = type
+  selectedAttributeFn = (idx, attributeIndex, type) => {
+    return type
       ? {
-          background: idx === attributeIndex ? "#1D1F22" : "white",
-          color: idx === attributeIndex ? "white" : "#1D1F22",
+          background: idx === attributeIndex ? DARK_BLUE : WHITE,
+          color: idx === attributeIndex ? WHITE : DARK_BLUE,
         }
-      : { border: idx === attributeIndex ? "1px solid #5ECE7B" : "none" };
-
-    return selectedAttribute;
+      : { border: idx === attributeIndex ? GREEN_BORDER : NONE };
   }
 
   // returns actual attributes without inner values...
-  attributeTemplate(index, name, type, swatch, text) {
-    const attributeTemplate = (
+  attributeTemplate = (index, name, type, swatch, text) => {
+    return (
       <ClickableAttributeContainer
         key={index}
         attrName={name}
@@ -172,21 +147,18 @@ export default class ProductContentContainer extends PureComponent {
         attributesValueText={text}
       />
     );
-
-    return attributeTemplate;
   }
 
-  getCurrentAttribute(index, attributeName) {
-    let attributeIndex = null;
+  getCurrentAttribute = (index, attributeName) => {
     const currAttribute = this.state.attributes.attribute;
     if (currAttribute) return currAttribute[index][attributeName];
 
-    return attributeIndex;
+    return null;
   }
 
   // Printing the thumbnails...
-  printImageThumbnails(currentProduct) {
-    const printImageThumbnails = currentProduct.gallery.map(
+  printImageThumbnails = currentProduct => {
+    return currentProduct.gallery.map(
       (thumbnail, idx) => {
         return (
           <div
@@ -203,53 +175,43 @@ export default class ProductContentContainer extends PureComponent {
         );
       }
     );
-
-    return printImageThumbnails;
   }
 
   // Handling Attributes...
-  attributeFn(currentProduct) {
-    const attributes = currentProduct.attributes.map((attribute, index) => {
-      let attributeIndex = this.getCurrentAttribute(
+  attributeFn = currentProduct => {
+    return currentProduct.attributes.map((attribute, index) => {
+      const attributeIndex = this.getCurrentAttribute(
         index,
         attribute.name.toLowerCase()
       );
       const attributesValueText = this.attributeTypeFn(
         attribute,
         attributeIndex,
-        true
+        TRUE
       );
       const attributesValueSwatch = this.attributeTypeFn(
         attribute,
         attributeIndex,
-        false
+        FALSE
       );
-      const attributeTemplate = this.attributeTemplate(
+      return this.attributeTemplate(
         index,
         attribute.name.toUpperCase(),
         attribute.type,
         attributesValueSwatch,
         attributesValueText
       );
-
-      return attributeTemplate;
     });
-
-    return attributes;
   }
 
   // Makes the out of stock image to show appropriately...
-  instockStyle(inStock) {
-    const instock = inStock ? "none" : "block";
-
-    return instock;
+  instockStyle = inStock => {
+    return inStock ? NONE : BLOCK;
   }
 
   // Determines when the add to cart button shows from the stock state...
-  instockForButton(inStock) {
-    const instock = inStock ? "block" : "none";
-
-    return instock;
+  instockForButton = inStock => {
+    return inStock ? BLOCK : NONE;
   }
 
   render() {
