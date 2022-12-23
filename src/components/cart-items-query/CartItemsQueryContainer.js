@@ -4,6 +4,7 @@ import AttributesContainer from "../attributes/AttributesContainer";
 import NavCartItems from "../nav-cart-items/NavCartItems";
 import { v4 as uuidv4 } from "uuid";
 import { Query } from "react-apollo";
+import { BLUE, WHITE } from "../../lib/constants";
 
 export class CartItemsQueryContainer extends PureComponent {
   cartItemsQuery = (
@@ -110,7 +111,7 @@ export class CartItemsQueryContainer extends PureComponent {
           key={idx}
           className="attribute-value-swatch"
           style={{
-            background: value.value === "#FFFFFF" ? "#D3D2D5" : value,
+            background: value.value === WHITE ? BLUE : value,
           }}
         ></div>
       </div>

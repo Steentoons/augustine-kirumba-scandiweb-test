@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import ClickableAttributeContainer from "../clickable-attribute/ClickableAttributeContainer";
 import ProductContent from "./ProductContent";
 import { v4 as uuidv4 } from "uuid";
+import { BLUE, WHITE } from "../../lib/constants";
 
 export default class ProductContentContainer extends PureComponent {
   constructor() {
@@ -115,7 +116,7 @@ export default class ProductContentContainer extends PureComponent {
           key={idx}
           className="attribute-value-swatch"
           style={{
-            background: value.value === "#FFFFFF" ? "#D3D2D5" : value.value,
+            background: value.value === WHITE ? BLUE : value.value,
           }}
         ></div>
       </div>

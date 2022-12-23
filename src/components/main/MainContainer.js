@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import ApolloClient from "apollo-boost";
 import _ from "lodash";
 import Main from "./Main";
+import { LEFT, MINUS, PLUS, RIGHT } from "../../lib/constants";
 
 const client = new ApolloClient({
   uri: "http://localhost:4000/",
@@ -124,9 +125,9 @@ export class MainContainer extends PureComponent {
 
   cartCountPlusMinus = (prev, duty) => {
     switch (duty) {
-      case "plus":
+      case PLUS:
         return { cartCount: prev.cartCount + 1 };
-      case "minus":
+      case MINUS:
         return { cartCount: prev.cartCount - 1 };
       default:
         break;
@@ -181,10 +182,10 @@ export class MainContainer extends PureComponent {
   updateQuantityPlusMinus = (quantity, cartItem, idx, fixedPrice) => {
     const newTotal = 0;
     switch (quantity) {
-      case "plus":
+      case PLUS:
         cartItem.quantity = this.state.cartItems[idx].quantity + 1;
         return this.getTotalFromQuantity(quantity, fixedPrice, newTotal);
-      case "minus":
+      case MINUS:
         if (this.state.cartItems[idx].quantity > 0) {
           cartItem.quantity = this.state.cartItems[idx].quantity - 1;
           if (cartItem.quantity === 0) this.deleteItem(idx);
@@ -206,9 +207,9 @@ export class MainContainer extends PureComponent {
   newTotalFn = (quantity, fixedPrice) => {
     const totalPrice = this.state.totalPrice * 100;
     switch (quantity) {
-      case "plus":
+      case PLUS:
         return ((totalPrice + fixedPrice) / 100).toFixed(2);
-      case "minus":
+      case MINUS:
         return ((totalPrice - fixedPrice) / 100).toFixed(2);
       default:
         break
@@ -264,9 +265,9 @@ export class MainContainer extends PureComponent {
     const items = [...this.state.cartItems];
     const item = { ...items[idx] };
     switch (nav) {
-      case "left":
+      case LEFT:
         return this.navigateImageLeft(currentIdx, length, item, items, idx);
-      case "right":
+      case RIGHT:
         return this.navigateImageRight(currentIdx, length, item, items, idx);
       default:
         break

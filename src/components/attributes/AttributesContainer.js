@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react'
 import Attributes from './Attributes'
+import { SWATCH } from '../../lib/constants'
 
 export class AttributesContainer extends PureComponent {
   getAttrType = ( attrType ,attributesValueSwatch, attributesValueText ) => {
-    return attrType === "swatch" ? attributesValueSwatch : attributesValueText
+    return attrType === SWATCH ? attributesValueSwatch : attributesValueText
   }
   render() {
     const {
