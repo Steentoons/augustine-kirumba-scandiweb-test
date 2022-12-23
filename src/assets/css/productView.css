@@ -24,6 +24,8 @@
 
 .product-view-image {
     margin-right: 100px;
+    display: flex;
+    height: fit-content;
 }
 
 .product-view-thumbnail img {
@@ -32,14 +34,15 @@
 
 .product-view-container .instock-container {
     position: relative;
+    width: 0;
 }
 
 .product-view-container .instock-wrapper {
     position: absolute;
     z-index: +2;
     width: 610px;
-    height: 511px;
-    margin-top: -511px;
+    height: 100%;
+    margin: 0;
     background: rgba(255, 255, 255, 0.5);
     display: flex;
     align-items: center;
@@ -60,10 +63,12 @@
     background-repeat: no-repeat;
     display: flex;
     justify-content: center;
+    height: fit-content;
 }
 
 .product-view-image-div img {
-    width: 100%;
+    width: 610px;
+    height: auto;
 }
 
 .product-view-details-wrapper {
