@@ -11,14 +11,6 @@ export default class ProductContainer extends PureComponent {
       toCart: FALSE,
       attributes: {},
     };
-
-    this.handleMouseOver = this.handleMouseOver.bind(this);
-    this.plpCartHandler = this.plpCartHandler.bind(this);
-    this.toCartMouseOut = this.toCartMouseOut.bind(this);
-    this.instock = this.instock.bind(this);
-    this.toCartFn = this.toCartFn.bind(this);
-    this.cartIdsFn = this.cartIdsFn.bind(this);
-    this.freshAttributes = this.freshAttributes.bind(this);
   }
 
   componentDidMount = () => {

@@ -64,12 +64,6 @@ export default class HeaderContainer extends PureComponent {
     const { cartItems } = this.props;
     const total = this.calculateTotalHandlerMap(cartItems)
     return this.calculateTotalHandlerReducer(total)
-
-    // return total;
-
-    // const itemFixedPriceArr = this.itemFixedPriceFn(cartItems, currencySymbol)
-    //   return this.itemFixedPriceReducer(itemFixedPriceArr)
-    //   .toFixed(2);
   };
 
   calculateTotalHandlerReducer(total) {
